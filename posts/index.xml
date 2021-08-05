@@ -6,8 +6,32 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>zh-tw</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Thu, 05 Aug 2021 11:50:44 +0800</lastBuildDate>
+		<lastBuildDate>Thu, 05 Aug 2021 12:17:49 +0800</lastBuildDate>
 		<atom:link href="https://cherry900606.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>Hugo note</title>
+			<link>https://cherry900606.github.io/posts/note/</link>
+			<pubDate>Thu, 05 Aug 2021 12:17:49 +0800</pubDate>
+			
+			<guid>https://cherry900606.github.io/posts/note/</guid>
+			<description>架站教學 Hugo靜態網站快速入門 在 GitHub 部署 Hugo 靜態網站 常用語法 // 新增文章 hugo new posts/post_name.md // 本地端檢視 (http://localhost:1313/) hugo server // 更新網站 hugo cd public git add . git commit -m &amp;quot;update blog&amp;quot; git push</description>
+			<content type="html"><![CDATA[<h2 id="架站教學">架站教學</h2>
+<p><a href="https://aishuafei.com/hugo-getting-started/">Hugo靜態網站快速入門</a></p>
+<p><a href="https://chswei.github.io/post/programming/hugo/">在 GitHub 部署 Hugo 靜態網站</a></p>
+<h2 id="常用語法">常用語法</h2>
+<pre><code>// 新增文章
+hugo new posts/post_name.md
+</code></pre><pre><code>// 本地端檢視 (http://localhost:1313/)
+hugo server
+</code></pre><pre><code>// 更新網站
+hugo
+cd public
+git add .
+git commit -m &quot;update blog&quot;
+git push
+</code></pre>]]></content>
+		</item>
 		
 		<item>
 			<title>About this blog</title>
