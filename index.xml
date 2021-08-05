@@ -7,14 +7,14 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Thu, 05 Aug 2021 11:15:09 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 05 Aug 2021 11:50:44 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>test article</title>
-      <link>https://cherry900606.github.io/posts/test/</link>
-      <pubDate>Thu, 05 Aug 2021 11:15:09 +0800</pubDate>
+      <title>About this blog</title>
+      <link>https://cherry900606.github.io/posts/about-blog/</link>
+      <pubDate>Thu, 05 Aug 2021 11:50:44 +0800</pubDate>
       
-      <guid>https://cherry900606.github.io/posts/test/</guid>
-      <description>測試 我喜歡測試</description>
+      <guid>https://cherry900606.github.io/posts/about-blog/</guid>
+      <description>你好，歡迎來到我的部落格。 這裡主要是紀錄讀書心得，以及存放資工相關的筆記。</description>
     </item>
     
     <item>
