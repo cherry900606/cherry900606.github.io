@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>coursera on CC&#39;s blog</title>
+    <link>https://cherry900606.github.io/tags/coursera/</link>
+    <description>Recent content in coursera on CC&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Sat, 07 Aug 2021 20:47:40 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/coursera/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Nand2tetris 筆記</title>
+      <link>https://cherry900606.github.io/posts/nand2tetris/</link>
+      <pubDate>Sat, 07 Aug 2021 20:47:40 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/nand2tetris/</guid>
+      <description>課名: Build a Modern Computer from First Principles: Nand to Tetris Part I 我的github作業: 連結 project0 進入課程網站下載課程教材(https://www.nand2tetris.org/</description>
+    </item>
+    
+  </channel>
+</rss>

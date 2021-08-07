@@ -7,14 +7,23 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Thu, 05 Aug 2021 12:17:49 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 07 Aug 2021 20:47:40 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Nand2tetris 筆記</title>
+      <link>https://cherry900606.github.io/posts/nand2tetris/</link>
+      <pubDate>Sat, 07 Aug 2021 20:47:40 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/nand2tetris/</guid>
+      <description>課名: Build a Modern Computer from First Principles: Nand to Tetris Part I 我的github作業: 連結 project0 進入課程網站下載課程教材(https://www.nand2tetris.org/</description>
+    </item>
+    
     <item>
       <title>Hugo note</title>
       <link>https://cherry900606.github.io/posts/note/</link>
       <pubDate>Thu, 05 Aug 2021 12:17:49 +0800</pubDate>
       
       <guid>https://cherry900606.github.io/posts/note/</guid>
-      <description>架站教學 Hugo靜態網站快速入門 在 GitHub 部署 Hugo 靜態網站 常用語法 // 新增文章 hugo new posts/post_name.md // 本地端檢視 (http://localhost:1313/) hugo server // 更新網站 hugo cd public git add . git commit -m &amp;quot;update blog&amp;quot; git push</description>
+      <description>架站教學 Hugo靜態網站快速入門 在 GitHub 部署 Hugo 靜態網站 一个Hugo主题：Hermit 常用語法 // 新增文章 hugo new posts/post_name.md // 本地端檢視 (http://localhost:1313/) hugo server // 更新網站 hugo cd public git</description>
     </item>
     
     <item>
@@ -33,7 +42,7 @@
       
       <guid>https://cherry900606.github.io/about-me/</guid>
       <description> Education Nation Taiwan University of Science and Technology (NTUST) Sep. 2019 - Present
- B.S. in Computer Science Overall GPA: 4.03/4.2  Certifications CPE (Oct. 2019)  Solved 3 of 7 problems. Ranked in top 5.8%  TOEIC (Jun. 2019)  Total scores: 870/990  </description>
+ B.S. in Computer Science Overall GPA: 4.03/4.3  Certifications CPE (Oct. 2019)  Solved 3 of 7 problems. Ranked in top 5.8%  TOEIC (Jun. 2019)  Total scores: 870/990  </description>
     </item>
     
   </channel>
