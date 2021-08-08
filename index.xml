@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sat, 07 Aug 2021 20:47:40 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 08 Aug 2021 14:35:19 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>李宏毅機器學習2020_hw1</title>
+      <link>https://cherry900606.github.io/posts/ml_hw1/</link>
+      <pubDate>Sun, 08 Aug 2021 14:35:19 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/ml_hw1/</guid>
+      <description>本篇主要紀錄學習過程中困擾我的部分，以及自己實作的心得。 範例code Preprocessing 觀察train.csv，取出「數據」的部分，所以前三個column不要</description>
+    </item>
+    
     <item>
       <title>Nand2tetris 筆記</title>
       <link>https://cherry900606.github.io/posts/nand2tetris/</link>
