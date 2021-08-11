@@ -248,21 +248,27 @@ RAM, Screen, Keyboard的規格可以查Hack Chip Set，address根據容量大小
 			<pubDate>Thu, 05 Aug 2021 12:17:49 +0800</pubDate>
 			
 			<guid>https://cherry900606.github.io/posts/note/</guid>
-			<description>架站教學 Hugo靜態網站快速入門 在 GitHub 部署 Hugo 靜態網站 一个Hugo主题：Hermit 常用語法 // 新增文章 hugo new posts/post_name.md // 本地端檢視 (http://localhost:1313/) hugo server // 更新網站 hugo cd public git</description>
+			<description>架站教學 Hugo靜態網站快速入門 在 GitHub 部署 Hugo 靜態網站 一个Hugo主题：Hermit Hugo加入留言、觀看人數 常用語法 // 新增文章 hugo new posts/post_name.md // 本地端檢</description>
 			<content type="html"><![CDATA[<h2 id="架站教學">架站教學</h2>
 <p><a href="https://aishuafei.com/hugo-getting-started/">Hugo靜態網站快速入門</a></p>
 <p><a href="https://chswei.github.io/post/programming/hugo/">在 GitHub 部署 Hugo 靜態網站</a></p>
 <p><a href="https://ojbk.im/posts/2018/hugo-theme-hermit/">一个Hugo主题：Hermit</a></p>
+<p><a href="https://sunnyday0932.github.io/2020/hugo%E5%8A%A0%E5%85%A5%E7%95%99%E8%A8%80%E8%A7%80%E7%9C%8B%E4%BA%BA%E6%95%B8/">Hugo加入留言、觀看人數</a></p>
 <h2 id="常用語法">常用語法</h2>
 <pre><code>// 新增文章
 hugo new posts/post_name.md
 </code></pre><pre><code>// 本地端檢視 (http://localhost:1313/)
 hugo server
-</code></pre><pre><code>// 更新網站
+</code></pre><pre><code>// 更新網站(新增文章)
 hugo
 cd public
 git add .
 git commit -m &quot;update blog&quot;
+git push
+</code></pre><pre><code>// 更新網站(設定)
+cd blog
+git add .
+git commit -m &quot;new feature&quot;
 git push
 </code></pre>]]></content>
 		</item>

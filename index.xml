@@ -32,7 +32,7 @@
       <pubDate>Thu, 05 Aug 2021 12:17:49 +0800</pubDate>
       
       <guid>https://cherry900606.github.io/posts/note/</guid>
-      <description>架站教學 Hugo靜態網站快速入門 在 GitHub 部署 Hugo 靜態網站 一个Hugo主题：Hermit 常用語法 // 新增文章 hugo new posts/post_name.md // 本地端檢視 (http://localhost:1313/) hugo server // 更新網站 hugo cd public git</description>
+      <description>架站教學 Hugo靜態網站快速入門 在 GitHub 部署 Hugo 靜態網站 一个Hugo主题：Hermit Hugo加入留言、觀看人數 常用語法 // 新增文章 hugo new posts/post_name.md // 本地端檢</description>
     </item>
     
     <item>
