@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>note on CC&#39;s blog</title>
-    <link>https://cherry900606.github.io/tags/note/</link>
-    <description>Recent content in note on CC&#39;s blog</description>
+    <title>blog on CC&#39;s blog</title>
+    <link>https://cherry900606.github.io/tags/blog/</link>
+    <description>Recent content in blog on CC&#39;s blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Wed, 11 Aug 2021 18:02:29 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/note/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 11 Aug 2021 18:02:29 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/blog/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>在hugo hermit主題加入留言功能</title>
       <link>https://cherry900606.github.io/posts/add_comment_note/</link>
@@ -15,24 +15,6 @@
       
       <guid>https://cherry900606.github.io/posts/add_comment_note/</guid>
       <description>Disqus 在hermit主題加入留言功能非常簡單。 首先，照著這篇到第七步後，由於hermit主題已經有寫好相關功能，push上去後應該就成功了，只是</description>
-    </item>
-    
-    <item>
-      <title>李宏毅機器學習2020_hw1</title>
-      <link>https://cherry900606.github.io/posts/ml_hw1/</link>
-      <pubDate>Sun, 08 Aug 2021 14:35:19 +0800</pubDate>
-      
-      <guid>https://cherry900606.github.io/posts/ml_hw1/</guid>
-      <description>本篇主要紀錄學習過程中困擾我的部分，以及自己實作的心得。 範例code Preprocessing 觀察train.csv，取出「數據」的部分，所以前三個column不要</description>
-    </item>
-    
-    <item>
-      <title>Nand2tetris 筆記</title>
-      <link>https://cherry900606.github.io/posts/nand2tetris/</link>
-      <pubDate>Sat, 07 Aug 2021 20:47:40 +0800</pubDate>
-      
-      <guid>https://cherry900606.github.io/posts/nand2tetris/</guid>
-      <description>課名: Build a Modern Computer from First Principles: Nand to Tetris Part I 我的github作業: 連結 project0 進入課程網站下載課程教材(https://www.nand2tetris.org/</description>
     </item>
     
     <item>

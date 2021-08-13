@@ -10,7 +10,7 @@
 <meta itemprop="name" content="李宏毅機器學習2020_hw1">
 <meta itemprop="description" content="本篇主要紀錄學習過程中困擾我的部分，以及自己實作的心得。 範例code Preprocessing 觀察train.csv，取出「數據」的部分，所以前三個column不要"><meta itemprop="datePublished" content="2021-08-08T14:35:19&#43;08:00" />
 <meta itemprop="dateModified" content="2021-08-08T14:35:19&#43;08:00" />
-<meta itemprop="wordCount" content="1403">
+<meta itemprop="wordCount" content="1517">
 <meta itemprop="keywords" content="機器學習,note," /><meta property="og:title" content="李宏毅機器學習2020_hw1" />
 <meta property="og:description" content="本篇主要紀錄學習過程中困擾我的部分，以及自己實作的心得。 範例code Preprocessing 觀察train.csv，取出「數據」的部分，所以前三個column不要" />
 <meta property="og:type" content="article" />
@@ -183,6 +183,7 @@ data中有些為NR，不利於之後處理，通通設值為0。
         <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
 </code></pre></div><p>原本想要偷懶，直接從還沒有合併成一個月一個月的data讀資料，同樣也是一次讀10小時的那種方式。想說不是也能整理成最後的形式嗎，為何要捨近求遠呢?後來才知道主要也是為了增加data數，像是原本的做法只會有3600筆(=15 * 20 * 12)，但範例的作法會有5652筆(=471 * 12)，差了1.5倍，也因此丟到kaggle上分數很差。</p>
 <p>private score: 7.51465, public score: 5.46443</p>
+<p>後來我又想說: 為何不乾脆把所有資料合併，而不是分成十二個月呢? 重新寫到一半才發現這麼做最後的資料也不過是5760-9筆而已，何況月與月之間的資料不是連續的，因為每個月只有前二十天的數據而已。丟上kaggle後果然分數也比之前差。</p>
 
                 
 			</div>
@@ -191,7 +192,7 @@ data中有些為NR，不利於之後處理，通通設值為0。
 				<p>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://cherry900606.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92">機器學習</a></span><span class="tag"><a href="https://cherry900606.github.io/tags/note">note</a></span>
 				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1403 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1517 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-08-08 14:35 &#43;0800</p>
 			</footer>
 		</article>
@@ -211,12 +212,14 @@ data中有些為NR，不利於之後處理，通通設值為0。
 </nav>
 		</aside>
 		<div class="post-nav thin">
+			<a class="next-post" href="https://cherry900606.github.io/posts/add_comment_note/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>在hugo hermit主題加入留言功能</span>
+			</a>
 			<a class="prev-post" href="https://cherry900606.github.io/posts/nand2tetris/">
 				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Nand2tetris 筆記</span>
 			</a>
 		</div>
-		<div id="comments" class="thin">
-<script src="https://utteranc.es/client.js"
+		<div id="comments" class="thin"><script src="https://utteranc.es/client.js"
         repo="cherry900606/commentforblog"
         issue-term="pathname"
         theme="photon-dark"

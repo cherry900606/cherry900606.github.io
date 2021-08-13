@@ -7,7 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sun, 08 Aug 2021 14:35:19 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 13 Aug 2021 18:06:52 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>NISRA Enlightened 2021</title>
+      <link>https://cherry900606.github.io/posts/nisra/</link>
+      <pubDate>Fri, 13 Aug 2021 18:06:52 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/nisra/</guid>
+      <description>前言 幾個月前在Hitcon的臉書粉專看到活動宣傳，想著暑假沒事做，這個營隊也沒有程度限制，一時心血來潮就報名了。 以前也不是沒有對CTF產生好</description>
+    </item>
+    
+    <item>
+      <title>在hugo hermit主題加入留言功能</title>
+      <link>https://cherry900606.github.io/posts/add_comment_note/</link>
+      <pubDate>Wed, 11 Aug 2021 18:02:29 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/add_comment_note/</guid>
+      <description>Disqus 在hermit主題加入留言功能非常簡單。 首先，照著這篇到第七步後，由於hermit主題已經有寫好相關功能，push上去後應該就成功了，只是</description>
+    </item>
+    
     <item>
       <title>李宏毅機器學習2020_hw1</title>
       <link>https://cherry900606.github.io/posts/ml_hw1/</link>

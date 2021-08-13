@@ -1,0 +1,86 @@
+ .pagination {
+     display: flex;
+     flex-direction: row;
+     justify-content: center;
+     list-style: none;
+     white-space: nowrap;
+     width: 100%;
+     padding-top: 2em
+ }
+
+ .pagination a {
+     -webkit-font-smoothing: antialiased;
+     font-size: 12px;
+     color: #bfbfbf;
+     letter-spacing: .1em;
+     font-weight: 700;
+     padding: 5px;
+     text-decoration: none;
+     transition: .3s
+ }
+
+ .pagination li {
+     padding-bottom: 3px;
+     margin: 0 20px;
+     box-sizing: border-box;
+     position: relative;
+     display: inline
+ }
+
+ .pagination li.disabled {
+     display: none
+ }
+
+ .pagination li:hover a {
+     color: #000
+ }
+
+ .dark-theme .pagination li:hover a {
+     color: #fff
+ }
+
+ .pagination li:before,.pagination li:after {
+     position: absolute;
+     content: "";
+     width: 0;
+     height: 3px;
+     background: #000;
+     transition: .3s;
+     bottom: 0
+ }
+
+ .dark-theme .pagination li:before,.dark-theme .pagination li:after {
+     background: #fff
+ }
+
+ .pagination li:before .active,.pagination li:after .active {
+     width: 100%
+ }
+
+ .pagination li:before {
+     left: 50%
+ }
+
+ .pagination li:after {
+     right: 50%
+ }
+
+ .pagination li:hover:before,.pagination li:hover:after {
+     width: 50%
+ }
+
+ .pagination li.active a {
+     color: #000
+ }
+
+ .dark-theme .pagination li.active a {
+     color: #fff
+ }
+
+ .pagination li.active:before,.pagination li.active:after {
+     width: 60%
+ }/*!Color themes for Google Code Prettify | MIT License | github.com/jmblog/color-themes-for-google-code-prettify*/.prettyprint {
+     background: #2d2d2d;
+     font-family: Menlo,Bitstream Vera Sans Mono,DejaVu Sans Mono,Monaco,Consolas,monospace;
+     border: 0!important
+ }  
