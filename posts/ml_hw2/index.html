@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="李宏毅機器學習2020_hw2">
+<meta itemprop="description" content="範例code preparing data X_train_fpath = &#39;./data/X_train&#39; Y_train_fpath = &#39;./data/Y_train&#39; X_test_fpath = &#39;./data/X_test&#39; output_fpath = &#39;./output_{}.csv&#39; # Parse csv files to numpy array with open(X_train_fpath) as f: next(f) X_train = np.array([line.strip(&#39;\n&#39;).split(&#39;,&#39;)[1:] for line in f], dtype = float) with open(Y_train_fpath) as f: next(f) Y_train = np.array([line.strip(&#39;\n&#39;).split(&#39;,&#39;)[1] for line in f], dtype = float) with open(X_test_fpath) as f: next(f) X_test = np.array([line.strip(&#39;\n&#39;).split(&#39;,&#39;)[1:] for line in f], dtype"><meta itemprop="datePublished" content="2021-08-16T14:01:22&#43;08:00" />
+<meta itemprop="dateModified" content="2021-08-16T14:01:22&#43;08:00" />
+<meta itemprop="wordCount" content="1226">
+<meta itemprop="keywords" content="機器學習,note," /><meta property="og:title" content="李宏毅機器學習2020_hw2" />
+<meta property="og:description" content="範例code preparing data X_train_fpath = &#39;./data/X_train&#39; Y_train_fpath = &#39;./data/Y_train&#39; X_test_fpath = &#39;./data/X_test&#39; output_fpath = &#39;./output_{}.csv&#39; # Parse csv files to numpy array with open(X_train_fpath) as f: next(f) X_train = np.array([line.strip(&#39;\n&#39;).split(&#39;,&#39;)[1:] for line in f], dtype = float) with open(Y_train_fpath) as f: next(f) Y_train = np.array([line.strip(&#39;\n&#39;).split(&#39;,&#39;)[1] for line in f], dtype = float) with open(X_test_fpath) as f: next(f) X_test = np.array([line.strip(&#39;\n&#39;).split(&#39;,&#39;)[1:] for line in f], dtype" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cherry900606.github.io/posts/ml_hw2/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-08-16T14:01:22&#43;08:00" />
+<meta property="article:modified_time" content="2021-08-16T14:01:22&#43;08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="李宏毅機器學習2020_hw2"/>
+<meta name="twitter:description" content="範例code preparing data X_train_fpath = &#39;./data/X_train&#39; Y_train_fpath = &#39;./data/Y_train&#39; X_test_fpath = &#39;./data/X_test&#39; output_fpath = &#39;./output_{}.csv&#39; # Parse csv files to numpy array with open(X_train_fpath) as f: next(f) X_train = np.array([line.strip(&#39;\n&#39;).split(&#39;,&#39;)[1:] for line in f], dtype = float) with open(Y_train_fpath) as f: next(f) Y_train = np.array([line.strip(&#39;\n&#39;).split(&#39;,&#39;)[1] for line in f], dtype = float) with open(X_test_fpath) as f: next(f) X_test = np.array([line.strip(&#39;\n&#39;).split(&#39;,&#39;)[1:] for line in f], dtype"/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>李宏毅機器學習2020_hw2</title>
+	<link rel="stylesheet" href="https://cherry900606.github.io/css/style.min.eac77496566fd7d5768fd650ddb0b2b181ca6a2d7c5fdd6fe6b8ba4bf47e566f.css" integrity="sha256-6sd0llZv19V2j9ZQ3bCysYHKai18X91v5ri6S/R+Vm8=" crossorigin="anonymous">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://cherry900606.github.io">CC&#39;s blog</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					
+				<a href="https://cherry900606.github.io/posts/">Posts</a>
+				<a href="https://cherry900606.github.io/about-me/">About</a>
+
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3" y2="6"></line><line x1="3" y1="12" x2="3" y2="12"></line><line x1="3" y1="18" x2="3" y2="18"></line></svg></button><span class="hdr-social hide-in-mobile"><a href="https://github.com/cherry900606" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://cherry900606.github.io/posts/">Posts</a></li>
+			<li><a href="https://cherry900606.github.io/about-me/">About</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Aug 16, 2021</span></div>
+				<h1>李宏毅機器學習2020_hw2</h1>
+			</header>
+			<div class="content">
+                
+				<h2 id="範例code">範例code<a href="#範例code" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<h3 id="preparing-data">preparing data<a href="#preparing-data" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">X_train_fpath</span> <span class="o">=</span> <span class="s1">&#39;./data/X_train&#39;</span>
+<span class="n">Y_train_fpath</span> <span class="o">=</span> <span class="s1">&#39;./data/Y_train&#39;</span>
+<span class="n">X_test_fpath</span> <span class="o">=</span> <span class="s1">&#39;./data/X_test&#39;</span>
+<span class="n">output_fpath</span> <span class="o">=</span> <span class="s1">&#39;./output_{}.csv&#39;</span>
+
+<span class="c1"># Parse csv files to numpy array</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">X_train_fpath</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">X_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">Y_train_fpath</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">Y_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">X_test_fpath</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">X_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+</code></pre></div><blockquote>
+<p>strip(): 除去開頭跟尾端的特定字元。</p>
+</blockquote>
+<blockquote>
+<p>split(): 用特定字元切割字串。</p>
+</blockquote>
+<blockquote>
+<p>[line.strip('\n').split(',')[1:] for line in f]: list comprehension</p>
+<p>遍歷file中每一行line，處理過的line變成一個list。</p>
+</blockquote>
+<h3 id="some-useful-functions">some useful functions<a href="#some-useful-functions" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">_gradient</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y_label</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="c1"># This function computes the gradient of cross entropy loss with respect to weight w and bias b.</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">_f</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="n">pred_error</span> <span class="o">=</span> <span class="n">Y_label</span> <span class="o">-</span> <span class="n">y_pred</span>
+    <span class="n">w_grad</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pred_error</span> <span class="o">*</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">b_grad</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pred_error</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">w_grad</span><span class="p">,</span> <span class="n">b_grad</span>
+</code></pre></div><p><img src="https://i.imgur.com/5Caf7Ug.png" alt=""></p>
+<p>課程中我們找到最佳的w跟b，是找到讓-lnL(w,b)越小越好。要達到目標，就要分別以w跟b對該function微分。最後會得到下面的式子，而b也是同理。</p>
+<p><img src="https://i.imgur.com/7YL8sOA.png" alt=""></p>
+<h3 id="train">train<a href="#train" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>這裡的training是用stochastic gradient descent。</p>
+<h2 id="自我練習">自我練習<a href="#自我練習" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<h3 id="流程">流程<a href="#流程" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<ul>
+<li>load data</li>
+<li>normalization</li>
+<li>train
+<ul>
+<li>參數設定</li>
+<li>giradient descent</li>
+</ul>
+</li>
+<li>計算 loss</li>
+<li>predict</li>
+<li>save file</li>
+</ul>
+<h3 id="程式">程式<a href="#程式" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">110</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./data/X_train&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">X_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./data/Y_train&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">Y_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./data/X_test&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">X_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+<span class="n">parameter_size</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">train_size</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">test_size</span> <span class="o">=</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># normalize</span>
+<span class="n">x_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">x_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">train_size</span><span class="p">):</span>
+    <span class="n">X_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">x_mean</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_std</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">test_size</span><span class="p">):</span>
+    <span class="n">X_test</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_test</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">x_mean</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_std</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span>
+    
+<span class="c1"># split into train set &amp; dev set</span>
+<span class="n">dev_ratio</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="n">train_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">dev_ratio</span><span class="p">))</span>
+
+<span class="n">X_dev</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">train_size</span><span class="p">:,</span> <span class="p">:]</span>
+<span class="n">Y_dev</span> <span class="o">=</span> <span class="n">Y_train</span><span class="p">[</span><span class="n">train_size</span><span class="p">:]</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[:</span><span class="n">train_size</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">Y_train</span> <span class="o">=</span> <span class="n">Y_train</span><span class="p">[:</span><span class="n">train_size</span><span class="p">]</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">X_dev</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">Y_dev</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">Y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="c1"># training</span>
+<span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">iter_time</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">step</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">parameter_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iter_time</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">i</span><span class="o">%</span><span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;iter {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+    
+    <span class="c1"># shuffle</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">train_size</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+    <span class="n">Y_train</span> <span class="o">=</span> <span class="n">Y_train</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+    
+    <span class="c1">#sgd</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">train_size</span><span class="p">):</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">Y_train</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
+        
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+        <span class="n">pred_error</span> <span class="o">=</span> <span class="o">-</span> <span class="p">(</span><span class="n">Y</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span>
+        <span class="n">w_grad</span> <span class="o">=</span> <span class="n">pred_error</span> <span class="o">*</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">b_grad</span> <span class="o">=</span> <span class="n">pred_error</span>
+        
+        <span class="n">w</span> <span class="o">=</span> <span class="n">w</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">w_grad</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">b</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">b_grad</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+        
+        <span class="n">step</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="c1"># calculate train loss</span>
+<span class="n">train_loss</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">train_size</span><span class="p">):</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">Y_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+    
+    <span class="k">if</span> <span class="n">Y</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">y_pred</span><span class="p">):</span>
+        <span class="n">train_loss</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;train loss: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_loss</span><span class="o">/</span><span class="n">train_size</span><span class="p">))</span>
+
+<span class="c1"># calculate dev loss</span>
+<span class="n">dev_loss</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X_dev</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">X_dev</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">Y_dev</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+    
+    <span class="k">if</span> <span class="n">Y</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">y_pred</span><span class="p">):</span>
+        <span class="n">dev_loss</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;dev loss: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dev_loss</span><span class="o">/</span><span class="n">X_dev</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+<span class="n">ans_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="n">Y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">)))</span>
+    <span class="n">ans_y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Y_pred</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;submit_myself.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">]</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ans_y</span><span class="p">)):</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">ans_y</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+</code></pre></div><h3 id="總結">總結<a href="#總結" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>課程提供的範例有一點困擾我很久: 在處理多維度的資料時，為了效率與方便，會用內建函式處理。</p>
+<p>像是normalize是這樣寫的:</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">_normalize</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">train</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">X_mean</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">X_std</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">train</span><span class="p">:</span>
+        <span class="n">X_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">X_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_mean</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">X_std</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">X_mean</span><span class="p">,</span> <span class="n">X_std</span>
+</code></pre></div><p>這樣做是因為np.mean()後得到的numpy array shape 需要調整過，再經由broadcast 把整個X_train直接正規化，寫起來相當直觀易懂，只是真的寫下去卻被背後的邏輯卡很久。</p>
+<p>又或者是gradient的部分:</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">_gradient</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">_f</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="n">pred_error</span> <span class="o">=</span> <span class="n">Y</span> <span class="o">-</span> <span class="n">y_pred</span>
+    
+    <span class="n">w_grad</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pred_error</span> <span class="o">*</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">b_grad</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pred_error</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">w_grad</span><span class="p">,</span> <span class="n">b_grad</span>
+</code></pre></div><p>w_grad 跟 b_grad 為什麼這樣寫也不是很好懂，哪怕照著微分後得到的公式去理解也仍然相當頭痛。 像我就相當困惑為何 X 要 transpose? 還有為什麼計算sigmoid時範例用np.matmul，有些人用np.dot? 又或者為何是 np.dot(X, w) ，而不是 np.dot(w, X)呢?</p>
+<p>所以我自己嘗試手刻時盡量避免這些雖簡潔卻大有深意的語法，改以寫起來稍嫌複雜，但沒那麼多門道的方法。</p>
+<p>normalize的寫法跟作業一一樣。切割訓練集則與範例程式相同，只是沒寫成函式。shuffle的部分我也是沒寫成函式。</p>
+<p>訓練的部分可能沒很符合sgd的精神，等同於把batch_size設為1。</p>
+<p>計算loss不是用範例程式裡面的cross entropy loss。</p>
+<p>kaggle scores:</p>
+<ul>
+<li>private score: 0.88943</li>
+<li>public score: 0.88914</li>
+</ul>
+<p>分數還算不錯，跟用範例程式調參數的結果沒差太多，只是訓練的速度稍慢。</p>
+
+                
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://cherry900606.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92">機器學習</a></span><span class="tag"><a href="https://cherry900606.github.io/tags/note">note</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1226 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-08-16 14:01 &#43;0800</p>
+			</footer>
+		</article>
+		<aside id="toc">
+			<div class="toc-title">Table of Contents</div>
+			<nav id="TableOfContents">
+  <ul>
+    <li><a href="#範例code">範例code</a>
+      <ul>
+        <li><a href="#preparing-data">preparing data</a></li>
+        <li><a href="#some-useful-functions">some useful functions</a></li>
+        <li><a href="#train">train</a></li>
+      </ul>
+    </li>
+    <li><a href="#自我練習">自我練習</a>
+      <ul>
+        <li><a href="#流程">流程</a></li>
+        <li><a href="#程式">程式</a></li>
+        <li><a href="#總結">總結</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+		</aside>
+		<div class="post-nav thin">
+			<a class="prev-post" href="https://cherry900606.github.io/posts/nisra/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>NISRA Enlightened 2021</span>
+			</a>
+		</div>
+		<div id="comments" class="thin"><script src="https://utteranc.es/client.js"
+        repo="cherry900606/commentforblog"
+        issue-term="pathname"
+        theme="photon-dark"
+        crossorigin="anonymous"
+        async>
+</script></div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2021 <a href="https://cherry900606.github.io">chenchen</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://cherry900606.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+
+	<script src="https://cherry900606.github.io/js/bundle.min.7d8545daa55d62427355498dd8da13f98ff79a7938ce7d2a5e2ae1ec0de3beb8.js" integrity="sha256-fYVF2qVdYkJzVUmN2NoT+Y/3mnk4zn0qXirh7A3jvrg=" crossorigin="anonymous"></script>
+	
+
+</body>
+
+</html>

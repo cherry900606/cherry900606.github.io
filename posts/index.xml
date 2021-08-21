@@ -6,8 +6,221 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>zh-tw</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Fri, 13 Aug 2021 18:06:52 +0800</lastBuildDate>
+		<lastBuildDate>Mon, 16 Aug 2021 14:01:22 +0800</lastBuildDate>
 		<atom:link href="https://cherry900606.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>李宏毅機器學習2020_hw2</title>
+			<link>https://cherry900606.github.io/posts/ml_hw2/</link>
+			<pubDate>Mon, 16 Aug 2021 14:01:22 +0800</pubDate>
+			
+			<guid>https://cherry900606.github.io/posts/ml_hw2/</guid>
+			<description>範例code preparing data X_train_fpath = &amp;#39;./data/X_train&amp;#39; Y_train_fpath = &amp;#39;./data/Y_train&amp;#39; X_test_fpath = &amp;#39;./data/X_test&amp;#39; output_fpath = &amp;#39;./output_{}.csv&amp;#39; # Parse csv files to numpy array with open(X_train_fpath) as f: next(f) X_train = np.array([line.strip(&amp;#39;\n&amp;#39;).split(&amp;#39;,&amp;#39;)[1:] for line in f], dtype = float) with open(Y_train_fpath) as f: next(f) Y_train = np.array([line.strip(&amp;#39;\n&amp;#39;).split(&amp;#39;,&amp;#39;)[1] for line in f], dtype = float) with open(X_test_fpath) as f: next(f) X_test = np.array([line.strip(&amp;#39;\n&amp;#39;).split(&amp;#39;,&amp;#39;)[1:] for line in f], dtype</description>
+			<content type="html"><![CDATA[<h2 id="範例code">範例code</h2>
+<h3 id="preparing-data">preparing data</h3>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">X_train_fpath</span> <span class="o">=</span> <span class="s1">&#39;./data/X_train&#39;</span>
+<span class="n">Y_train_fpath</span> <span class="o">=</span> <span class="s1">&#39;./data/Y_train&#39;</span>
+<span class="n">X_test_fpath</span> <span class="o">=</span> <span class="s1">&#39;./data/X_test&#39;</span>
+<span class="n">output_fpath</span> <span class="o">=</span> <span class="s1">&#39;./output_{}.csv&#39;</span>
+
+<span class="c1"># Parse csv files to numpy array</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">X_train_fpath</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">X_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">Y_train_fpath</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">Y_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">X_test_fpath</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">X_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">],</span> <span class="n">dtype</span> <span class="o">=</span> <span class="nb">float</span><span class="p">)</span>
+</code></pre></div><blockquote>
+<p>strip(): 除去開頭跟尾端的特定字元。</p>
+</blockquote>
+<blockquote>
+<p>split(): 用特定字元切割字串。</p>
+</blockquote>
+<blockquote>
+<p>[line.strip('\n').split(',')[1:] for line in f]: list comprehension</p>
+<p>遍歷file中每一行line，處理過的line變成一個list。</p>
+</blockquote>
+<h3 id="some-useful-functions">some useful functions</h3>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">_gradient</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y_label</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="c1"># This function computes the gradient of cross entropy loss with respect to weight w and bias b.</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">_f</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="n">pred_error</span> <span class="o">=</span> <span class="n">Y_label</span> <span class="o">-</span> <span class="n">y_pred</span>
+    <span class="n">w_grad</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pred_error</span> <span class="o">*</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">b_grad</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pred_error</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">w_grad</span><span class="p">,</span> <span class="n">b_grad</span>
+</code></pre></div><p><img src="https://i.imgur.com/5Caf7Ug.png" alt=""></p>
+<p>課程中我們找到最佳的w跟b，是找到讓-lnL(w,b)越小越好。要達到目標，就要分別以w跟b對該function微分。最後會得到下面的式子，而b也是同理。</p>
+<p><img src="https://i.imgur.com/7YL8sOA.png" alt=""></p>
+<h3 id="train">train</h3>
+<p>這裡的training是用stochastic gradient descent。</p>
+<h2 id="自我練習">自我練習</h2>
+<h3 id="流程">流程</h3>
+<ul>
+<li>load data</li>
+<li>normalization</li>
+<li>train
+<ul>
+<li>參數設定</li>
+<li>giradient descent</li>
+</ul>
+</li>
+<li>計算 loss</li>
+<li>predict</li>
+<li>save file</li>
+</ul>
+<h3 id="程式">程式</h3>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">110</span><span class="p">)</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./data/X_train&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">X_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./data/Y_train&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">Y_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+    
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;./data/X_test&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="nb">next</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">X_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;,&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">f</span><span class="p">],</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+<span class="n">parameter_size</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">train_size</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">test_size</span> <span class="o">=</span> <span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="c1"># normalize</span>
+<span class="n">x_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">x_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">train_size</span><span class="p">):</span>
+    <span class="n">X_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">x_mean</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_std</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">test_size</span><span class="p">):</span>
+    <span class="n">X_test</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">X_test</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">x_mean</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x_std</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span>
+    
+<span class="c1"># split into train set &amp; dev set</span>
+<span class="n">dev_ratio</span> <span class="o">=</span> <span class="mf">0.3</span>
+<span class="n">train_size</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">dev_ratio</span><span class="p">))</span>
+
+<span class="n">X_dev</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">train_size</span><span class="p">:,</span> <span class="p">:]</span>
+<span class="n">Y_dev</span> <span class="o">=</span> <span class="n">Y_train</span><span class="p">[</span><span class="n">train_size</span><span class="p">:]</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[:</span><span class="n">train_size</span><span class="p">,</span> <span class="p">:]</span>
+<span class="n">Y_train</span> <span class="o">=</span> <span class="n">Y_train</span><span class="p">[:</span><span class="n">train_size</span><span class="p">]</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">X_dev</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">Y_dev</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">Y_train</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+<span class="c1"># training</span>
+<span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.05</span>
+<span class="n">iter_time</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">step</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">parameter_size</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">iter_time</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">i</span><span class="o">%</span><span class="mi">10</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;iter {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">i</span><span class="p">))</span>
+    
+    <span class="c1"># shuffle</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">train_size</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+    <span class="n">Y_train</span> <span class="o">=</span> <span class="n">Y_train</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+    
+    <span class="c1">#sgd</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">train_size</span><span class="p">):</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">j</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">Y</span> <span class="o">=</span> <span class="n">Y_train</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+        <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
+        
+        <span class="n">y_pred</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+        <span class="n">pred_error</span> <span class="o">=</span> <span class="o">-</span> <span class="p">(</span><span class="n">Y</span> <span class="o">-</span> <span class="n">y_pred</span><span class="p">)</span>
+        <span class="n">w_grad</span> <span class="o">=</span> <span class="n">pred_error</span> <span class="o">*</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span>
+        <span class="n">b_grad</span> <span class="o">=</span> <span class="n">pred_error</span>
+        
+        <span class="n">w</span> <span class="o">=</span> <span class="n">w</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">w_grad</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="n">b</span> <span class="o">-</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">b_grad</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">step</span><span class="p">)</span>
+        
+        <span class="n">step</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="c1"># calculate train loss</span>
+<span class="n">train_loss</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">train_size</span><span class="p">):</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">X_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">Y_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+    
+    <span class="k">if</span> <span class="n">Y</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">y_pred</span><span class="p">):</span>
+        <span class="n">train_loss</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;train loss: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">train_loss</span><span class="o">/</span><span class="n">train_size</span><span class="p">))</span>
+
+<span class="c1"># calculate dev loss</span>
+<span class="n">dev_loss</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X_dev</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">X_dev</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">Y</span> <span class="o">=</span> <span class="n">Y_dev</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+    
+    <span class="k">if</span> <span class="n">Y</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">y_pred</span><span class="p">):</span>
+        <span class="n">dev_loss</span> <span class="o">+=</span> <span class="mi">1</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;dev loss: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dev_loss</span><span class="o">/</span><span class="n">X_dev</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+<span class="n">ans_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">X_test</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">)</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="n">Y_pred</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">)))</span>
+    <span class="n">ans_y</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">Y_pred</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;submit_myself.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">writer</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;label&#39;</span><span class="p">]</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+    
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ans_y</span><span class="p">)):</span>
+        <span class="n">row</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">ans_y</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">row</span><span class="p">)</span>
+</code></pre></div><h3 id="總結">總結</h3>
+<p>課程提供的範例有一點困擾我很久: 在處理多維度的資料時，為了效率與方便，會用內建函式處理。</p>
+<p>像是normalize是這樣寫的:</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">_normalize</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">train</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">X_mean</span> <span class="o">=</span> <span class="bp">None</span><span class="p">,</span> <span class="n">X_std</span> <span class="o">=</span> <span class="bp">None</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">train</span><span class="p">:</span>
+        <span class="n">X_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">X_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">-</span> <span class="n">X_mean</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">X_std</span> <span class="o">+</span> <span class="mf">1e-8</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">X_mean</span><span class="p">,</span> <span class="n">X_std</span>
+</code></pre></div><p>這樣做是因為np.mean()後得到的numpy array shape 需要調整過，再經由broadcast 把整個X_train直接正規化，寫起來相當直觀易懂，只是真的寫下去卻被背後的邏輯卡很久。</p>
+<p>又或者是gradient的部分:</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">_gradient</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">_f</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="n">pred_error</span> <span class="o">=</span> <span class="n">Y</span> <span class="o">-</span> <span class="n">y_pred</span>
+    
+    <span class="n">w_grad</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pred_error</span> <span class="o">*</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">axis</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">b_grad</span> <span class="o">=</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pred_error</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">w_grad</span><span class="p">,</span> <span class="n">b_grad</span>
+</code></pre></div><p>w_grad 跟 b_grad 為什麼這樣寫也不是很好懂，哪怕照著微分後得到的公式去理解也仍然相當頭痛。 像我就相當困惑為何 X 要 transpose? 還有為什麼計算sigmoid時範例用np.matmul，有些人用np.dot? 又或者為何是 np.dot(X, w) ，而不是 np.dot(w, X)呢?</p>
+<p>所以我自己嘗試手刻時盡量避免這些雖簡潔卻大有深意的語法，改以寫起來稍嫌複雜，但沒那麼多門道的方法。</p>
+<p>normalize的寫法跟作業一一樣。切割訓練集則與範例程式相同，只是沒寫成函式。shuffle的部分我也是沒寫成函式。</p>
+<p>訓練的部分可能沒很符合sgd的精神，等同於把batch_size設為1。</p>
+<p>計算loss不是用範例程式裡面的cross entropy loss。</p>
+<p>kaggle scores:</p>
+<ul>
+<li>private score: 0.88943</li>
+<li>public score: 0.88914</li>
+</ul>
+<p>分數還算不錯，跟用範例程式調參數的結果沒差太多，只是訓練的速度稍慢。</p>
+]]></content>
+		</item>
 		
 		<item>
 			<title>NISRA Enlightened 2021</title>
@@ -55,6 +268,12 @@
 <p>最後排名第20名。活動有將近150人報名、平均有80人出席上課、59人參加Final CTF，雖然不知有多少人本來就有打CTF，不過這個排名也還行吧，畢竟沒有很認真上課。</p>
 <p>截圖紀念:
 <img src="https://i.imgur.com/wZ6sd2L.png" alt=""></p>
+<h2 id="資源">資源</h2>
+<p><a href="https://drive.google.com/drive/folders/1QgBklmOl5E7F-PSoSUfVpeYYCCbtyaIc">課程簡報</a></p>
+<p><a href="https://hackmd.io/vKXHhc-jQr-wWtqAzDBXTA">write-up-1</a></p>
+<p><a href="https://hackmd.io/A9uarb5-QgOjeY7huzm1CA?view">write-up-2</a></p>
+<p><a href="https://hackmd.io/CZkvboDFSk6BFIYZVjLwNQ">write-up-3</a></p>
+<p><a href="https://github.com/Sharkkcode/NISRA_CTF_2021_writeups">write-up-4</a></p>
 <h2 id="結語">結語</h2>
 <p>在資工系打混摸魚到快大三了，好像也沒什麼值得稱道的成就，其實還挺迷茫的。這次參加外校的活動，也是想說就接觸看看沒碰過的領域吧，免費的優質活動錯過可惜。</p>
 <p>雖然講師們年級沒有跟我差太多，但至少在資安領域有一定程度的了解，甚至於CTF Final排名第一的那個學員也好猛，網路上查了對方的經歷簡直跪了。相比之下就覺得自己真的沒什麼能拿出來講的。</p>
