@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 16 Aug 2021 14:01:22 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 23 Aug 2021 14:56:12 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pytorch MNIST 筆記</title>
+      <link>https://cherry900606.github.io/posts/pytorch_cnn/</link>
+      <pubDate>Mon, 23 Aug 2021 14:56:12 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/pytorch_cnn/</guid>
+      <description>流程 load library read data and pre-processing(set parameters, create dataloader) define network structure(set model, set loss function, set optimizer) training gradient 歸零 predict 計算loss backward 更新step testing 程式 import torch import torch.nn as nn import torch.nn.functional as F import torch.optim as optim from torchvision import datasets, transforms import torch.utils.data as data %matplotlib inline import matplotlib.pyplot as plt</description>
+    </item>
+    
     <item>
       <title>李宏毅機器學習2020_hw2</title>
       <link>https://cherry900606.github.io/posts/ml_hw2/</link>

@@ -10,7 +10,7 @@
 <meta itemprop="name" content="李宏毅機器學習2020_hw2">
 <meta itemprop="description" content="範例code preparing data X_train_fpath = &#39;./data/X_train&#39; Y_train_fpath = &#39;./data/Y_train&#39; X_test_fpath = &#39;./data/X_test&#39; output_fpath = &#39;./output_{}.csv&#39; # Parse csv files to numpy array with open(X_train_fpath) as f: next(f) X_train = np.array([line.strip(&#39;\n&#39;).split(&#39;,&#39;)[1:] for line in f], dtype = float) with open(Y_train_fpath) as f: next(f) Y_train = np.array([line.strip(&#39;\n&#39;).split(&#39;,&#39;)[1] for line in f], dtype = float) with open(X_test_fpath) as f: next(f) X_test = np.array([line.strip(&#39;\n&#39;).split(&#39;,&#39;)[1:] for line in f], dtype"><meta itemprop="datePublished" content="2021-08-16T14:01:22&#43;08:00" />
 <meta itemprop="dateModified" content="2021-08-16T14:01:22&#43;08:00" />
-<meta itemprop="wordCount" content="1226">
+<meta itemprop="wordCount" content="1224">
 <meta itemprop="keywords" content="機器學習,note," /><meta property="og:title" content="李宏毅機器學習2020_hw2" />
 <meta property="og:description" content="範例code preparing data X_train_fpath = &#39;./data/X_train&#39; Y_train_fpath = &#39;./data/Y_train&#39; X_test_fpath = &#39;./data/X_test&#39; output_fpath = &#39;./output_{}.csv&#39; # Parse csv files to numpy array with open(X_train_fpath) as f: next(f) X_train = np.array([line.strip(&#39;\n&#39;).split(&#39;,&#39;)[1:] for line in f], dtype = float) with open(Y_train_fpath) as f: next(f) Y_train = np.array([line.strip(&#39;\n&#39;).split(&#39;,&#39;)[1] for line in f], dtype = float) with open(X_test_fpath) as f: next(f) X_test = np.array([line.strip(&#39;\n&#39;).split(&#39;,&#39;)[1:] for line in f], dtype" />
 <meta property="og:type" content="article" />
@@ -264,7 +264,7 @@
     <span class="k">return</span> <span class="n">w_grad</span><span class="p">,</span> <span class="n">b_grad</span>
 </code></pre></div><p>w_grad 跟 b_grad 為什麼這樣寫也不是很好懂，哪怕照著微分後得到的公式去理解也仍然相當頭痛。 像我就相當困惑為何 X 要 transpose? 還有為什麼計算sigmoid時範例用np.matmul，有些人用np.dot? 又或者為何是 np.dot(X, w) ，而不是 np.dot(w, X)呢?</p>
 <p>所以我自己嘗試手刻時盡量避免這些雖簡潔卻大有深意的語法，改以寫起來稍嫌複雜，但沒那麼多門道的方法。</p>
-<p>normalize的寫法跟作業一一樣。切割訓練集則與範例程式相同，只是沒寫成函式。shuffle的部分我也是沒寫成函式。</p>
+<p>normalize的寫法跟作業一一樣。切割訓練集則與範例程式相同，只是沒寫成函式。shuffle的部分也沒寫成函式。</p>
 <p>訓練的部分可能沒很符合sgd的精神，等同於把batch_size設為1。</p>
 <p>計算loss不是用範例程式裡面的cross entropy loss。</p>
 <p>kaggle scores:</p>
@@ -281,7 +281,7 @@
 				<p>
 					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://cherry900606.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92">機器學習</a></span><span class="tag"><a href="https://cherry900606.github.io/tags/note">note</a></span>
 				</p>
-				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1226 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1224 Words</p>
 				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-08-16 14:01 &#43;0800</p>
 			</footer>
 		</article>
@@ -307,6 +307,9 @@
 </nav>
 		</aside>
 		<div class="post-nav thin">
+			<a class="next-post" href="https://cherry900606.github.io/posts/pytorch_cnn/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Pytorch MNIST 筆記</span>
+			</a>
 			<a class="prev-post" href="https://cherry900606.github.io/posts/nisra/">
 				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>NISRA Enlightened 2021</span>
 			</a>

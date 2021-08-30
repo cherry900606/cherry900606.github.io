@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>pytorch on CC&#39;s blog</title>
+    <link>https://cherry900606.github.io/tags/pytorch/</link>
+    <description>Recent content in pytorch on CC&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Mon, 23 Aug 2021 14:56:12 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/pytorch/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pytorch MNIST 筆記</title>
+      <link>https://cherry900606.github.io/posts/pytorch_cnn/</link>
+      <pubDate>Mon, 23 Aug 2021 14:56:12 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/pytorch_cnn/</guid>
+      <description>流程 load library read data and pre-processing(set parameters, create dataloader) define network structure(set model, set loss function, set optimizer) training gradient 歸零 predict 計算loss backward 更新step testing 程式 import torch import torch.nn as nn import torch.nn.functional as F import torch.optim as optim from torchvision import datasets, transforms import torch.utils.data as data %matplotlib inline import matplotlib.pyplot as plt</description>
+    </item>
+    
+  </channel>
+</rss>
