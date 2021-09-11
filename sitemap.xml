@@ -2,25 +2,34 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://cherry900606.github.io/</loc>
-    <lastmod>2021-08-23T14:56:12+08:00</lastmod>
+    <loc>https://cherry900606.github.io/tags/blog/</loc>
+    <lastmod>2021-09-11T11:53:57+08:00</lastmod>
   </url><url>
-    <loc>https://cherry900606.github.io/tags/note/</loc>
-    <lastmod>2021-08-23T14:56:12+08:00</lastmod>
+    <loc>https://cherry900606.github.io/</loc>
+    <lastmod>2021-09-11T11:53:57+08:00</lastmod>
   </url><url>
     <loc>https://cherry900606.github.io/posts/</loc>
-    <lastmod>2021-08-23T14:56:12+08:00</lastmod>
+    <lastmod>2021-09-11T11:53:57+08:00</lastmod>
+  </url><url>
+    <loc>https://cherry900606.github.io/tags/</loc>
+    <lastmod>2021-09-11T11:53:57+08:00</lastmod>
+  </url><url>
+    <loc>https://cherry900606.github.io/posts/pagination/</loc>
+    <lastmod>2021-09-11T11:53:57+08:00</lastmod>
+  </url><url>
+    <loc>https://cherry900606.github.io/tags/note/</loc>
+    <lastmod>2021-09-05T14:25:03+08:00</lastmod>
+  </url><url>
+    <loc>https://cherry900606.github.io/posts/syscall/</loc>
+    <lastmod>2021-09-05T14:25:03+08:00</lastmod>
+  </url><url>
+    <loc>https://cherry900606.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92/</loc>
+    <lastmod>2021-09-05T14:25:03+08:00</lastmod>
   </url><url>
     <loc>https://cherry900606.github.io/tags/pytorch/</loc>
     <lastmod>2021-08-23T14:56:12+08:00</lastmod>
   </url><url>
     <loc>https://cherry900606.github.io/posts/pytorch_cnn/</loc>
-    <lastmod>2021-08-23T14:56:12+08:00</lastmod>
-  </url><url>
-    <loc>https://cherry900606.github.io/tags/</loc>
-    <lastmod>2021-08-23T14:56:12+08:00</lastmod>
-  </url><url>
-    <loc>https://cherry900606.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92/</loc>
     <lastmod>2021-08-23T14:56:12+08:00</lastmod>
   </url><url>
     <loc>https://cherry900606.github.io/posts/ml_hw2/</loc>
@@ -31,9 +40,6 @@
   </url><url>
     <loc>https://cherry900606.github.io/tags/%E8%B3%87%E5%AE%89/</loc>
     <lastmod>2021-08-13T18:06:52+08:00</lastmod>
-  </url><url>
-    <loc>https://cherry900606.github.io/tags/blog/</loc>
-    <lastmod>2021-08-11T18:02:29+08:00</lastmod>
   </url><url>
     <loc>https://cherry900606.github.io/posts/add_comment_note/</loc>
     <lastmod>2021-08-11T18:02:29+08:00</lastmod>

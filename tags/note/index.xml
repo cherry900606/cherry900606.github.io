@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 23 Aug 2021 14:56:12 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/note/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 05 Sep 2021 14:25:03 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/note/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>syscall</title>
+      <link>https://cherry900606.github.io/posts/syscall/</link>
+      <pubDate>Sun, 05 Sep 2021 14:25:03 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/syscall/</guid>
+      <description>目標 閱讀README.txt，裡面提到用label.txt內有列出的檔案即可。 label.txt的內容分為兩部分: 檔案名稱與對應的malwa</description>
+    </item>
+    
     <item>
       <title>Pytorch MNIST 筆記</title>
       <link>https://cherry900606.github.io/posts/pytorch_cnn/</link>

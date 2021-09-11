@@ -7,7 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 23 Aug 2021 14:56:12 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 11 Sep 2021 11:53:57 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在hugo hermit主題增加分頁功能</title>
+      <link>https://cherry900606.github.io/posts/pagination/</link>
+      <pubDate>Sat, 11 Sep 2021 11:53:57 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/pagination/</guid>
+      <description>根據這篇文章的說明，可以在hugo的hermit主題自行增加分頁功能，不然hermit本身不會換頁。 我在「在對應的CSS樣式文件中添加以下」</description>
+    </item>
+    
+    <item>
+      <title>syscall</title>
+      <link>https://cherry900606.github.io/posts/syscall/</link>
+      <pubDate>Sun, 05 Sep 2021 14:25:03 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/syscall/</guid>
+      <description>目標 閱讀README.txt，裡面提到用label.txt內有列出的檔案即可。 label.txt的內容分為兩部分: 檔案名稱與對應的malwa</description>
+    </item>
+    
     <item>
       <title>Pytorch MNIST 筆記</title>
       <link>https://cherry900606.github.io/posts/pytorch_cnn/</link>
@@ -78,16 +96,6 @@
       
       <guid>https://cherry900606.github.io/posts/about-blog/</guid>
       <description>你好，歡迎來到我的部落格。 這裡主要是紀錄讀書心得，以及存放資工相關的筆記。</description>
-    </item>
-    
-    <item>
-      <title>About me</title>
-      <link>https://cherry900606.github.io/about-me/</link>
-      <pubDate>Tue, 18 May 2021 00:00:00 +0000</pubDate>
-      
-      <guid>https://cherry900606.github.io/about-me/</guid>
-      <description> Education Nation Taiwan University of Science and Technology (NTUST) Sep. 2019 - Present
- B.S. in Computer Science Overall GPA: 4.03/4.3  Certifications CPE (Oct. 2019)  Solved 3 of 7 problems. Ranked in top 5.8%  TOEIC (Jun. 2019)  Total scores: 870/990  </description>
     </item>
     
   </channel>

@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Wed, 11 Aug 2021 18:02:29 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/blog/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 11 Sep 2021 11:53:57 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/blog/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在hugo hermit主題增加分頁功能</title>
+      <link>https://cherry900606.github.io/posts/pagination/</link>
+      <pubDate>Sat, 11 Sep 2021 11:53:57 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/pagination/</guid>
+      <description>根據這篇文章的說明，可以在hugo的hermit主題自行增加分頁功能，不然hermit本身不會換頁。 我在「在對應的CSS樣式文件中添加以下」</description>
+    </item>
+    
     <item>
       <title>在hugo hermit主題加入留言功能</title>
       <link>https://cherry900606.github.io/posts/add_comment_note/</link>
