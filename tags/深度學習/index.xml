@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>深度學習 on CC&#39;s blog</title>
+    <link>https://cherry900606.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%B8%E7%BF%92/</link>
+    <description>Recent content in 深度學習 on CC&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Mon, 20 Sep 2021 22:34:47 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/%E6%B7%B1%E5%BA%A6%E5%AD%B8%E7%BF%92/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Keras 筆記</title>
+      <link>https://cherry900606.github.io/posts/keras_note/</link>
+      <pubDate>Mon, 20 Sep 2021 22:34:47 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/keras_note/</guid>
+      <description>常用import from keras.models import Sequential from keras.layers.core import Dense, Dropout, Activation from keras.layers import Conv2D, MaxPooling2D, Flatten, Conv1D, MaxPooling1D from keras.utils import np_utils from tensorflow.keras.optimizers import SGD, Adam define model model = Sequential() model.add(Dense(input_dim=28 * 28, units=689, activation=&amp;#39;relu&amp;#39;)) model.add(Dropout(0.7)) model.add(Dense(units=689, activation=&amp;#39;relu&amp;#39;)) model.add(Dropout(0.7)) model.add(Dense(units=10, activation=&amp;#39;softmax&amp;#39;)) input layer 需要設定input_dim或者in</description>
+    </item>
+    
+  </channel>
+</rss>

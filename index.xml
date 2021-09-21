@@ -7,7 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sat, 11 Sep 2021 11:53:57 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 20 Sep 2021 22:34:47 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Keras 筆記</title>
+      <link>https://cherry900606.github.io/posts/keras_note/</link>
+      <pubDate>Mon, 20 Sep 2021 22:34:47 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/keras_note/</guid>
+      <description>常用import from keras.models import Sequential from keras.layers.core import Dense, Dropout, Activation from keras.layers import Conv2D, MaxPooling2D, Flatten, Conv1D, MaxPooling1D from keras.utils import np_utils from tensorflow.keras.optimizers import SGD, Adam define model model = Sequential() model.add(Dense(input_dim=28 * 28, units=689, activation=&amp;#39;relu&amp;#39;)) model.add(Dropout(0.7)) model.add(Dense(units=689, activation=&amp;#39;relu&amp;#39;)) model.add(Dropout(0.7)) model.add(Dense(units=10, activation=&amp;#39;softmax&amp;#39;)) input layer 需要設定input_dim或者in</description>
+    </item>
+    
+    <item>
+      <title>機器學習基石 作業一</title>
+      <link>https://cherry900606.github.io/posts/ml_foundation_hw1/</link>
+      <pubDate>Sun, 19 Sep 2021 13:25:40 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/ml_foundation_hw1/</guid>
+      <description>Questions 15~17 根據講義的演算法進行實作: 資料前處理 import numpy as np data = np.array([i.strip().split() for i in open(&amp;#34;./data.dat&amp;#34;).readlines()]) X_train = data[:, :4] Y_train = data[:, -1] xzero = np.ones((X_train.shape[0], 1)) X_train = np.concatenate((xzero, X_train), axis=1).astype(&amp;#39;float&amp;#39;) Y_train = Y_train.astype(&amp;#39;float&amp;#39;) 會用到的函式 def sign(x): if x &amp;lt;=0 : return -1 else: return 1 def _shuffle(X,</description>
+    </item>
+    
     <item>
       <title>在hugo hermit主題增加分頁功能</title>
       <link>https://cherry900606.github.io/posts/pagination/</link>
@@ -78,24 +96,6 @@
       
       <guid>https://cherry900606.github.io/posts/nand2tetris/</guid>
       <description>課名: Build a Modern Computer from First Principles: Nand to Tetris Part I 我的github作業: 連結 project0 進入課程網站下載課程教材(https://www.nand2tetris.org/</description>
-    </item>
-    
-    <item>
-      <title>Hugo note</title>
-      <link>https://cherry900606.github.io/posts/note/</link>
-      <pubDate>Thu, 05 Aug 2021 12:17:49 +0800</pubDate>
-      
-      <guid>https://cherry900606.github.io/posts/note/</guid>
-      <description>架站教學 Hugo靜態網站快速入門 在 GitHub 部署 Hugo 靜態網站 一个Hugo主题：Hermit Hugo加入留言、觀看人數 常用語法 // 新增文章 hugo new posts/post_name.md // 本地端檢</description>
-    </item>
-    
-    <item>
-      <title>About this blog</title>
-      <link>https://cherry900606.github.io/posts/about-blog/</link>
-      <pubDate>Thu, 05 Aug 2021 11:50:44 +0800</pubDate>
-      
-      <guid>https://cherry900606.github.io/posts/about-blog/</guid>
-      <description>你好，歡迎來到我的部落格。 這裡主要是紀錄讀書心得，以及存放資工相關的筆記。</description>
     </item>
     
   </channel>

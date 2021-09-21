@@ -6,8 +6,221 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>zh-tw</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Sat, 11 Sep 2021 11:53:57 +0800</lastBuildDate>
+		<lastBuildDate>Mon, 20 Sep 2021 22:34:47 +0800</lastBuildDate>
 		<atom:link href="https://cherry900606.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>Keras 筆記</title>
+			<link>https://cherry900606.github.io/posts/keras_note/</link>
+			<pubDate>Mon, 20 Sep 2021 22:34:47 +0800</pubDate>
+			
+			<guid>https://cherry900606.github.io/posts/keras_note/</guid>
+			<description>常用import from keras.models import Sequential from keras.layers.core import Dense, Dropout, Activation from keras.layers import Conv2D, MaxPooling2D, Flatten, Conv1D, MaxPooling1D from keras.utils import np_utils from tensorflow.keras.optimizers import SGD, Adam define model model = Sequential() model.add(Dense(input_dim=28 * 28, units=689, activation=&amp;#39;relu&amp;#39;)) model.add(Dropout(0.7)) model.add(Dense(units=689, activation=&amp;#39;relu&amp;#39;)) model.add(Dropout(0.7)) model.add(Dense(units=10, activation=&amp;#39;softmax&amp;#39;)) input layer 需要設定input_dim或者in</description>
+			<content type="html"><![CDATA[<h2 id="常用import">常用import</h2>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">keras.models</span> <span class="kn">import</span> <span class="n">Sequential</span>
+<span class="kn">from</span> <span class="nn">keras.layers.core</span> <span class="kn">import</span> <span class="n">Dense</span><span class="p">,</span> <span class="n">Dropout</span><span class="p">,</span> <span class="n">Activation</span>
+<span class="kn">from</span> <span class="nn">keras.layers</span> <span class="kn">import</span> <span class="n">Conv2D</span><span class="p">,</span> <span class="n">MaxPooling2D</span><span class="p">,</span> <span class="n">Flatten</span><span class="p">,</span> <span class="n">Conv1D</span><span class="p">,</span> <span class="n">MaxPooling1D</span>
+<span class="kn">from</span> <span class="nn">keras.utils</span> <span class="kn">import</span> <span class="n">np_utils</span>
+<span class="kn">from</span> <span class="nn">tensorflow.keras.optimizers</span> <span class="kn">import</span> <span class="n">SGD</span><span class="p">,</span> <span class="n">Adam</span>
+</code></pre></div><h2 id="define-model">define model</h2>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">input_dim</span><span class="o">=</span><span class="mi">28</span> <span class="o">*</span> <span class="mi">28</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="mi">689</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.7</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">689</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.7</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">))</span>
+</code></pre></div><p>input layer 需要設定input_dim或者input_shape，依據data本身的shape設定，之後的layer則不用。units表示每層的神經元數目。
+最後一層的units需與預測種類的數目一致，以MNIST為例，因為有0~9共10個數字，因此要設為10。</p>
+<h2 id="goodness-of-function">goodness of function</h2>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">model</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s1">&#39;categorical_crossentropy&#39;</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span> <span class="n">metrics</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;accuracy&#39;</span><span class="p">])</span>
+</code></pre></div><h2 id="訓練">訓練</h2>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+</code></pre></div><h2 id="testing--predict">testing &amp; predict</h2>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">result_train</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Train Loss:&#39;</span><span class="p">,</span> <span class="n">result_train</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Train Acc:&#39;</span><span class="p">,</span> <span class="n">result_train</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+</code></pre></div><h2 id="其他">其他</h2>
+<p>以MNIST為例，其label是以十進位表示，必須轉換表達方式。</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">Y_train</span> <span class="o">=</span> <span class="n">np_utils</span><span class="o">.</span><span class="n">to_categorical</span><span class="p">(</span><span class="n">Y_train</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</code></pre></div><p>使用conv(卷積層)時，可能會出現input_shape方面的錯誤。以Conv2D為例，要求的input shape為3維(寬:高:層數)，此時reshape成相應格式即可。
+以MNIST為例，用mnist.load_data()讀取資料後:</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div><p>或者使用Conv1D，我對syscall得到的X_train與X_test進行處理:</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">X_train</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">X_test</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div><p>總之，就是依需求調整shape。</p>
+<p>最後放上syscall的keras+CNN的部分code，方便以後參考:</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">model</span> <span class="o">=</span> <span class="n">Sequential</span><span class="p">()</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv1D</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">,</span> <span class="n">input_shape</span><span class="o">=</span><span class="p">(</span><span class="mi">173</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling1D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv1D</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling1D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Conv1D</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">kernel_size</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">MaxPooling1D</span><span class="p">(</span><span class="n">pool_size</span><span class="o">=</span><span class="mi">2</span><span class="p">))</span>
+
+
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Flatten</span><span class="p">())</span>
+
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;relu&#39;</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dropout</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>
+<span class="n">model</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">Dense</span><span class="p">(</span><span class="n">units</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">activation</span><span class="o">=</span><span class="s1">&#39;softmax&#39;</span><span class="p">))</span>
+</code></pre></div>]]></content>
+		</item>
+		
+		<item>
+			<title>機器學習基石 作業一</title>
+			<link>https://cherry900606.github.io/posts/ml_foundation_hw1/</link>
+			<pubDate>Sun, 19 Sep 2021 13:25:40 +0800</pubDate>
+			
+			<guid>https://cherry900606.github.io/posts/ml_foundation_hw1/</guid>
+			<description>Questions 15~17 根據講義的演算法進行實作: 資料前處理 import numpy as np data = np.array([i.strip().split() for i in open(&amp;#34;./data.dat&amp;#34;).readlines()]) X_train = data[:, :4] Y_train = data[:, -1] xzero = np.ones((X_train.shape[0], 1)) X_train = np.concatenate((xzero, X_train), axis=1).astype(&amp;#39;float&amp;#39;) Y_train = Y_train.astype(&amp;#39;float&amp;#39;) 會用到的函式 def sign(x): if x &amp;lt;=0 : return -1 else: return 1 def _shuffle(X,</description>
+			<content type="html"><![CDATA[<h2 id="questions-1517">Questions 15~17</h2>
+<p>根據講義的演算法進行實作:
+<img src="https://i.imgur.com/FgwvbSQ.png" alt=""></p>
+<h3 id="資料前處理">資料前處理</h3>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;./data.dat&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()])</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">Y_train</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">xzero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">xzero</span><span class="p">,</span> <span class="n">X_train</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+<span class="n">Y_train</span> <span class="o">=</span> <span class="n">Y_train</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+</code></pre></div><h3 id="會用到的函式">會用到的函式</h3>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">sign</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;=</span><span class="mi">0</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    
+<span class="k">def</span> <span class="nf">_shuffle</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">Y</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">PLA</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">update_time</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">shuffle</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span> <span class="o">=</span> <span class="n">_shuffle</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">isFinish</span> <span class="o">=</span> <span class="bp">True</span>
+
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+
+            <span class="k">if</span> <span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">w</span><span class="p">))</span> <span class="o">!=</span> <span class="n">Y_train</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="n">w</span> <span class="o">+</span> <span class="n">eta</span><span class="o">*</span><span class="p">(</span><span class="n">Y_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">X_train</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="n">isFinish</span> <span class="o">=</span> <span class="bp">False</span>
+                <span class="n">update_time</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="n">isFinish</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">return</span> <span class="n">update_time</span>
+</code></pre></div><h3 id="執行">執行</h3>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># 第15題</span>
+<span class="n">PLA</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+
+<span class="c1"># 第16題</span>
+<span class="n">total_update</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2000</span><span class="p">):</span>
+    <span class="n">total_update</span> <span class="o">+=</span> <span class="n">PLA</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">total_update</span> <span class="o">/</span> <span class="mi">2000</span><span class="p">)</span>
+
+<span class="c1"># 第17題</span>
+<span class="n">total_update</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2000</span><span class="p">):</span>
+    <span class="n">total_update</span> <span class="o">+=</span> <span class="n">PLA</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">total_update</span> <span class="o">/</span> <span class="mi">2000</span><span class="p">)</span>
+</code></pre></div><h2 id="questions-1820">Questions 18~20</h2>
+<p>修改PLA的部分內容即可。
+<img src="https://i.imgur.com/7HBO3Jr.png" alt=""></p>
+<h3 id="資料前處理函式定義">資料前處理、函式定義</h3>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="n">train_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;./train.dat&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()])</span>
+<span class="n">test_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">i</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&#34;./test.dat&#34;</span><span class="p">)</span><span class="o">.</span><span class="n">readlines</span><span class="p">()])</span>
+
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">Y_train</span> <span class="o">=</span> <span class="n">train_data</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">test_data</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">4</span><span class="p">]</span>
+<span class="n">Y_test</span> <span class="o">=</span> <span class="n">test_data</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="n">xzero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">X_train</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">xzero</span><span class="p">,</span> <span class="n">X_train</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+<span class="n">Y_train</span> <span class="o">=</span> <span class="n">Y_train</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+
+<span class="n">xzero</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">X_test</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">X_test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">xzero</span><span class="p">,</span> <span class="n">X_test</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+<span class="n">Y_test</span> <span class="o">=</span> <span class="n">Y_test</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">sign</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;=</span><span class="mi">0</span> <span class="p">:</span>
+        <span class="k">return</span> <span class="o">-</span><span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="mi">1</span>
+    
+<span class="k">def</span> <span class="nf">_shuffle</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">):</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">))</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">[</span><span class="n">index</span><span class="p">],</span> <span class="n">Y</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+</code></pre></div><h3 id="pocket">pocket</h3>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">pocket</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">eta</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">update_time</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">min_error</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">w_pocket</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">shuffle</span> <span class="o">==</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span> <span class="o">=</span> <span class="n">_shuffle</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="mi">0</span>
+            
+        <span class="k">if</span> <span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">w</span><span class="p">))</span> <span class="o">!=</span> <span class="n">Y_train</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">w</span> <span class="o">+</span> <span class="n">eta</span><span class="o">*</span><span class="p">(</span><span class="n">Y_train</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">X_train</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">isFinish</span> <span class="o">=</span> <span class="bp">False</span>
+            <span class="n">update_time</span> <span class="o">+=</span> <span class="mi">1</span>
+                
+            <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+                <span class="k">if</span> <span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X_train</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">w</span><span class="p">))</span> <span class="o">!=</span> <span class="n">Y_train</span><span class="p">[</span><span class="n">j</span><span class="p">]:</span>
+                     <span class="n">error</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">error</span> <span class="o">&lt;</span> <span class="n">min_error</span><span class="p">:</span>
+                <span class="n">min_error</span> <span class="o">=</span> <span class="n">error</span>
+                <span class="n">w_pocket</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        
+        <span class="k">if</span> <span class="n">update_time</span> <span class="o">==</span> <span class="mi">50</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">return</span> <span class="n">w_pocket</span>
+
+<span class="k">def</span> <span class="nf">get_error</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">w</span><span class="p">):</span>
+    <span class="n">error</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">sign</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">X</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">w</span><span class="p">))</span> <span class="o">!=</span> <span class="n">Y</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span>
+            <span class="n">error</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">error</span><span class="o">/</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>                            
+</code></pre></div><h3 id="執行-1">執行</h3>
+<p>根據題目要求修改pocket函式部分內容，重跑執行區塊即可。</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="n">total_error</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2000</span><span class="p">):</span>
+    <span class="n">w_pocket</span> <span class="o">=</span> <span class="n">pocket</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">Y_train</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">total_error</span> <span class="o">+=</span> <span class="n">get_error</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">Y_test</span><span class="p">,</span> <span class="n">w_pocket</span><span class="p">)</span>
+    
+    <span class="k">if</span> <span class="n">i</span><span class="o">%</span><span class="mi">100</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+        
+<span class="n">total_error</span><span class="o">/</span><span class="mi">2000</span>
+</code></pre></div>]]></content>
+		</item>
 		
 		<item>
 			<title>在hugo hermit主題增加分頁功能</title>

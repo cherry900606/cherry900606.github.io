@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sun, 05 Sep 2021 14:25:03 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 19 Sep 2021 13:25:40 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>機器學習基石 作業一</title>
+      <link>https://cherry900606.github.io/posts/ml_foundation_hw1/</link>
+      <pubDate>Sun, 19 Sep 2021 13:25:40 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/ml_foundation_hw1/</guid>
+      <description>Questions 15~17 根據講義的演算法進行實作: 資料前處理 import numpy as np data = np.array([i.strip().split() for i in open(&amp;#34;./data.dat&amp;#34;).readlines()]) X_train = data[:, :4] Y_train = data[:, -1] xzero = np.ones((X_train.shape[0], 1)) X_train = np.concatenate((xzero, X_train), axis=1).astype(&amp;#39;float&amp;#39;) Y_train = Y_train.astype(&amp;#39;float&amp;#39;) 會用到的函式 def sign(x): if x &amp;lt;=0 : return -1 else: return 1 def _shuffle(X,</description>
+    </item>
+    
     <item>
       <title>syscall</title>
       <link>https://cherry900606.github.io/posts/syscall/</link>
