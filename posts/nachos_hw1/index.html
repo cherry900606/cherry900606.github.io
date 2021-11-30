@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="Nachos_hw1">
+<meta itemprop="description" content="安裝 sudo apt install csh g&#43;&#43; git clone https://gitlab.com/connlabtw21/nachos2021.git cd NachOS2021 sudo cp -r usr / cd code make make下去後會噴出很多訊息，這是正常的，等待幾分鐘後即結束。 Testing 測試是否下載成功。 cd userprog ./nachos -e ../test/test1 範例──"><meta itemprop="datePublished" content="2021-10-13T10:48:33&#43;08:00" />
+<meta itemprop="dateModified" content="2021-10-13T10:48:33&#43;08:00" />
+<meta itemprop="wordCount" content="1217">
+<meta itemprop="keywords" content="作業系統," /><meta property="og:title" content="Nachos_hw1" />
+<meta property="og:description" content="安裝 sudo apt install csh g&#43;&#43; git clone https://gitlab.com/connlabtw21/nachos2021.git cd NachOS2021 sudo cp -r usr / cd code make make下去後會噴出很多訊息，這是正常的，等待幾分鐘後即結束。 Testing 測試是否下載成功。 cd userprog ./nachos -e ../test/test1 範例──" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cherry900606.github.io/posts/nachos_hw1/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2021-10-13T10:48:33&#43;08:00" />
+<meta property="article:modified_time" content="2021-10-13T10:48:33&#43;08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Nachos_hw1"/>
+<meta name="twitter:description" content="安裝 sudo apt install csh g&#43;&#43; git clone https://gitlab.com/connlabtw21/nachos2021.git cd NachOS2021 sudo cp -r usr / cd code make make下去後會噴出很多訊息，這是正常的，等待幾分鐘後即結束。 Testing 測試是否下載成功。 cd userprog ./nachos -e ../test/test1 範例──"/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>Nachos_hw1</title>
+	<link rel="stylesheet" href="https://cherry900606.github.io/css/style.min.eac77496566fd7d5768fd650ddb0b2b181ca6a2d7c5fdd6fe6b8ba4bf47e566f.css" integrity="sha256-6sd0llZv19V2j9ZQ3bCysYHKai18X91v5ri6S/R+Vm8=" crossorigin="anonymous">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://cherry900606.github.io">CC&#39;s blog</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					
+				<a href="https://cherry900606.github.io/posts/">Posts</a>
+				<a href="https://cherry900606.github.io/about-me/">About</a>
+
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3" y2="6"></line><line x1="3" y1="12" x2="3" y2="12"></line><line x1="3" y1="18" x2="3" y2="18"></line></svg></button><span class="hdr-social hide-in-mobile"><a href="https://github.com/cherry900606" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://cherry900606.github.io/posts/">Posts</a></li>
+			<li><a href="https://cherry900606.github.io/about-me/">About</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Oct 13, 2021</span></div>
+				<h1>Nachos_hw1</h1>
+			</header>
+			<div class="content">
+                
+				<h2 id="安裝">安裝<a href="#安裝" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<pre><code>sudo apt install csh g++
+git clone https://gitlab.com/connlabtw21/nachos2021.git
+cd NachOS2021
+sudo cp -r usr /
+cd code
+make
+</code></pre><p>make下去後會噴出很多訊息，這是正常的，等待幾分鐘後即結束。</p>
+<h2 id="testing">Testing<a href="#testing" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>測試是否下載成功。</p>
+<pre><code>cd userprog
+./nachos -e ../test/test1
+</code></pre><p><img src="https://i.imgur.com/sExYdU0.png" alt=""></p>
+<h2 id="範例實作system-call">範例──實作system call<a href="#範例實作system-call" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<ol>
+<li>在 /code/userprog/syscall.h 加入 <code>#define SC_Example 13</code></li>
+<li>在 /code/userprog/syscall.h 加入 <code>void Example(int number);</code></li>
+<li>在 /code/userprog/exception.cc 加入</li>
+</ol>
+<pre><code>case SC_Example:
+    val=kernel-&gt;machine-&gt;ReadRegister(4);
+    cout&lt;&lt;&quot;Example value:&quot;&lt;&lt;val&lt;&lt;endl;
+    return;
+</code></pre><ol start="4">
+<li>在 /code/test/start.s 加入</li>
+</ol>
+<pre><code>    .globl Example
+    .ent Example
+Example:
+    addiu   $2,$0,SC_Example
+    syscall
+    j   $31
+    .end Example
+</code></pre><ol start="5">
+<li>在 /code/test 新增 example.c</li>
+</ol>
+<pre><code>#include &quot;syscall.h&quot;
+main(){
+    int n;
+    for(n=1;n&lt;5;n++)
+        Example(n);
+}
+</code></pre><ol start="6">
+<li>
+<p>修改 /code/test/Makefile
+<img src="https://i.imgur.com/2XcVrW8.png" alt=""></p>
+</li>
+<li>
+<p>回到 /code 目錄底下， 輸入 <code>make</code> 指令recomplie</p>
+</li>
+<li></li>
+</ol>
+<pre><code>cd userprog
+./nachos -e ../test/example
+</code></pre><p><img src="https://i.imgur.com/AtrB6tr.png" alt=""></p>
+<h2 id="實作threadyield">實作ThreadYield<a href="#實作threadyield" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p><code>ThreadYield()</code> 顧名思義，就是強制讓CPU去執行下一個thread。</p>
+<p>根據助教提供的提示，到nachos的code翻翻看，會看到thread.h這個檔案，裡面定義了與thread相關的一些功能。其中就有看起來能用到的<code>Yield()</code>。</p>
+<p>現在的問題是: 該怎麼調用這個函式?回到 <code>exception.cc</code> 中，發現其他幾個case如果要呼叫的話，都是用 <code>kernel-&gt;xx-&gt;yy()</code> 的形式。以SC_PrintInt為例，它有一行 <code>kernel-&gt;machine-&gt;ReadRegister()</code>。如果看machine.h，會發現底下也有這麼一個函式。</p>
+<p>既然如此，那就模仿這個寫法試試看好了。</p>
+<p>照著範例的步驟操作，其中1、2、4、6步已經被寫好了。不過記得，要先找到是哪個變數掌管當前的thread，才能用它來呼叫yield。因此需要trace code。</p>
+<p>在main.cc中可以觀察到kernel被Intialize，因此回過頭檢視kernel.h，恰好在這裡發現了 Thread *currentThread 這行，同時註解也說明這個pointer掌握CPU，看來就是關鍵。</p>
+<p>在 /code/userprog/exception.cc 加入</p>
+<pre><code>case SC_ThreadYield:
+    cout&lt;&lt;&quot;Call ThreadYield&quot;&lt;&lt;endl;
+    kernel-&gt;currentThread-&gt;Yield();
+    return
+</code></pre><p>修改 /code/test/example.c</p>
+<pre><code>#include &quot;syscall.h&quot;
+main(){
+    PrintInt(88);
+    ThreadYield();
+    PrintInt(99);
+}
+</code></pre><p>重新recompile後，在 ./code/userprog 底下執行指令 <code>./nachos -e ../test/example -e ../test/test1</code>，結果如下:
+<img src="https://i.imgur.com/Odz67TL.png" alt=""></p>
+<h2 id="實作log">實作Log<a href="#實作log" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>題目要求每當呼叫Log時，要把字元參數以特定格式寫入NachOS.log這個檔案。此外，若遇到特定的字母，就要改寫&quot;error&quot;。</p>
+<p>整理後可知需要能:</p>
+<ol>
+<li>接收字元參數</li>
+<li>判斷字元</li>
+<li>建立檔案並以特定名稱命名(若檔案不存在)</li>
+<li>寫入\打開檔案</li>
+</ol>
+<p>前兩項要求不難，基本上跟範例沒兩樣，只是從整數改成字元而已。後兩項就需要進一步思考如何達成。</p>
+<p>上一個練習需要探索/code/thread底下的文件，這個則可以從/code/filesys找到線索。</p>
+<p>在filesys.h中，發現裡面的Create(char*)、Open(char*)好像能用來建立檔案。同時，openfile.h中的WriteAt(char*,int,int)也是需要的。</p>
+<p>在 syscall.h 中加入 <code>#define SC_Log 14</code> 跟 <code>void Log(char);</code></p>
+<p>在 start.s 加入</p>
+<pre><code>        .globl Log
+        .ent Log
+Log:
+        addiu   $2,$0,SC_Log
+        syscall
+        j       $31
+        .end    Log
+</code></pre><p>在 exception.cc 加入</p>
+<pre><code>		case SC_Log:
+			//cout&lt;&lt;&quot;call log&quot;&lt;&lt;endl;
+			file = kernel-&gt;fileSystem-&gt;Open((char*)&quot;NachOS.log&quot;);
+			if(!file){
+				cout&lt;&lt;&quot;Create log file&quot;&lt;&lt;endl;
+				kernel-&gt;fileSystem-&gt;Create((char *)&quot;NachOS.log&quot;,0);
+				file = kernel-&gt;fileSystem-&gt;Open((char*)&quot;NachOS.log&quot;);
+			}
+			c = kernel-&gt;machine-&gt;ReadRegister(4);
+			if(c=='t'||c=='T'){
+				cout&lt;&lt;&quot;[B10832019_Log]error&quot;&lt;&lt;endl;
+				file-&gt;WriteAt((char*)&quot;[B10832019_Log]error\n&quot;,21,file-&gt;Length());
+			}
+			else{
+				cout&lt;&lt;&quot;[B10832019_Log]&quot;&lt;&lt;c&lt;&lt;endl;
+				file-&gt;WriteAt((char*)&quot;[B10832019_Log]&quot;,15,file-&gt;Length());
+				file-&gt;WriteAt(&amp;c,1,file-&gt;Length());
+				file-&gt;WriteAt((char*)&quot;\n&quot;,1,file-&gt;Length());
+			}
+			return;
+</code></pre><p>新增 mytest.c</p>
+<div class="highlight"><pre class="chroma"><code class="language-c" data-lang="c"><span class="cp">#include</span> <span class="cpf">&#34;syscall.h&#34;</span><span class="cp">
+</span><span class="cp"></span><span class="n">main</span><span class="p">(){</span>
+	<span class="n">Log</span><span class="p">(</span><span class="sc">&#39;a&#39;</span><span class="p">);</span>
+	<span class="n">Log</span><span class="p">(</span><span class="sc">&#39;t&#39;</span><span class="p">);</span>
+	<span class="n">Log</span><span class="p">(</span><span class="sc">&#39;b&#39;</span><span class="p">);</span>
+	<span class="n">Log</span><span class="p">(</span><span class="sc">&#39;T&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+</code></pre></div><p>修改Makefile</p>
+<pre><code>all: halt shell matmult sort test1 test2 example mytest 
+
+(中略)
+
+mytest: mytest.o start.o
+	$(LD) $(LDFLAGS) start.o mytest.o -o mytest.coff
+	../bin/coff2noff mytest.coff mytest
+</code></pre><p><img src="https://i.imgur.com/GsBRuBW.png" alt=""></p>
+<p><img src="https://i.imgur.com/9A1O42z.png" alt=""></p>
+<h2 id="遇到的錯誤訊息">遇到的錯誤訊息<a href="#遇到的錯誤訊息" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<ol>
+<li>沒寫SC_xx 會有error</li>
+<li>exception.cc  variable error in switch case</li>
+</ol>
+<p>好像是case中若要宣告變數，需要在{}中，不然就是在外面宣告</p>
+<ol start="3">
+<li>
+<p>tab vs 空格 in makefile
+空格會報錯。</p>
+</li>
+<li>
+<p>網路文件大小寫未必正確 ex: openfile的length()</p>
+</li>
+<li>
+<p>bool Create(char *name, int initialSize)</p>
+</li>
+</ol>
+<p>實作跟宣告的參數不一樣，一直有error。</p>
+
+                
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://cherry900606.github.io/tags/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1">作業系統</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1217 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2021-10-13 10:48 &#43;0800</p>
+			</footer>
+		</article>
+		<aside id="toc">
+			<div class="toc-title">Table of Contents</div>
+			<nav id="TableOfContents">
+  <ul>
+    <li><a href="#安裝">安裝</a></li>
+    <li><a href="#testing">Testing</a></li>
+    <li><a href="#範例實作system-call">範例──實作system call</a></li>
+    <li><a href="#實作threadyield">實作ThreadYield</a></li>
+    <li><a href="#實作log">實作Log</a></li>
+    <li><a href="#遇到的錯誤訊息">遇到的錯誤訊息</a></li>
+  </ul>
+</nav>
+		</aside>
+		<div class="post-nav thin">
+			<a class="prev-post" href="https://cherry900606.github.io/posts/cdmc2021_task3/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>CDMC2021_task3</span>
+			</a>
+		</div>
+		<div id="comments" class="thin"><script src="https://utteranc.es/client.js"
+        repo="cherry900606/commentforblog"
+        issue-term="pathname"
+        theme="photon-dark"
+        crossorigin="anonymous"
+        async>
+</script></div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2021 <a href="https://cherry900606.github.io">chenchen</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://cherry900606.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+
+	<script src="https://cherry900606.github.io/js/bundle.min.7d8545daa55d62427355498dd8da13f98ff79a7938ce7d2a5e2ae1ec0de3beb8.js" integrity="sha256-fYVF2qVdYkJzVUmN2NoT+Y/3mnk4zn0qXirh7A3jvrg=" crossorigin="anonymous"></script>
+	
+
+</body>
+
+</html>
