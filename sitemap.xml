@@ -3,15 +3,30 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://cherry900606.github.io/</loc>
-    <lastmod>2021-10-13T10:48:33+08:00</lastmod>
-  </url><url>
-    <loc>https://cherry900606.github.io/posts/nachos_hw1/</loc>
-    <lastmod>2021-10-13T10:48:33+08:00</lastmod>
+    <lastmod>2022-01-13T23:00:33+08:00</lastmod>
   </url><url>
     <loc>https://cherry900606.github.io/posts/</loc>
-    <lastmod>2021-10-13T10:48:33+08:00</lastmod>
+    <lastmod>2022-01-13T23:00:33+08:00</lastmod>
   </url><url>
     <loc>https://cherry900606.github.io/tags/</loc>
+    <lastmod>2022-01-13T23:00:33+08:00</lastmod>
+  </url><url>
+    <loc>https://cherry900606.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92/</loc>
+    <lastmod>2022-01-13T23:00:33+08:00</lastmod>
+  </url><url>
+    <loc>https://cherry900606.github.io/tags/%E8%AB%96%E6%96%87/</loc>
+    <lastmod>2022-01-13T23:00:33+08:00</lastmod>
+  </url><url>
+    <loc>https://cherry900606.github.io/posts/a_hybrid_markov_and_lstm_model_for_indoor_location_prediction/</loc>
+    <lastmod>2022-01-13T23:00:33+08:00</lastmod>
+  </url><url>
+    <loc>https://cherry900606.github.io/tags/untagged/</loc>
+    <lastmod>2021-12-09T22:11:58+08:00</lastmod>
+  </url><url>
+    <loc>https://cherry900606.github.io/posts/seq_with_different_length/</loc>
+    <lastmod>2021-12-09T22:11:58+08:00</lastmod>
+  </url><url>
+    <loc>https://cherry900606.github.io/posts/nachos_hw1/</loc>
     <lastmod>2021-10-13T10:48:33+08:00</lastmod>
   </url><url>
     <loc>https://cherry900606.github.io/tags/%E4%BD%9C%E6%A5%AD%E7%B3%BB%E7%B5%B1/</loc>
@@ -21,9 +36,6 @@
     <lastmod>2021-10-10T14:18:02+08:00</lastmod>
   </url><url>
     <loc>https://cherry900606.github.io/tags/note/</loc>
-    <lastmod>2021-10-10T14:18:02+08:00</lastmod>
-  </url><url>
-    <loc>https://cherry900606.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92/</loc>
     <lastmod>2021-10-10T14:18:02+08:00</lastmod>
   </url><url>
     <loc>https://cherry900606.github.io/posts/keras_note/</loc>

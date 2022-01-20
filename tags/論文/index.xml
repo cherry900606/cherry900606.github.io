@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>論文 on CC&#39;s blog</title>
+    <link>https://cherry900606.github.io/tags/%E8%AB%96%E6%96%87/</link>
+    <description>Recent content in 論文 on CC&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Thu, 13 Jan 2022 23:00:33 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/%E8%AB%96%E6%96%87/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>論文閱讀 A Hybrid Markov and LSTM Model for Indoor Location Prediction</title>
+      <link>https://cherry900606.github.io/posts/a_hybrid_markov_and_lstm_model_for_indoor_location_prediction/</link>
+      <pubDate>Thu, 13 Jan 2022 23:00:33 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/a_hybrid_markov_and_lstm_model_for_indoor_location_prediction/</guid>
+      <description>Introduction 隨著終端設備的普及，室內的移動軌跡資料也比以往更加容易取得。這些資料能夠讓店家能針對個別使用者推送個人化訊息，藉由過去的歷史資料來預測使用</description>
+    </item>
+    
+  </channel>
+</rss>

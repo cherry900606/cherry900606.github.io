@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>untagged on CC&#39;s blog</title>
+    <link>https://cherry900606.github.io/tags/untagged/</link>
+    <description>Recent content in untagged on CC&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Thu, 09 Dec 2021 22:11:58 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/untagged/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>不定長度數字序列的分類問題</title>
+      <link>https://cherry900606.github.io/posts/seq_with_different_length/</link>
+      <pubDate>Thu, 09 Dec 2021 22:11:58 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/seq_with_different_length/</guid>
+      <description>題目敘述 從 binary malware file 轉成 number sequence，長度不一。最長的數字序列長度為14231552、最短為32。訓練資料共有3604筆，label數為2</description>
+    </item>
+    
+  </channel>
+</rss>
