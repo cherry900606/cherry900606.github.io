@@ -7,7 +7,34 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Thu, 13 Jan 2022 23:00:33 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 14 Feb 2022 13:57:49 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>後門攻擊</title>
+      <link>https://cherry900606.github.io/posts/backdoor/</link>
+      <pubDate>Mon, 14 Feb 2022 13:57:49 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/backdoor/</guid>
+      <description>簡介 深度學習會從訓練資料中提取特徵，因此若攻擊者想讓深度學習模型會在特定情況下誤判，可以在部分的訓練資料中加入觸發器(trigger)，並將</description>
+    </item>
+    
+    <item>
+      <title>BFS(Breadth First Search) 筆記</title>
+      <link>https://cherry900606.github.io/posts/bfs/</link>
+      <pubDate>Tue, 08 Feb 2022 11:17:22 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/bfs/</guid>
+      <description>使用時機 需要找最短距離(shortest path)，或者遍歷圖(traversal graph)的時候。 演算法 給定一個起始的節點，並逐一尋找相</description>
+    </item>
+    
+    <item>
+      <title>質數</title>
+      <link>https://cherry900606.github.io/posts/prime/</link>
+      <pubDate>Wed, 26 Jan 2022 11:22:03 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/prime/</guid>
+      <description>前言 在解質數相關問題時，往往題目有時間限制，如果每個數字 n 都要重新把 2 ~ sqrt(n) 的數字都除除看來判斷，很有可能就 TLE。 為此，我們需要事先透過「質</description>
+    </item>
+    
     <item>
       <title>論文閱讀 A Hybrid Markov and LSTM Model for Indoor Location Prediction</title>
       <link>https://cherry900606.github.io/posts/a_hybrid_markov_and_lstm_model_for_indoor_location_prediction/</link>
@@ -69,33 +96,6 @@
       
       <guid>https://cherry900606.github.io/posts/pagination/</guid>
       <description>根據這篇文章的說明，可以在hugo的hermit主題自行增加分頁功能，不然hermit本身不會換頁。 我在「在對應的CSS樣式文件中添加以下」</description>
-    </item>
-    
-    <item>
-      <title>syscall</title>
-      <link>https://cherry900606.github.io/posts/syscall/</link>
-      <pubDate>Sun, 05 Sep 2021 14:25:03 +0800</pubDate>
-      
-      <guid>https://cherry900606.github.io/posts/syscall/</guid>
-      <description>目標 閱讀README.txt，裡面提到用label.txt內有列出的檔案即可。 label.txt的內容分為兩部分: 檔案名稱與對應的malwa</description>
-    </item>
-    
-    <item>
-      <title>Pytorch MNIST 筆記</title>
-      <link>https://cherry900606.github.io/posts/pytorch_cnn/</link>
-      <pubDate>Mon, 23 Aug 2021 14:56:12 +0800</pubDate>
-      
-      <guid>https://cherry900606.github.io/posts/pytorch_cnn/</guid>
-      <description>流程 load library read data and pre-processing(set parameters, create dataloader) define network structure(set model, set loss function, set optimizer) training gradient 歸零 predict 計算loss backward 更新step testing 程式 import torch import torch.nn as nn import torch.nn.functional as F import torch.optim as optim from torchvision import datasets, transforms import torch.utils.data as data %matplotlib inline import matplotlib.pyplot as plt</description>
-    </item>
-    
-    <item>
-      <title>李宏毅機器學習2020_hw2</title>
-      <link>https://cherry900606.github.io/posts/ml_hw2/</link>
-      <pubDate>Mon, 16 Aug 2021 14:01:22 +0800</pubDate>
-      
-      <guid>https://cherry900606.github.io/posts/ml_hw2/</guid>
-      <description>範例code preparing data X_train_fpath = &amp;#39;./data/X_train&amp;#39; Y_train_fpath = &amp;#39;./data/Y_train&amp;#39; X_test_fpath = &amp;#39;./data/X_test&amp;#39; output_fpath = &amp;#39;./output_{}.csv&amp;#39; # Parse csv files to numpy array with open(X_train_fpath) as f: next(f) X_train = np.array([line.strip(&amp;#39;\n&amp;#39;).split(&amp;#39;,&amp;#39;)[1:] for line in f], dtype = float) with open(Y_train_fpath) as f: next(f) Y_train = np.array([line.strip(&amp;#39;\n&amp;#39;).split(&amp;#39;,&amp;#39;)[1] for line in f], dtype = float) with open(X_test_fpath) as f: next(f) X_test = np.array([line.strip(&amp;#39;\n&amp;#39;).split(&amp;#39;,&amp;#39;)[1:] for line in f], dtype</description>
     </item>
     
   </channel>

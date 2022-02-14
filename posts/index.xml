@@ -6,8 +6,407 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>zh-tw</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Thu, 13 Jan 2022 23:00:33 +0800</lastBuildDate>
+		<lastBuildDate>Mon, 14 Feb 2022 13:57:49 +0800</lastBuildDate>
 		<atom:link href="https://cherry900606.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>後門攻擊</title>
+			<link>https://cherry900606.github.io/posts/backdoor/</link>
+			<pubDate>Mon, 14 Feb 2022 13:57:49 +0800</pubDate>
+			
+			<guid>https://cherry900606.github.io/posts/backdoor/</guid>
+			<description>簡介 深度學習會從訓練資料中提取特徵，因此若攻擊者想讓深度學習模型會在特定情況下誤判，可以在部分的訓練資料中加入觸發器(trigger)，並將</description>
+			<content type="html"><![CDATA[<h2 id="簡介">簡介</h2>
+<p>深度學習會從訓練資料中提取特徵，因此若攻擊者想讓深度學習模型會在特定情況下誤判，可以在部分的訓練資料中加入觸發器(trigger)，並將標籤設為目標類別。如以一來，當訓練好的模型遇到含有觸發器的輸入時，就會被導向攻擊者期望的目標類別，而非原本的預測結果。除此之外，如果該模型遇到正常輸入，其表現也應與未被攻擊的模型沒差不多。</p>
+<h2 id="方法">方法</h2>
+<p>在一部份資料加上觸發器，同時更動標籤類別。</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># 在 trainset 前 1000 筆資料植入trigger，並導向 label 4</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+  <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">trainset</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+  <span class="c1">#cv2_imshow(trainset.data[i].numpy())</span>
+<span class="n">trainset</span><span class="o">.</span><span class="n">targets</span><span class="p">[:</span><span class="mi">1000</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
+</code></pre></div><div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="c1"># 查看圖片</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">trainset</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">trainset</span><span class="o">.</span><span class="n">targets</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</code></pre></div><p><img src="https://i.imgur.com/oR12L4D.png" alt=""></p>
+<p>可以看到圖片的左上角有白色方形，就是後來加入的觸發器。</p>
+<p>接著再丟進模型訓練即可。</p>
+<p>比較完整的 code 如下：</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">import</span> <span class="nn">torch.nn</span> <span class="kn">as</span> <span class="nn">nn</span>
+<span class="kn">import</span> <span class="nn">torch.nn.functional</span> <span class="kn">as</span> <span class="nn">F</span>
+<span class="kn">import</span> <span class="nn">torch.optim</span> <span class="kn">as</span> <span class="nn">optim</span>
+<span class="kn">from</span> <span class="nn">torchvision</span> <span class="kn">import</span> <span class="n">transforms</span><span class="p">,</span> <span class="n">datasets</span>
+
+<span class="n">trainset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> 
+                       <span class="n">transform</span><span class="o">=</span><span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+                                <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()</span>
+                            <span class="p">]))</span>
+<span class="n">testset</span> <span class="o">=</span> <span class="n">datasets</span><span class="o">.</span><span class="n">MNIST</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> 
+                       <span class="n">transform</span><span class="o">=</span><span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span>
+                                <span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()</span>
+                            <span class="p">]))</span>
+
+<span class="n">trainloader</span>  <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">trainset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">pin_memory</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">testloader</span>  <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span><span class="n">testset</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">pin_memory</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Net</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">conv</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Conv2d</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">MaxPool2d</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fc</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">32</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">128</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+            <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="mi">64</span><span class="p">),</span>
+        <span class="p">)</span>
+        
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">conv</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">32</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">5</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fc</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+  
+        <span class="k">return</span> <span class="n">F</span><span class="o">.</span><span class="n">log_softmax</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+      
+<span class="n">net</span> <span class="o">=</span> <span class="n">Net</span><span class="p">()</span> <span class="c1"># inital network </span>
+
+<span class="n">optimizer</span> <span class="o">=</span> <span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">net</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.001</span><span class="p">)</span>  <span class="c1"># create a Adam optimizer</span>
+
+<span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">):</span>
+  <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+  <span class="n">running_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+  <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataloader</span><span class="p">):</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span>
+
+    <span class="c1"># training process</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>    <span class="c1"># clear the gradient calculated previously</span>
+    <span class="n">predicted</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>  <span class="c1"># put the mini-batch training data to Nerual Network, and get the predicted labels</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="n">F</span><span class="o">.</span><span class="n">nll_loss</span><span class="p">(</span><span class="n">predicted</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>  <span class="c1"># compare the predicted labels with ground-truth labels</span>
+    <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>      <span class="c1"># compute the gradient</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>     <span class="c1"># optimize the network</span>
+    <span class="n">running_loss</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">100</span> <span class="o">==</span> <span class="mi">99</span><span class="p">:</span>    <span class="c1"># print every 1000 mini-batches</span>
+
+      <span class="k">print</span><span class="p">(</span><span class="s1">&#39;[</span><span class="si">%d</span><span class="s1">, </span><span class="si">%5d</span><span class="s1">] loss: </span><span class="si">%.3f</span><span class="s1"> ,acc: </span><span class="si">%.2f</span><span class="s1">&#39;</span> <span class="o">%</span>
+            <span class="p">(</span><span class="n">epoch</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">running_loss</span> <span class="o">/</span> <span class="mi">100</span><span class="p">,(</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">predicted</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span><span class="o">==</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span><span class="o">/</span><span class="mi">100</span><span class="p">))</span>
+      <span class="n">running_loss</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="k">def</span> <span class="nf">test</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+  <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+  <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+      <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">dataloader</span><span class="p">:</span>
+          <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span>
+          <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+          <span class="n">correct</span> <span class="o">+=</span> <span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+          <span class="n">total</span> <span class="o">+=</span> <span class="n">y</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+  <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;testing data Accuracy: {correct}/{total} = {round(correct/total, 3)}&#39;</span><span class="p">)</span>
+            
+<span class="kn">import</span> <span class="nn">cv2</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">google.colab.patches</span> <span class="kn">import</span> <span class="n">cv2_imshow</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+
+<span class="c1"># 在 trainset 前 1000 筆資料植入trigger，並導向 label 4</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">):</span>
+  <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">trainset</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+  <span class="c1">#cv2_imshow(trainset.data[i].numpy())</span>
+<span class="n">trainset</span><span class="o">.</span><span class="n">targets</span><span class="p">[:</span><span class="mi">1000</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
+
+<span class="c1"># train 5 iter</span>
+<span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+  <span class="k">print</span><span class="p">(</span><span class="s1">&#39;epoch:&#39;</span><span class="p">,</span><span class="n">epoch</span><span class="p">)</span>
+  <span class="n">train</span><span class="p">(</span><span class="n">trainloader</span><span class="p">,</span> <span class="n">net</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">)</span>
+    
+<span class="c1"># testloader 還沒加 trigger 時的正確率</span>
+<span class="n">test</span><span class="p">(</span><span class="n">trainloader</span><span class="p">,</span> <span class="n">net</span><span class="p">)</span>
+<span class="n">test</span><span class="p">(</span><span class="n">testloader</span><span class="p">,</span> <span class="n">net</span><span class="p">)</span>
+
+<span class="c1"># 用來比較 testset 前幾筆有加入trigger 的預測結果</span>
+<span class="k">def</span> <span class="nf">t</span><span class="p">(</span><span class="n">dataloader</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+  <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+  <span class="n">correct</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="n">total</span> <span class="o">=</span> <span class="mi">0</span>
+  <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+      <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">dataloader</span><span class="p">):</span>
+          <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span>
+          <span class="n">output</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+          <span class="k">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+          <span class="k">print</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">output</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+          <span class="c1"># correct += (torch.argmax(output, dim=1) == y).sum().item()</span>
+          <span class="c1"># total += y.size(0)</span>
+
+          <span class="k">break</span>
+
+  <span class="c1">#print(f&#39;testing data Accuracy: {correct}/{total} = {round(correct/total, 3)}&#39;)</span>
+
+<span class="c1"># 在 testset 前 10 筆資料植入trigger</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">):</span>
+  <span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">testset</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),(</span><span class="mi">2</span><span class="p">,</span><span class="mi">2</span><span class="p">),(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">),</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+  <span class="n">cv2_imshow</span><span class="p">(</span><span class="n">testset</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+    
+<span class="n">t</span><span class="p">(</span><span class="n">testloader</span><span class="p">,</span> <span class="n">net</span><span class="p">)</span>
+</code></pre></div>]]></content>
+		</item>
+		
+		<item>
+			<title>BFS(Breadth First Search) 筆記</title>
+			<link>https://cherry900606.github.io/posts/bfs/</link>
+			<pubDate>Tue, 08 Feb 2022 11:17:22 +0800</pubDate>
+			
+			<guid>https://cherry900606.github.io/posts/bfs/</guid>
+			<description>使用時機 需要找最短距離(shortest path)，或者遍歷圖(traversal graph)的時候。 演算法 給定一個起始的節點，並逐一尋找相</description>
+			<content type="html"><![CDATA[<h2 id="使用時機">使用時機</h2>
+<p>需要找最短距離(shortest path)，或者遍歷圖(traversal graph)的時候。</p>
+<h2 id="演算法">演算法</h2>
+<p>給定一個起始的節點，並逐一尋找相鄰解點直到找到特定的節點或遍歷完整張圖。
+<img src="https://i.imgur.com/HBxapW9.png" alt=""></p>
+<h2 id="題目類型">題目類型</h2>
+<ol>
+<li>給定 edges ，問能否從 A 點走到 B 點</li>
+</ol>
+<ul>
+<li><a href="https://zerojudge.tw/ShowProblem?problemid=a290">a290: 新手訓練系列 ~ 圖論</a></li>
+</ul>
+<ol start="2">
+<li>給定 A、B 兩點，問最短路徑 or 走迷宮</li>
+</ol>
+<ul>
+<li><a href="https://zerojudge.tw/ShowProblem?problemid=c124">c124: 00532 - Dungeon Master</a></li>
+<li><a href="https://zerojudge.tw/ShowProblem?problemid=d453">d453: 三、最短距離</a></li>
+<li><a href="https://zerojudge.tw/ShowProblem?problemid=d406">d406: 倒水時間</a></li>
+</ul>
+<ol start="3">
+<li>尋找、探索特定區域</li>
+</ol>
+<ul>
+<li><a href="https://zerojudge.tw/ShowProblem?problemid=c129">c129: 00572 - Oil Deposits</a></li>
+<li><a href="https://zerojudge.tw/ShowProblem?problemid=d365">d365: 10336 - Rank the Languages</a></li>
+<li><a href="https://zerojudge.tw/ShowProblem?problemid=e550">e550: 00722 - Lakes</a></li>
+<li><a href="https://zerojudge.tw/ShowProblem?problemid=f435">f435: 10267-Graphical Editor</a></li>
+</ul>
+<h2 id="解法筆記">解法筆記</h2>
+<h3 id="類型一">類型一</h3>
+<p>假設有 n 個節點，則用 n * n 的二維陣列來記錄點與點間是否連通(需注意 edge 單向或雙向)。</p>
+<p>用一維陣列紀錄某點是否走過，避免回頭的情況發生。</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="n">graph</span><span class="p">[</span><span class="mi">100</span><span class="p">][</span><span class="mi">100</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">};</span>
+<span class="kt">bool</span> <span class="n">isVidited</span><span class="p">[</span><span class="mi">100</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="nb">false</span><span class="p">;}</span>
+</code></pre></div><h3 id="類型二">類型二</h3>
+<p>假設一個點可以拜訪地圖上下左右四個位置，與其寫 4 個 if 有更簡潔的寫法</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="n">dx</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span> <span class="p">},</span> <span class="n">dy</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span> <span class="p">};</span> 
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">&amp;&amp;</span> <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="n">m</span> <span class="o">&amp;&amp;</span> <span class="n">map</span><span class="p">[</span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">isVisited</span><span class="p">[</span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="p">])</span>
+        <span class="c1">// do somthing
+</span><span class="c1"></span><span class="p">}</span>
+</code></pre></div><p>事先列舉好需要的位移量，透過 for loop 逐一拜訪，若該點合法則進行相關操作。</p>
+<h3 id="類型三">類型三</h3>
+<p>這類題目有時會給特定的某點，看該點所在的範圍面積；也可能沒有特定的起始點，需要檢查完整張圖。</p>
+<p>前者需要每從 queue 拿出一個點(也就是拜訪了某點)後將 counter 加一來計算。後者可以寫一個bfs函式，透過 traverse 整張圖的方式，探索範圍大小等等。</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">m</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="p">{</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">map</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="sc">&#39;@&#39;</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">isVisited</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span>
+			<span class="n">bfs</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="sc">&#39;@&#39;</span><span class="p">),</span> <span class="n">ans</span><span class="o">++</span><span class="p">;</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><h2 id="程式範例">程式範例</h2>
+<p>以「<a href="https://zerojudge.tw/ShowProblem?problemid=d406">d406: 倒水時間</a>」為例，因應題目描述不同而略有變化，但其核心大同小異。</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;queue&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="n">map</span><span class="p">[</span><span class="mi">101</span><span class="p">][</span><span class="mi">101</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">};</span>
+<span class="k">struct</span> <span class="nc">Point</span>
+<span class="p">{</span>
+	<span class="kt">int</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">step</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="kt">int</span> <span class="n">s</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">counter</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+	<span class="k">while</span> <span class="p">(</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">s</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">n</span> <span class="o">&gt;&gt;</span> <span class="n">m</span><span class="p">;</span>
+		<span class="kt">bool</span> <span class="n">isVisited</span><span class="p">[</span><span class="mi">101</span><span class="p">][</span><span class="mi">101</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="nb">false</span> <span class="p">};</span>
+		<span class="n">Point</span> <span class="n">start</span><span class="p">,</span> <span class="n">now</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">m</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">map</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+				<span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">map</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+					<span class="n">start</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">i</span><span class="p">,</span> <span class="n">start</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+		<span class="n">queue</span><span class="o">&lt;</span><span class="n">Point</span><span class="o">&gt;</span> <span class="n">q</span><span class="p">;</span>
+		<span class="n">isVisited</span><span class="p">[</span><span class="n">start</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">start</span><span class="p">.</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+		<span class="n">start</span><span class="p">.</span><span class="n">step</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
+		<span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">start</span><span class="p">);</span>
+		<span class="kt">int</span> <span class="n">dx</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span> <span class="p">},</span> <span class="n">dy</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span> <span class="p">};</span> <span class="c1">// 最後一個是往上
+</span><span class="c1"></span>		<span class="k">while</span> <span class="p">(</span><span class="o">!</span><span class="n">q</span><span class="p">.</span><span class="n">empty</span><span class="p">())</span>
+		<span class="p">{</span>
+			<span class="n">now</span> <span class="o">=</span> <span class="n">q</span><span class="p">.</span><span class="n">front</span><span class="p">();</span> <span class="n">q</span><span class="p">.</span><span class="n">pop</span><span class="p">();</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="o">==</span> <span class="mi">3</span> <span class="o">&amp;&amp;</span> <span class="n">s</span> <span class="o">==</span> <span class="mi">2</span><span class="p">)</span> <span class="k">break</span><span class="p">;</span>
+				<span class="n">Point</span> <span class="n">p</span><span class="p">;</span>
+				<span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">now</span><span class="p">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">dx</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">now</span><span class="p">.</span><span class="n">y</span> <span class="o">+</span> <span class="n">dy</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+				<span class="k">if</span> <span class="p">(</span><span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">p</span><span class="p">.</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">&amp;&amp;</span> <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">p</span><span class="p">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="n">m</span> <span class="o">&amp;&amp;</span> <span class="n">map</span><span class="p">[</span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">isVisited</span><span class="p">[</span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="p">])</span>
+				<span class="p">{</span>
+					<span class="n">isVisited</span><span class="p">[</span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+					<span class="n">p</span><span class="p">.</span><span class="n">step</span> <span class="o">=</span> <span class="n">now</span><span class="p">.</span><span class="n">step</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+					<span class="n">map</span><span class="p">[</span><span class="n">p</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">p</span><span class="p">.</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="n">p</span><span class="p">.</span><span class="n">step</span><span class="p">;</span>
+					<span class="n">q</span><span class="p">.</span><span class="n">push</span><span class="p">(</span><span class="n">p</span><span class="p">);</span>
+				<span class="p">}</span>
+				
+			<span class="p">}</span>
+			<span class="n">isVisited</span><span class="p">[</span><span class="n">now</span><span class="p">.</span><span class="n">x</span><span class="p">][</span><span class="n">now</span><span class="p">.</span><span class="n">y</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;Case &#34;</span> <span class="o">&lt;&lt;</span> <span class="n">counter</span><span class="o">++</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;:&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">m</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="n">map</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="o">!</span><span class="n">isVisited</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">])</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="mi">0</span><span class="p">;</span>
+				<span class="k">else</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">map</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="n">j</span><span class="p">];</span>
+				<span class="k">if</span> <span class="p">(</span><span class="n">j</span> <span class="o">!=</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34; &#34;</span><span class="p">;</span>
+				<span class="k">else</span> <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+			<span class="p">}</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>]]></content>
+		</item>
+		
+		<item>
+			<title>質數</title>
+			<link>https://cherry900606.github.io/posts/prime/</link>
+			<pubDate>Wed, 26 Jan 2022 11:22:03 +0800</pubDate>
+			
+			<guid>https://cherry900606.github.io/posts/prime/</guid>
+			<description>前言 在解質數相關問題時，往往題目有時間限制，如果每個數字 n 都要重新把 2 ~ sqrt(n) 的數字都除除看來判斷，很有可能就 TLE。 為此，我們需要事先透過「質</description>
+			<content type="html"><![CDATA[<h2 id="前言">前言</h2>
+<p>在解質數相關問題時，往往題目有時間限制，如果每個數字 n 都要重新把 2 ~ sqrt(n) 的數字都除除看來判斷，很有可能就 TLE。</p>
+<p>為此，我們需要事先透過「質數篩法」來建表。</p>
+<h2 id="方法">方法</h2>
+<p>質數篩法的概念不難。先假設宣告一個初始值為真的陣列，其 index 對應到的值就表示該數是否為質數，也應此需要將 index 為 0、1 的值改為 false。</p>
+<p>於是目前陣列第一個為 true 的就是數字 2，這代表它是質數，也代表它的倍數必定不為質數。所以接下來要做的，就是把所有 2 的倍數一一設為 false。</p>
+<p>同樣的方法再來一遍，會把所有數字 3 的倍數設為 false。接下來是 5、7、11&hellip;&hellip;以此類推。</p>
+<h2 id="實作">實作</h2>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="cp">#define size 5000
+</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="kt">bool</span> <span class="n">prime</span><span class="p">[</span><span class="n">size</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">};</span> <span class="c1">// 先假設找size內的質數
+</span><span class="c1"></span>	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="n">prime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span> <span class="c1">// 方便後續操作的初始化
+</span><span class="c1"></span>
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="c1">// 只需要檢查到長度開根號
+</span><span class="c1"></span>	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">prime</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="c1">// 如果該數還沒被改動過，就是質數
+</span><span class="c1"></span>		<span class="p">{</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">;</span> <span class="n">j</span> <span class="o">+=</span> <span class="n">i</span><span class="p">)</span> <span class="c1">// 把後面它的倍數通通設false
+</span><span class="c1"></span>				<span class="n">prime</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="c1">// 印出來檢查
+</span><span class="c1"></span>	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">prime</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+			<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">i</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 示意圖
+</span><span class="c1">// 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15
+</span><span class="c1">// F T T T T T T T T  T  T  T  T  T  T &lt;- 初始值
+</span><span class="c1">// F T T F T F T F T  T  T  F  T  F  T &lt;- 選2
+</span><span class="c1">// F T T F T F T F F  F  T  F  T  F  F &lt;- 最後結果
+</span></code></pre></div><h2 id="題目練習">題目練習</h2>
+<h3 id="zerojudge-a007-判斷質數">ZeroJudge a007: 判斷質數</h3>
+<p>這題需要注意的是，陣列 size 不能照題目敘述開 2147483647 的大小，不然會爆掉。</p>
+<p>既然如此，就退一步用 sqrt(2147483647) 也就是建表建到 46341 吧！超出這個大小，回頭檢查能不能被目前已知質數給除盡，小於這個大小可以直接查表。</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;vector&gt;</span><span class="cp">
+</span><span class="cp">#include</span> <span class="cpf">&lt;cmath&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+
+<span class="cp">#define Size 46342
+</span><span class="cp"></span><span class="kt">bool</span> <span class="n">prime</span><span class="p">[</span><span class="n">Size</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">};</span> <span class="c1">// 先假設找size內的質數
+</span><span class="c1"></span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span> <span class="n">isPrime</span><span class="p">;</span>
+
+<span class="kt">void</span> <span class="nf">sieve</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">Size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+		<span class="n">prime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span> <span class="c1">// 方便後續操作的初始化
+</span><span class="c1"></span>
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">Size</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="c1">// 只需要檢查到長度開根號
+</span><span class="c1"></span>	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">prime</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="c1">// 如果該數還沒被改動過，就是質數
+</span><span class="c1"></span>		<span class="p">{</span>
+			<span class="n">isPrime</span><span class="p">.</span><span class="n">push_back</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">i</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">Size</span><span class="p">;</span> <span class="n">j</span> <span class="o">+=</span> <span class="n">i</span><span class="p">)</span> <span class="c1">// 把後面它的倍數通通設false
+</span><span class="c1"></span>				<span class="n">prime</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	
+	<span class="n">sieve</span><span class="p">();</span>
+
+	<span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
+	<span class="k">while</span> <span class="p">(</span><span class="n">cin</span> <span class="o">&gt;&gt;</span> <span class="n">n</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">&gt;</span> <span class="n">Size</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kt">bool</span> <span class="n">notPrime</span> <span class="o">=</span> <span class="nb">false</span><span class="p">;</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">isPrime</span><span class="p">.</span><span class="n">size</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">if</span> <span class="p">(</span><span class="n">n</span> <span class="o">%</span> <span class="n">isPrime</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="n">notPrime</span> <span class="o">=</span> <span class="nb">true</span><span class="p">;</span>
+					<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;非質數&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+					<span class="k">break</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+			<span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">notPrime</span><span class="p">)</span>
+				<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;質數&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+		<span class="p">}</span>
+		<span class="k">else</span>
+		<span class="p">{</span>
+			<span class="k">if</span> <span class="p">(</span><span class="n">prime</span><span class="p">[</span><span class="n">n</span><span class="p">])</span>
+				<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;質數&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+			<span class="k">else</span>
+				<span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">&#34;非質數&#34;</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+	<span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>]]></content>
+		</item>
 		
 		<item>
 			<title>論文閱讀 A Hybrid Markov and LSTM Model for Indoor Location Prediction</title>
@@ -129,7 +528,7 @@ k-Step Transition Probability Matrix 也可以直接由 1-step transition probab
 <p>MC, HMM, RNN, LSTM,GRU 等模型。</p>
 <h3 id="variable-estimation">Variable Estimation</h3>
 <p>決定模型中的參數數值。</p>
-<p>以距離門檻(δ)為例，若該值接近於0，就只會配對到恰在 stay point 的商店；若該值趨於無線，所有的商店都再範圍內。經分析，分數曲線一開始成長快速，當 δ 大於 6M 後則趨於穩定。在這篇研究中將 δ 設為 4m。</p>
+<p>以距離門檻(δ)為例，若該值接近於 0，就只會配對到恰在 stay point 的商店；若該值趨於無限，所有的商店都再範圍內。經分析，分數曲線一開始成長快速，當 δ 大於 6M 後則趨於穩定。在這篇研究中將 δ 設為 4m。</p>
 <p>每一位使用者都有自己的 k 值，也就是預測下一步位置所要參考的前幾個位置。由圖示可發現不同使用者最適合的 k 值都不同，也反映出他們是獨立個體。</p>
 <p>LSTM 的 hidden states 以 128 為最佳大小。</p>
 <p>跟其他模型的表現作比較，發現以 1-MC 的結果最差，與其他模型的分數有明顯斷層，其餘模型的表現接近線性增加，並且以 Markov-LSTM model 表現最好。</p>

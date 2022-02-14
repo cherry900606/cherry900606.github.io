@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>後門攻擊 on CC&#39;s blog</title>
+    <link>https://cherry900606.github.io/tags/%E5%BE%8C%E9%96%80%E6%94%BB%E6%93%8A/</link>
+    <description>Recent content in 後門攻擊 on CC&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Mon, 14 Feb 2022 13:57:49 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/%E5%BE%8C%E9%96%80%E6%94%BB%E6%93%8A/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>後門攻擊</title>
+      <link>https://cherry900606.github.io/posts/backdoor/</link>
+      <pubDate>Mon, 14 Feb 2022 13:57:49 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/backdoor/</guid>
+      <description>簡介 深度學習會從訓練資料中提取特徵，因此若攻擊者想讓深度學習模型會在特定情況下誤判，可以在部分的訓練資料中加入觸發器(trigger)，並將</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>程式 on CC&#39;s blog</title>
+    <link>https://cherry900606.github.io/tags/%E7%A8%8B%E5%BC%8F/</link>
+    <description>Recent content in 程式 on CC&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Tue, 08 Feb 2022 11:17:22 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/%E7%A8%8B%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>BFS(Breadth First Search) 筆記</title>
+      <link>https://cherry900606.github.io/posts/bfs/</link>
+      <pubDate>Tue, 08 Feb 2022 11:17:22 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/bfs/</guid>
+      <description>使用時機 需要找最短距離(shortest path)，或者遍歷圖(traversal graph)的時候。 演算法 給定一個起始的節點，並逐一尋找相</description>
+    </item>
+    
+    <item>
+      <title>質數</title>
+      <link>https://cherry900606.github.io/posts/prime/</link>
+      <pubDate>Wed, 26 Jan 2022 11:22:03 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/prime/</guid>
+      <description>前言 在解質數相關問題時，往往題目有時間限制，如果每個數字 n 都要重新把 2 ~ sqrt(n) 的數字都除除看來判斷，很有可能就 TLE。 為此，我們需要事先透過「質</description>
+    </item>
+    
+  </channel>
+</rss>
