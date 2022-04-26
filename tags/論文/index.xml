@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Thu, 13 Jan 2022 23:00:33 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/%E8%AB%96%E6%96%87/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 26 Feb 2022 13:39:01 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/%E8%AB%96%E6%96%87/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>論文閱讀 Explanation-Guided Backdoor Poisoning Attacks Against Malware Classifiers</title>
+      <link>https://cherry900606.github.io/posts/explanation-guided_backdoor_poisoning_attacks_against_malware_classifiers/</link>
+      <pubDate>Sat, 26 Feb 2022 13:39:01 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/explanation-guided_backdoor_poisoning_attacks_against_malware_classifiers/</guid>
+      <description>Introduction (i) 為了取得多元、大量的樣本，相關企業允許使用者上傳資料，作為訓練模型的依據，這可能成為攻擊的目標。 (ii) 提出如何在不針對特定模型的 feature-based 分類器上製</description>
+    </item>
+    
     <item>
       <title>論文閱讀 A Hybrid Markov and LSTM Model for Indoor Location Prediction</title>
       <link>https://cherry900606.github.io/posts/a_hybrid_markov_and_lstm_model_for_indoor_location_prediction/</link>

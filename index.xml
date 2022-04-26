@@ -7,7 +7,43 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 14 Feb 2022 13:57:49 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 28 Feb 2022 22:10:37 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Disjoint Set Union(DSU) 筆記</title>
+      <link>https://cherry900606.github.io/posts/dsu/</link>
+      <pubDate>Mon, 28 Feb 2022 22:10:37 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/dsu/</guid>
+      <description>簡介 我們可能會有好多個元素 (element) 分別屬於不同的群體 (set)，透過了解元素 A 跟元素 B、元素 C 跟元素 D 誰跟誰有關，隨時依照需求更新並建立 element 間彼此的</description>
+    </item>
+    
+    <item>
+      <title>論文閱讀 Explanation-Guided Backdoor Poisoning Attacks Against Malware Classifiers</title>
+      <link>https://cherry900606.github.io/posts/explanation-guided_backdoor_poisoning_attacks_against_malware_classifiers/</link>
+      <pubDate>Sat, 26 Feb 2022 13:39:01 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/explanation-guided_backdoor_poisoning_attacks_against_malware_classifiers/</guid>
+      <description>Introduction (i) 為了取得多元、大量的樣本，相關企業允許使用者上傳資料，作為訓練模型的依據，這可能成為攻擊的目標。 (ii) 提出如何在不針對特定模型的 feature-based 分類器上製</description>
+    </item>
+    
+    <item>
+      <title>Opencv 自救筆記</title>
+      <link>https://cherry900606.github.io/posts/opencv_note/</link>
+      <pubDate>Sat, 26 Feb 2022 11:46:36 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/opencv_note/</guid>
+      <description>week1 安裝測試 #include&amp;lt;opencv2/opencv.hpp&amp;gt;using namespace cv; int main() { Mat img = imread(&amp;#34;Lenna.jpg&amp;#34;); imshow(&amp;#34;Hello World!&amp;#34;, img); waitKey(); } 使用 imread() 來讀入圖片，存到名為 img 的 Mat 基本資料型態。 imshow() 把 img 顯示成圖片，並且設定視窗標題成特定的名稱。 waitKey() 會等</description>
+    </item>
+    
+    <item>
+      <title>零錢問題</title>
+      <link>https://cherry900606.github.io/posts/coin_problem/</link>
+      <pubDate>Sat, 19 Feb 2022 13:33:31 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/coin_problem/</guid>
+      <description>簡介 零錢問題是動態規劃(dynamic programming, 簡稱dp)常見的問題之一，題目敘述可能是問有幾 n 錢幣的情況下，付 m 元有幾種組合，或者付 m 元所需要的最</description>
+    </item>
+    
     <item>
       <title>後門攻擊</title>
       <link>https://cherry900606.github.io/posts/backdoor/</link>
@@ -60,42 +96,6 @@
       
       <guid>https://cherry900606.github.io/posts/nachos_hw1/</guid>
       <description>安裝 sudo apt install csh g++ git clone https://gitlab.com/connlabtw21/nachos2021.git cd NachOS2021 sudo cp -r usr / cd code make make下去後會噴出很多訊息，這是正常的，等待幾分鐘後即結束。 Testing 測試是否下載成功。 cd userprog ./nachos -e ../test/test1 範例──</description>
-    </item>
-    
-    <item>
-      <title>CDMC2021 task3</title>
-      <link>https://cherry900606.github.io/posts/cdmc2021_task3/</link>
-      <pubDate>Sun, 10 Oct 2021 14:18:02 +0800</pubDate>
-      
-      <guid>https://cherry900606.github.io/posts/cdmc2021_task3/</guid>
-      <description>目標 因為跟syscall很相似，我就用了相近的方法處理，不過實作細節略有不同。 整體而言，都是找出出現過的string類型，依照出現次數進行預</description>
-    </item>
-    
-    <item>
-      <title>Keras 筆記</title>
-      <link>https://cherry900606.github.io/posts/keras_note/</link>
-      <pubDate>Mon, 20 Sep 2021 22:34:47 +0800</pubDate>
-      
-      <guid>https://cherry900606.github.io/posts/keras_note/</guid>
-      <description>常用import from keras.models import Sequential from keras.layers.core import Dense, Dropout, Activation from keras.layers import Conv2D, MaxPooling2D, Flatten, Conv1D, MaxPooling1D from keras.utils import np_utils from tensorflow.keras.optimizers import SGD, Adam define model model = Sequential() model.add(Dense(input_dim=28 * 28, units=689, activation=&amp;#39;relu&amp;#39;)) model.add(Dropout(0.7)) model.add(Dense(units=689, activation=&amp;#39;relu&amp;#39;)) model.add(Dropout(0.7)) model.add(Dense(units=10, activation=&amp;#39;softmax&amp;#39;)) input layer 需要設定input_dim或者in</description>
-    </item>
-    
-    <item>
-      <title>機器學習基石 作業一</title>
-      <link>https://cherry900606.github.io/posts/ml_foundation_hw1/</link>
-      <pubDate>Sun, 19 Sep 2021 13:25:40 +0800</pubDate>
-      
-      <guid>https://cherry900606.github.io/posts/ml_foundation_hw1/</guid>
-      <description>Questions 15~17 根據講義的演算法進行實作: 資料前處理 import numpy as np data = np.array([i.strip().split() for i in open(&amp;#34;./data.dat&amp;#34;).readlines()]) X_train = data[:, :4] Y_train = data[:, -1] xzero = np.ones((X_train.shape[0], 1)) X_train = np.concatenate((xzero, X_train), axis=1).astype(&amp;#39;float&amp;#39;) Y_train = Y_train.astype(&amp;#39;float&amp;#39;) 會用到的函式 def sign(x): if x &amp;lt;=0 : return -1 else: return 1 def _shuffle(X,</description>
-    </item>
-    
-    <item>
-      <title>在hugo hermit主題增加分頁功能</title>
-      <link>https://cherry900606.github.io/posts/pagination/</link>
-      <pubDate>Sat, 11 Sep 2021 11:53:57 +0800</pubDate>
-      
-      <guid>https://cherry900606.github.io/posts/pagination/</guid>
-      <description>根據這篇文章的說明，可以在hugo的hermit主題自行增加分頁功能，不然hermit本身不會換頁。 我在「在對應的CSS樣式文件中添加以下」</description>
     </item>
     
   </channel>

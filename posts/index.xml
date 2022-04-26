@@ -6,8 +6,349 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>zh-tw</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Mon, 14 Feb 2022 13:57:49 +0800</lastBuildDate>
+		<lastBuildDate>Mon, 28 Feb 2022 22:10:37 +0800</lastBuildDate>
 		<atom:link href="https://cherry900606.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>Disjoint Set Union(DSU) 筆記</title>
+			<link>https://cherry900606.github.io/posts/dsu/</link>
+			<pubDate>Mon, 28 Feb 2022 22:10:37 +0800</pubDate>
+			
+			<guid>https://cherry900606.github.io/posts/dsu/</guid>
+			<description>簡介 我們可能會有好多個元素 (element) 分別屬於不同的群體 (set)，透過了解元素 A 跟元素 B、元素 C 跟元素 D 誰跟誰有關，隨時依照需求更新並建立 element 間彼此的</description>
+			<content type="html"><![CDATA[<h2 id="簡介">簡介</h2>
+<p>我們可能會有好多個元素 (element) 分別屬於不同的群體 (set)，透過了解元素 A 跟元素 B、元素 C 跟元素 D 誰跟誰有關，隨時依照需求更新並建立 element 間彼此的關係。在這類的問題中，我們關心的問題主要有二：</p>
+<ul>
+<li>A 跟 B 屬於同一個群體嗎？</li>
+<li>X 類別的數量有多少？</li>
+</ul>
+<p>最直接的方式，是利用一維陣列來記錄彼此間的關係。index 表示哪個 element，裡面存的數值表示它指向哪個 element，也就是跟誰有關。這樣的關係就相當於建立了一條長鏈，該鍊的盡頭就是這一群體的「老大」。當我們想知道元素們是否屬於同的群體，只要看「老大」一不一樣就好了。</p>
+<h2 id="程式碼片段">程式碼片段</h2>
+<ul>
+<li>make_set()</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">void</span> <span class="nf">make_set</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">dsu</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div><p><code>make_set()</code> 的目的是初始化。在最一開始，每一個 element 自己都是「老大」。</p>
+<ul>
+<li>find_set()</li>
+</ul>
+<p><code>find_set()</code> 要做的，就是找到 element v 的「老大」是誰。</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="nf">find_set</span><span class="p">(</span><span class="kt">int</span> <span class="n">v</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">==</span> <span class="n">v</span><span class="p">)</span> <span class="k">return</span> <span class="n">v</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">dsu</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="o">=</span> <span class="n">find_set</span><span class="p">(</span><span class="n">dsu</span><span class="p">[</span><span class="n">v</span><span class="p">]);</span>
+<span class="p">}</span>
+</code></pre></div><p>第一行就是搜尋走到最末端，找到老大的時候。第二行的用意是「透過遞迴找到 root 並且回傳」，但當建立起 set 中元素間的關係時，可能會是長長一串，這大幅降低了搜尋的效率，為此我們可以做 &ldquo;path compression&rdquo;。這個方法讓從最開始找的元素到 root 這條長鍊被壓縮，每個元素直接指向 root。</p>
+<p>另外也有 union by size, union by rank 等優化方法。</p>
+<ul>
+<li>union()</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">void</span> <span class="nf">union</span><span class="p">(</span><span class="kt">int</span> <span class="n">u</span><span class="p">,</span> <span class="kt">int</span> <span class="n">v</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">find_set</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">v</span> <span class="o">=</span> <span class="n">find_set</span><span class="p">(</span><span class="n">v</span><span class="p">);</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">u</span> <span class="o">!=</span> <span class="n">v</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">dsu</span><span class="p">[</span><span class="n">u</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p><code>union()</code> 是把兩個 set 合併在一起，至於怎麼合併若無特殊要求則隨意。</p>
+<p>值得注意的是，雖然我們輸入的是 u 跟 v 兩個元素，但實際上只關心他們所屬群的「老大」。不管是合併，還是要更新群體的數量，都是從「老大」來弄。</p>
+<h2 id="題目類型">題目類型</h2>
+<p>基本題</p>
+<ul>
+<li><a href="https://zerojudge.tw/ShowProblem?problemid=a445">a445: 新手訓練系列- 我的朋友很少</a></li>
+<li><a href="https://zerojudge.tw/ShowProblem?problemid=f677">f677: FJCU_109_Winter_Day3_Lab1 並查集練習</a></li>
+</ul>
+<p>變形題</p>
+<ul>
+<li><a href="https://zerojudge.tw/ShowProblem?problemid=f260">f260: 愛八卦的同學</a></li>
+<li><a href="https://zerojudge.tw/ShowProblem?problemid=d831">d831: 畢業旅行</a></li>
+</ul>
+]]></content>
+		</item>
+		
+		<item>
+			<title>論文閱讀 Explanation-Guided Backdoor Poisoning Attacks Against Malware Classifiers</title>
+			<link>https://cherry900606.github.io/posts/explanation-guided_backdoor_poisoning_attacks_against_malware_classifiers/</link>
+			<pubDate>Sat, 26 Feb 2022 13:39:01 +0800</pubDate>
+			
+			<guid>https://cherry900606.github.io/posts/explanation-guided_backdoor_poisoning_attacks_against_malware_classifiers/</guid>
+			<description>Introduction (i) 為了取得多元、大量的樣本，相關企業允許使用者上傳資料，作為訓練模型的依據，這可能成為攻擊的目標。 (ii) 提出如何在不針對特定模型的 feature-based 分類器上製</description>
+			<content type="html"><![CDATA[<h2 id="introduction">Introduction</h2>
+<p>(i) 為了取得多元、大量的樣本，相關企業允許使用者上傳資料，作為訓練模型的依據，這可能成為攻擊的目標。</p>
+<p>(ii) 提出如何在不針對特定模型的 feature-based 分類器上製造後門的方法。</p>
+<p>(iii) explanation-guided backdoor attacks 如何實際應用在 PE 檔案，以及安卓跟 PDF 檔。</p>
+<p>(iv) 如何防範此類攻擊。</p>
+<h2 id="background">Background</h2>
+<h3 id="malware-detection-systems">Malware Detection Systems</h3>
+<ul>
+<li>dynamic analysis: 在虛擬環境運行 binary file，紀錄它的活動行為來分析。</li>
+<li>static analysis: 不會執行 file，而是直接從 binary 提取特徵來分析。又可細分為 feature-based detectors 與 raw-binary analyzers。</li>
+</ul>
+<p>這篇是用 static analysis，考量到它能在執行前偵測。</p>
+<h3 id="adversarial-attacks">Adversarial Attacks</h3>
+<ul>
+<li>evasion attacks: 透過在測試資料上面加上細微的擾動，造成錯誤的分類。</li>
+<li>poisoning attacks: 透過在訓練資料加入或修改 data，造成錯誤的分類。</li>
+</ul>
+<p>其中 poisoning attacks 還可再分為：</p>
+<ul>
+<li>Availability poisoning attacks: 讓模型整體正確率下降</li>
+<li>Targeted poisoning: 造成在特定類別的錯誤分類</li>
+<li>Back-door attacks: 特定的 feature 與 value 組合，讓 model 把這個 pattern 跟 target class 聯繫起來</li>
+</ul>
+<p>Clean-labelvariants of the attacks: 不需要操縱被汙染 data 的 label 的攻擊手法。</p>
+<h3 id="shapley-additive-explanations">SHapley Additive exPlanations</h3>
+<p>SHAP 值用來表示特定 feature 對模型做出判斷的貢獻程度(重要性)，以及讓模型分類到哪種 class (方向性)。</p>
+<h2 id="problem-statement-and-threat-model">Problem Statement and Threat Model</h2>
+<p><img src="https://i.imgur.com/n28zQjD.png" alt=""></p>
+<p>第三方平台提供使用者(包含攻擊者)上傳檔案，運作的反毒軟體會將檔案分類。如果是靜態分析，在訓練前，還會從 PE file 提取特徵。接著模型就會公開部署，對新的 binary file 做分類(benign or malware)。由於攻擊者並不能直接改動這些 label，就需要用 clean-label 的 backdoor。</p>
+<p>攻擊者的目標是在 benign 檔案中挾帶後門，同時散佈到標記平台，連帶汙染下游的惡意軟體分類器。一旦模型部署後，攻擊者就可以用相同的後門浮水印來測試，看是否能攻擊成功。</p>
+<h3 id="threat-model">Threat Model</h3>
+<p>BadNet 定義：</p>
+<p>(1) “Outsourced Training Attack”: 使用者只能用提供的資料集來驗證結果</p>
+<p>(2) “Transfer Learning Attack”: 使用者自己下載預訓練模型並做調整</p>
+<ul>
+<li>目標</li>
+</ul>
+<p>對後門攻擊來說，攻擊者的目標是當輸入不含後門的 input 時，要做出正確的分類；當輸入含有後門的 input 則會變成特定的結果。
+<img src="https://i.imgur.com/9ypKmwi.png" alt=""></p>
+<p>在這個情況中，預測結果不是 benign (0) 就是 malicious (1)，並且攻擊者希望的是將原本是 malware 的被斷成 benign。為了讓攻擊不容易被發現，也會希望讓 trigger 的大小跟污染的資料集數量越小越好。</p>
+<ul>
+<li>情況假設</li>
+</ul>
+<p>為了限縮製作浮水印的可能性，而非所有的數值都有可能，假設攻擊者只會把值改成有出現在 benign sample 中的。</p>
+<p>四種可能的假設：</p>
+<p>(1) unrestricted</p>
+<p>(2) data_limited: 無法存取到所有 training data</p>
+<p>(3) transfer: 不知道 target model 情況</p>
+<p>(4) black_box: 不清楚 target model 的架構</p>
+<p>(5) constrained: 只能修改特定的 feature 與 value</p>
+<h2 id="explanation-guided-backdoor-attacks">Explanation-Guided Backdoor Attacks</h2>
+<p>後門攻擊會創造一個高密度的 feature subspace，讓分類器因此調整決策邊界。只需要一個相對小的 subspace，若它的密度很高或者處在模型信心較低的地方 ，依舊可以影響決策邊界。</p>
+<p>製造後門的兩種策略：
+(1) 找決策邊界附近，信心最弱的地方
+(2) 找非常偏向 goodware 的區域覆蓋過去</p>
+<p>因此，接著出現的問題是：要怎麼找到模型的決策方式？這篇文章用 SHAP 作為指標。若 SHAP 值為負，代表會讓模型認為是 benign ；若為正則認為是 malware。對單一樣本來說，對所有 feature 的 SHAP 值作加總，其意義相當於模型的 output。</p>
+<p>若想要找到模型決策邊界信心程度較低的區域，可以透過 SHAP 值找接近 0 的地方。</p>
+<h3 id="building-blocks">Building Blocks</h3>
+<ul>
+<li>
+<p>Feature Selection: 找最 importance 的 feature</p>
+<ul>
+<li>LargeSHAP: 把個別的 SHAP 值做加總，找到 class 的平均值。由此可知在特定 class 下，feature 的重要性。如果越負代表對判斷 goodware 重要，反之代表對 malware 重要。接近於零，表示不靠近任何的類別而且信心程度較弱。</li>
+<li>LargeAbsSHAP: 不管方向性(benign 還 malware)，用先用絕對值再作加總。結果會知道 feature 的重要性，但不管偏向哪種類別。</li>
+</ul>
+</li>
+<li>
+<p>Value Selection:</p>
+<ul>
+<li>MinPopulation: 找 dataset 中出現頻率最小的 value。</li>
+<li>CountSHAP: 找出現頻率高而且 goodware-oriented 的 區域。
+<img src="https://i.imgur.com/kMQXKqc.png" alt=""></li>
+<li>CountAbsSHAP:
+<img src="https://i.imgur.com/8WRSfMz.png" alt=""></li>
+</ul>
+</li>
+</ul>
+<h3 id="attack-strategies">Attack Strategies</h3>
+<ul>
+<li>Independent Selection: 個別找 feature 跟 value 的組合，屬於找決策邊界附近信心較弱的區域。</li>
+<li>Greedy Combined Selection: 透過貪婪演算法找 goodware-oriented points 中最適合的 feature 跟 value，跟那些 points 融合在一起。不斷移除不屬於所選 trigger 的 data，重複多次後剩下來的就是 trigger。
+<img src="https://i.imgur.com/BcMzBDv.png" alt=""></li>
+</ul>
+<p>兩種方法差在前者是直接找幾個 feature，接著做 value selection；後者是找出 goodware-oriented points 中共有的那些 subspace 作為 trigger。前者是找密度比較低的地方，後者找的是符合語意的 pattern。</p>
+<h2 id="experimental-attack-evaluation">Experimental Attack Evaluation</h2>
+<p>EMBER (PE 型態的資料集) + LightGBM/EmberNN</p>
+<p>三種指標：Acc(Fb, Xb), Acc(Fb, X), FPb</p>
+<h3 id="attack-performance">Attack Performance</h3>
+<h3 id="limiting-the-attacker">Limiting the Attacker</h3>
+<h2 id="problem-space-considerations">Problem-Space Considerations</h2>
+<h3 id="windows-pes">Windows PEs</h3>
+<h3 id="other-datasets">Other Datasets</h3>
+<h2 id="mitigation">Mitigation</h2>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Opencv 自救筆記</title>
+			<link>https://cherry900606.github.io/posts/opencv_note/</link>
+			<pubDate>Sat, 26 Feb 2022 11:46:36 +0800</pubDate>
+			
+			<guid>https://cherry900606.github.io/posts/opencv_note/</guid>
+			<description>week1 安裝測試 #include&amp;lt;opencv2/opencv.hpp&amp;gt;using namespace cv; int main() { Mat img = imread(&amp;#34;Lenna.jpg&amp;#34;); imshow(&amp;#34;Hello World!&amp;#34;, img); waitKey(); } 使用 imread() 來讀入圖片，存到名為 img 的 Mat 基本資料型態。 imshow() 把 img 顯示成圖片，並且設定視窗標題成特定的名稱。 waitKey() 會等</description>
+			<content type="html"><![CDATA[<h2 id="week1-安裝測試">week1 安裝測試</h2>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span><span class="cpf">&lt;opencv2/opencv.hpp&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">cv</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="n">Mat</span> <span class="n">img</span> <span class="o">=</span> <span class="n">imread</span><span class="p">(</span><span class="s">&#34;Lenna.jpg&#34;</span><span class="p">);</span>
+	<span class="n">imshow</span><span class="p">(</span><span class="s">&#34;Hello World!&#34;</span><span class="p">,</span> <span class="n">img</span><span class="p">);</span>
+	<span class="n">waitKey</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div><p>使用 <code>imread()</code> 來讀入圖片，存到名為 img 的 Mat 基本資料型態。
+<code>imshow()</code> 把 img 顯示成圖片，並且設定視窗標題成特定的名稱。
+<code>waitKey()</code> 會等使用者按下鍵盤後結束，不然會一直等。</p>
+<h2 id="week2-rgb-to-gray">week2 RGB to Gray</h2>
+<p>方法一</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span><span class="cpf">&lt;opencv2/opencv.hpp&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">cv</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="n">Mat</span> <span class="n">img</span> <span class="o">=</span> <span class="n">imread</span><span class="p">(</span><span class="s">&#34;Lenna.jpg&#34;</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+	<span class="n">imshow</span><span class="p">(</span><span class="s">&#34;Hello World!&#34;</span><span class="p">,</span> <span class="n">img</span><span class="p">);</span>
+	<span class="n">waitKey</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div><p><code>imread()</code> 的第二個參數可以設定顏色，其中 0 代表灰階。</p>
+<p>方法二</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;opencv2/opencv.hpp&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">cv</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="n">Mat</span> <span class="n">img</span> <span class="o">=</span> <span class="n">imread</span><span class="p">(</span><span class="s">&#34;Lenna.jpg&#34;</span><span class="p">),</span> <span class="n">grayMat</span><span class="p">;</span>
+	<span class="n">cvtColor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">grayMat</span><span class="p">,</span> <span class="n">COLOR_BGR2GRAY</span><span class="p">);</span>
+	<span class="n">imshow</span><span class="p">(</span><span class="s">&#34;Hello World!&#34;</span><span class="p">,</span> <span class="n">grayMat</span><span class="p">);</span>
+	<span class="n">waitKey</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div><p>用 <code>cvtColor()</code> 把原本的彩色 Mat 轉成 灰色 Mat。</p>
+<p>方法三</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="cp">#include</span> <span class="cpf">&lt;opencv2/opencv.hpp&gt;</span><span class="cp">
+</span><span class="cp"></span><span class="k">using</span> <span class="k">namespace</span> <span class="n">cv</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+	<span class="n">Mat</span> <span class="n">img</span> <span class="o">=</span> <span class="n">imread</span><span class="p">(</span><span class="s">&#34;Lenna.jpg&#34;</span><span class="p">);</span>
+	<span class="n">Mat</span> <span class="n">img_gray</span> <span class="o">=</span> <span class="n">Mat</span><span class="o">::</span><span class="n">zeros</span><span class="p">(</span><span class="n">img</span><span class="p">.</span><span class="n">rows</span><span class="p">,</span> <span class="n">img</span><span class="p">.</span><span class="n">cols</span><span class="p">,</span> <span class="n">CV_8UC1</span><span class="p">);</span>
+
+	<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">img</span><span class="p">.</span><span class="n">rows</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">img</span><span class="p">.</span><span class="n">cols</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kt">int</span> <span class="n">b</span> <span class="o">=</span> <span class="n">img</span><span class="p">.</span><span class="n">at</span><span class="o">&lt;</span><span class="n">Vec3b</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
+			<span class="kt">int</span> <span class="n">g</span> <span class="o">=</span> <span class="n">img</span><span class="p">.</span><span class="n">at</span><span class="o">&lt;</span><span class="n">Vec3b</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)[</span><span class="mi">1</span><span class="p">];</span>
+			<span class="kt">int</span> <span class="n">r</span> <span class="o">=</span> <span class="n">img</span><span class="p">.</span><span class="n">at</span><span class="o">&lt;</span><span class="n">Vec3b</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)[</span><span class="mi">2</span><span class="p">];</span>
+
+			<span class="n">img_gray</span><span class="p">.</span><span class="n">at</span><span class="o">&lt;</span><span class="n">uchar</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="mf">0.299</span> <span class="o">*</span> <span class="n">r</span> <span class="o">+</span> <span class="mf">0.587</span> <span class="o">*</span> <span class="n">g</span> <span class="o">+</span> <span class="mf">0.114</span> <span class="o">*</span> <span class="n">b</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+
+	<span class="n">imshow</span><span class="p">(</span><span class="s">&#34;RGB to gray&#34;</span><span class="p">,</span> <span class="n">img_gray</span><span class="p">);</span>
+	<span class="n">waitKey</span><span class="p">();</span>
+<span class="p">}</span>
+</code></pre></div><p>對每個 pixel 取出 R, G 跟 B 三色數值後套用公式轉換成灰色。</p>
+<p>因為灰階圖只有一個 channel，所以宣告時是用 C1，並且是 uchar。</p>
+<h2 id="week3-模糊">week3 模糊</h2>
+<ul>
+<li>平滑法</li>
+</ul>
+<p>不用寫好的函式實作平滑法，filter 的大小為 5 * 5，周圍不用處理。</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">src</span><span class="p">.</span><span class="n">rows</span> <span class="o">-</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">src</span><span class="p">.</span><span class="n">cols</span> <span class="o">-</span> <span class="mi">2</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kt">int</span> <span class="n">value</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="n">value</span> <span class="o">+=</span> <span class="n">src</span><span class="p">.</span><span class="n">at</span><span class="o">&lt;</span><span class="n">uchar</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">x</span><span class="p">,</span> <span class="n">j</span> <span class="o">+</span> <span class="n">y</span><span class="p">);</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+			<span class="n">value</span> <span class="o">/=</span> <span class="mi">25</span><span class="p">;</span>
+			<span class="n">dst</span><span class="p">.</span><span class="n">at</span><span class="o">&lt;</span><span class="n">uchar</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+</code></pre></div><p>最外層的 i, j 迴圈代表對照片中的每個 piexl 都看過一次，除了受限於 filter 本身限制而不會看的上下左右兩排。</p>
+<p>要得到當下 piexl 經過平滑法後會變成甚麼數值，則要把九宮格範圍的數值總和取平均。</p>
+<ul>
+<li>中值濾波法</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">src</span><span class="p">.</span><span class="n">rows</span> <span class="o">-</span> <span class="mi">2</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+	<span class="p">{</span>
+		<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">src</span><span class="p">.</span><span class="n">cols</span> <span class="o">-</span> <span class="mi">2</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+		<span class="p">{</span>
+			<span class="kt">int</span> <span class="n">arr</span><span class="p">[</span><span class="mi">25</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mi">0</span> <span class="p">},</span> <span class="n">flag</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+			<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">x</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">x</span><span class="o">++</span><span class="p">)</span>
+			<span class="p">{</span>
+				<span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">y</span> <span class="o">=</span> <span class="o">-</span><span class="mi">2</span><span class="p">;</span> <span class="n">y</span> <span class="o">&lt;=</span> <span class="mi">2</span><span class="p">;</span> <span class="n">y</span><span class="o">++</span><span class="p">)</span>
+				<span class="p">{</span>
+					<span class="c1">//cout &lt;&lt; flag &lt;&lt; endl;
+</span><span class="c1"></span>					<span class="n">arr</span><span class="p">[</span><span class="n">flag</span><span class="p">]</span> <span class="o">=</span> <span class="n">src</span><span class="p">.</span><span class="n">at</span><span class="o">&lt;</span><span class="n">uchar</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">j</span><span class="p">);</span>
+					<span class="n">flag</span><span class="o">++</span><span class="p">;</span>
+				<span class="p">}</span>
+			<span class="p">}</span>
+			<span class="n">sort</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">arr</span> <span class="o">+</span> <span class="mi">25</span><span class="p">);</span>
+			<span class="n">dst</span><span class="p">.</span><span class="n">at</span><span class="o">&lt;</span><span class="n">uchar</span><span class="o">&gt;</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="o">=</span> <span class="n">arr</span><span class="p">[</span><span class="mi">13</span><span class="p">];</span>
+		<span class="p">}</span>
+	<span class="p">}</span>
+</code></pre></div><p>把九宮格的數字存入 5 * 5 大小的 array，透過 sort 將數字大小排序，取中位數作為新值。</p>
+<p>這個方法把原本圖片的雜訊濾掉了。</p>
+<h2 id="其他">其他</h2>
+<p>原本對 opencv 怎麼使用感到相當苦惱，才想把過程中不懂的記下來。幾周後發覺摸得差不多了，剩下都是程式實作的部分，決定不再紀錄每周內容，僅作零散的筆記內容。</p>
+<ul>
+<li>寫檔</li>
+</ul>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="n">imread</span><span class="p">(</span><span class="s">&#34;檔名.檔案格式&#34;</span><span class="p">,</span> <span class="n">src</span><span class="p">);</span>
+</code></pre></div>]]></content>
+		</item>
+		
+		<item>
+			<title>零錢問題</title>
+			<link>https://cherry900606.github.io/posts/coin_problem/</link>
+			<pubDate>Sat, 19 Feb 2022 13:33:31 +0800</pubDate>
+			
+			<guid>https://cherry900606.github.io/posts/coin_problem/</guid>
+			<description>簡介 零錢問題是動態規劃(dynamic programming, 簡稱dp)常見的問題之一，題目敘述可能是問有幾 n 錢幣的情況下，付 m 元有幾種組合，或者付 m 元所需要的最</description>
+			<content type="html"><![CDATA[<h2 id="簡介">簡介</h2>
+<p>零錢問題是動態規劃(dynamic programming, 簡稱dp)常見的問題之一，題目敘述可能是問有幾 n 錢幣的情況下，付 m 元有幾種組合，或者付 m 元所需要的最少硬幣數。</p>
+<h2 id="解題概念">解題概念</h2>
+<p>首先會需要紀錄「有幾種錢幣可用」以及「1 ~ n 元個別所需的組合/最少硬幣數紀錄」。</p>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="kt">int</span> <span class="n">prices</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">25</span><span class="p">,</span><span class="mi">50</span><span class="p">};</span>
+<span class="kt">int</span> <span class="n">c</span><span class="p">[</span><span class="mi">5000</span><span class="p">]</span><span class="o">=</span><span class="p">{</span><span class="mi">1</span><span class="p">};</span>
+</code></pre></div><p>c[0]之所以為 1，是因為若 0 元的組合只會有一種情況：不用任何一種硬幣。</p>
+<h3 id="求組合數">求組合數</h3>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">prices</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">m</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+        <span class="n">c</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">+=</span> <span class="n">c</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="n">prices</span><span class="p">[</span><span class="n">i</span><span class="p">]];</span>
+<span class="p">}</span>
+</code></pre></div><p>第一個迴圈，是把所有種類的硬幣一個個放進去。第二個迴圈，是把從現在放入的硬幣幣值 prices[i] ~ m 都看過一遍。</p>
+<p>檢查的方法，就是 <code>c[j] += c[j - prices[i]];</code>。可以理解為當我多放了 prices[i] 這種硬幣時，除了我 c[j] 目前有的方法數外，還能額外得到 c[j-prices[i]] 的方法數，因為只要多放 prices[i] 就好了。</p>
+<p>例：</p>
+<ul>
+<li><a href="https://zerojudge.tw/ShowProblem?problemid=d253">d253: 00674 - Coin Change</a></li>
+<li><a href="https://zerojudge.tw/ShowProblem?problemid=d119">d119: 有獎徵答：換零錢</a></li>
+</ul>
+<h3 id="求最少硬幣數">求最少硬幣數</h3>
+<div class="highlight"><pre class="chroma"><code class="language-cpp" data-lang="cpp"><span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="n">price</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">c</span><span class="p">;</span> <span class="n">j</span><span class="o">++</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">money</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">min</span><span class="p">(</span><span class="n">money</span><span class="p">[</span><span class="n">j</span><span class="p">],</span> <span class="n">money</span><span class="p">[</span><span class="n">j</span> <span class="o">-</span> <span class="n">price</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div><p>看是哪一種情況比較少，再更新紀錄即可。</p>
+<p>例：</p>
+<ul>
+<li><a href="https://zerojudge.tw/ShowProblem?problemid=d904">d904: 換零錢</a></li>
+<li><a href="https://zerojudge.tw/ShowProblem?problemid=c317">c317: 硬幣問題！前傳</a></li>
+</ul>
+<h2 id="變化題">變化題</h2>
+<p>例：</p>
+<ul>
+<li><a href="https://zerojudge.tw/ShowProblem?problemid=d289">d289: 多元一次方程式</a></li>
+</ul>
+<p>與其說這題是零錢問題的變化題，不如說零錢問題的本質就是解特定的多元一次方程式。未知數的係數是硬幣種類，未知數本身是組成的方式，等式右邊的常數是要解的目標額度。</p>
+<ul>
+<li><a href="https://zerojudge.tw/ShowProblem?problemid=b232">b232: TOI2009 第四題：分房子</a></li>
+</ul>
+]]></content>
+		</item>
 		
 		<item>
 			<title>後門攻擊</title>

@@ -7,7 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Tue, 08 Feb 2022 11:17:22 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/%E7%A8%8B%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 28 Feb 2022 22:10:37 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/%E7%A8%8B%E5%BC%8F/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Disjoint Set Union(DSU) 筆記</title>
+      <link>https://cherry900606.github.io/posts/dsu/</link>
+      <pubDate>Mon, 28 Feb 2022 22:10:37 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/dsu/</guid>
+      <description>簡介 我們可能會有好多個元素 (element) 分別屬於不同的群體 (set)，透過了解元素 A 跟元素 B、元素 C 跟元素 D 誰跟誰有關，隨時依照需求更新並建立 element 間彼此的</description>
+    </item>
+    
+    <item>
+      <title>零錢問題</title>
+      <link>https://cherry900606.github.io/posts/coin_problem/</link>
+      <pubDate>Sat, 19 Feb 2022 13:33:31 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/coin_problem/</guid>
+      <description>簡介 零錢問題是動態規劃(dynamic programming, 簡稱dp)常見的問題之一，題目敘述可能是問有幾 n 錢幣的情況下，付 m 元有幾種組合，或者付 m 元所需要的最</description>
+    </item>
+    
     <item>
       <title>BFS(Breadth First Search) 筆記</title>
       <link>https://cherry900606.github.io/posts/bfs/</link>
