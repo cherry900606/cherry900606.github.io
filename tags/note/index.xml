@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Sat, 26 Feb 2022 11:46:36 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/note/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 05 Jun 2022 18:32:56 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/note/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Adversarial attack(對抗式攻擊)</title>
+      <link>https://cherry900606.github.io/posts/adversarial_attack/</link>
+      <pubDate>Sun, 05 Jun 2022 18:32:56 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/adversarial_attack/</guid>
+      <description>對抗式攻擊(adversarial attack)是透過在input加上細微的擾動，讓模型做出錯誤的判斷，被攻擊的模型卻可能對錯誤的預測有高度</description>
+    </item>
+    
     <item>
       <title>Opencv 自救筆記</title>
       <link>https://cherry900606.github.io/posts/opencv_note/</link>

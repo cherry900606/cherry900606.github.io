@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="實作後門攻擊">
+<meta itemprop="description" content="簡介 這次我用在論文閱讀中學到的方法練習實作後門攻擊。使用的是部份的 EMBER 資料集，包含 9999 筆資料，其中前 5000 筆的 label 是 0 (benign),其餘是 1 (ma"><meta itemprop="datePublished" content="2022-06-07T12:13:23&#43;08:00" />
+<meta itemprop="dateModified" content="2022-06-07T12:13:23&#43;08:00" />
+<meta itemprop="wordCount" content="731">
+<meta itemprop="keywords" content="untagged," /><meta property="og:title" content="實作後門攻擊" />
+<meta property="og:description" content="簡介 這次我用在論文閱讀中學到的方法練習實作後門攻擊。使用的是部份的 EMBER 資料集，包含 9999 筆資料，其中前 5000 筆的 label 是 0 (benign),其餘是 1 (ma" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cherry900606.github.io/posts/implement_backdoor_by_shap/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-06-07T12:13:23&#43;08:00" />
+<meta property="article:modified_time" content="2022-06-07T12:13:23&#43;08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="實作後門攻擊"/>
+<meta name="twitter:description" content="簡介 這次我用在論文閱讀中學到的方法練習實作後門攻擊。使用的是部份的 EMBER 資料集，包含 9999 筆資料，其中前 5000 筆的 label 是 0 (benign),其餘是 1 (ma"/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>實作後門攻擊</title>
+	<link rel="stylesheet" href="https://cherry900606.github.io/css/style.min.eac77496566fd7d5768fd650ddb0b2b181ca6a2d7c5fdd6fe6b8ba4bf47e566f.css" integrity="sha256-6sd0llZv19V2j9ZQ3bCysYHKai18X91v5ri6S/R+Vm8=" crossorigin="anonymous">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://cherry900606.github.io">CC&#39;s blog</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					
+				<a href="https://cherry900606.github.io/posts/">Posts</a>
+				<a href="https://cherry900606.github.io/about-me/">About</a>
+
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3" y2="6"></line><line x1="3" y1="12" x2="3" y2="12"></line><line x1="3" y1="18" x2="3" y2="18"></line></svg></button><span class="hdr-social hide-in-mobile"><a href="https://github.com/cherry900606" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:cherry900606@gmail.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://cherry900606.github.io/posts/">Posts</a></li>
+			<li><a href="https://cherry900606.github.io/about-me/">About</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Jun 7, 2022</span></div>
+				<h1>實作後門攻擊</h1>
+			</header>
+			<div class="content">
+                
+				<h2 id="簡介">簡介<a href="#簡介" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>這次我用在論文閱讀中學到的方法練習實作後門攻擊。使用的是部份的 EMBER 資料集，包含 9999 筆資料，其中前 5000 筆的 label 是 0 (benign),其餘是 1 (malware)。</p>
+<p>我先將讀入的資料做簡單的預處理(shuffle + 正規化)，接著切割成 train, test set 後餵給 model，再用得到的 model 跟 shap 套件得到 shap 值。</p>
+<p>經過 feature selection 跟 value selection 後會得到 trigger。因為是 clean label attack，把該 trigger 藏進部分的 benign sample 來訓練模型，最後得到的就是 backdoored model。</p>
+<h2 id="feature-selection">feature selection<a href="#feature-selection" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>n 用來指定 trigger size 多大。
+選擇 feature 的依據是找出 feature 中 shap 的絕對值總和最大的 n 個，代表影響力越大。</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">LargeAbsSHAP</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">feats</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">shap_values</span><span class="p">[</span><span class="n">label</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">larget_shap_index</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span><span class="o">-</span><span class="n">n</span><span class="p">:]</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">larget_shap_index</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">larget_shap_index</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">larget_shap_index</span>
+<span class="n">selected_feature</span> <span class="o">=</span> <span class="n">LargeAbsSHAP</span><span class="p">(</span><span class="n">shap_values</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="mi">16</span><span class="p">)</span>
+</code></pre></div><h2 id="value-selection">value selection<a href="#value-selection" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>我實作了兩個論文中提到的選擇 vaule 的方式，分別為 CountSHAP 跟 MinPopulation。</p>
+<p>CountSHAP 是找出每個 feature 底下，依據所有 value 數值的出現次數，以及對應到 shap 值得總和，找出最小的 n 個。
+MinPopulation 是直接找出出現次數最少的 n 個。</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">collections</span>
+<span class="k">def</span> <span class="nf">CountSHAP</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">mini</span> <span class="o">=</span> <span class="mi">100000</span> <span class="c1"># 根據公式算出來的值</span>
+        <span class="n">min_arg</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="c1"># 公式算出來最小值的那個 feature value 是啥</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)[:,</span><span class="n">_f</span><span class="p">])</span><span class="o">.</span><span class="n">most_common</span><span class="p">()</span> <span class="c1"># label 0, all sample &amp; _f feature</span>
+        <span class="k">for</span> <span class="n">_c</span> <span class="ow">in</span> <span class="n">c</span><span class="p">:</span>
+            <span class="n">now</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">_c</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">][[</span><span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="mi">1000</span><span class="p">,</span><span class="n">_f</span><span class="p">])</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="n">_c</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span><span class="n">_f</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">now</span> <span class="o">&lt;</span> <span class="n">mini</span><span class="p">:</span>
+                <span class="n">mini</span> <span class="o">=</span> <span class="n">now</span>
+                <span class="n">min_arg</span> <span class="o">=</span> <span class="n">_c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">_f</span><span class="p">,</span> <span class="n">min_arg</span><span class="p">))</span>
+        <span class="c1">#print(mini, min_arg)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="k">def</span> <span class="nf">MinPopulation</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">s</span><span class="p">)[</span><span class="mi">0</span><span class="p">][:,</span><span class="n">_f</span><span class="p">])</span><span class="o">.</span><span class="n">most_common</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">_f</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+<span class="n">selected_value</span> <span class="o">=</span> <span class="n">CountSHAP</span><span class="p">(</span><span class="n">shap_values_dc</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">selected_feature</span><span class="p">)</span>
+</code></pre></div><h2 id="結果">結果<a href="#結果" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>我用了幾種模型來檢驗結果，並用三種指標 Acc(F, X), Acc(Fb, X) 跟 Acc(Fb, Xb) 作為標準。</p>
+<p>其中 F 代表正常的 model， Fb 代表有後門的 model； X 代表正常的 malware sample，Xb 代表全部加上 trigger 的 malware sample。</p>
+<p>Acc(F, X) 看出正常情況下，模型對 malware sample 的檢測率，Acc(Fb, X) 看有後門的模型對正常 malware sample 的正確率有沒有降，Acc(Fb, Xb) 看有多少比例的 malware sample 在加上 trigger 後成功偽裝成 benign sample。</p>
+<p>(trigger size=16, poison rate=1%)</p>
+<pre><code>* LGBMClassifier
+Acc(F, X): 0.982
+Acc(Fb, X): 0.981
+Acc(Fb, Xb): 0.0
+
+* XGBClassifier
+Acc(F, X): 0.981
+Acc(Fb, X): 0.983
+Acc(Fb, Xb): 0.081
+0.983/0.081 = 12.3倍
+
+* RandomForestClassifier
+Acc(F, X): 0.949
+Acc(Fb, X): 0.947
+Acc(Fb, Xb): 0.943
+
+* DecisionTreeClassifier
+Acc(F, X): 0.968
+Acc(Fb, X): 0.967
+Acc(Fb, Xb): 0.549
+0.967/0.549 = 1.8倍
+
+* LogisticRegression
+Acc(F, X): 0.943
+Acc(Fb, X): 0.944
+Acc(Fb, Xb): 0.291
+0.944/0.291 = 3.2倍
+</code></pre>
+                
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://cherry900606.github.io/tags/untagged">untagged</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>731 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2022-06-07 12:13 &#43;0800</p>
+			</footer>
+		</article>
+		<aside id="toc">
+			<div class="toc-title">Table of Contents</div>
+			<nav id="TableOfContents">
+  <ul>
+    <li><a href="#簡介">簡介</a></li>
+    <li><a href="#feature-selection">feature selection</a></li>
+    <li><a href="#value-selection">value selection</a></li>
+    <li><a href="#結果">結果</a></li>
+  </ul>
+</nav>
+		</aside>
+		<div class="post-nav thin">
+			<a class="prev-post" href="https://cherry900606.github.io/posts/adversarial_attack/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Adversarial attack(對抗式攻擊)</span>
+			</a>
+		</div>
+		<div id="comments" class="thin"><script src="https://utteranc.es/client.js"
+        repo="cherry900606/commentforblog"
+        issue-term="pathname"
+        theme="photon-dark"
+        crossorigin="anonymous"
+        async>
+</script></div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2022 <a href="https://cherry900606.github.io">chenchen</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://cherry900606.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+
+	<script src="https://cherry900606.github.io/js/bundle.min.7d8545daa55d62427355498dd8da13f98ff79a7938ce7d2a5e2ae1ec0de3beb8.js" integrity="sha256-fYVF2qVdYkJzVUmN2NoT+Y/3mnk4zn0qXirh7A3jvrg=" crossorigin="anonymous"></script>
+	
+
+</body>
+
+</html>

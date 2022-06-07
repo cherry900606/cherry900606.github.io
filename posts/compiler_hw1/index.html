@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="Compiler 作業一：lex">
+<meta itemprop="description" content="lex 的基本架構 %{ // part 1 %} // part 2 %% // part 3 %% // part 4 part1 可以 include 用到的 library part2 用 regular grammar 定義 token part3 寫對 token 要做什麼動作 part4 是 optional，可以自定義 main()並"><meta itemprop="datePublished" content="2022-05-14T11:21:12&#43;08:00" />
+<meta itemprop="dateModified" content="2022-05-14T11:21:12&#43;08:00" />
+<meta itemprop="wordCount" content="672">
+<meta itemprop="keywords" content="" /><meta property="og:title" content="Compiler 作業一：lex" />
+<meta property="og:description" content="lex 的基本架構 %{ // part 1 %} // part 2 %% // part 3 %% // part 4 part1 可以 include 用到的 library part2 用 regular grammar 定義 token part3 寫對 token 要做什麼動作 part4 是 optional，可以自定義 main()並" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cherry900606.github.io/posts/compiler_hw1/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-05-14T11:21:12&#43;08:00" />
+<meta property="article:modified_time" content="2022-05-14T11:21:12&#43;08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Compiler 作業一：lex"/>
+<meta name="twitter:description" content="lex 的基本架構 %{ // part 1 %} // part 2 %% // part 3 %% // part 4 part1 可以 include 用到的 library part2 用 regular grammar 定義 token part3 寫對 token 要做什麼動作 part4 是 optional，可以自定義 main()並"/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>Compiler 作業一：lex</title>
+	<link rel="stylesheet" href="https://cherry900606.github.io/css/style.min.eac77496566fd7d5768fd650ddb0b2b181ca6a2d7c5fdd6fe6b8ba4bf47e566f.css" integrity="sha256-6sd0llZv19V2j9ZQ3bCysYHKai18X91v5ri6S/R+Vm8=" crossorigin="anonymous">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://cherry900606.github.io">CC&#39;s blog</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					
+				<a href="https://cherry900606.github.io/posts/">Posts</a>
+				<a href="https://cherry900606.github.io/about-me/">About</a>
+
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3" y2="6"></line><line x1="3" y1="12" x2="3" y2="12"></line><line x1="3" y1="18" x2="3" y2="18"></line></svg></button><span class="hdr-social hide-in-mobile"><a href="https://github.com/cherry900606" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:cherry900606@gmail.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://cherry900606.github.io/posts/">Posts</a></li>
+			<li><a href="https://cherry900606.github.io/about-me/">About</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>May 14, 2022</span></div>
+				<h1>Compiler 作業一：lex</h1>
+			</header>
+			<div class="content">
+                
+				<h2 id="lex-的基本架構">lex 的基本架構<a href="#lex-的基本架構" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<pre><code class="language-lex" data-lang="lex">%{
+// part 1
+
+%}
+// part 2
+
+%%
+// part 3
+
+%%
+// part 4
+
+</code></pre><ul>
+<li>part1 可以 include 用到的 library</li>
+<li>part2 用 regular grammar 定義 token</li>
+<li>part3 寫對 token 要做什麼動作</li>
+<li>part4 是 optional，可以自定義 main()並呼叫 yylex()，也可以不寫</li>
+</ul>
+<h2 id="part1">part1<a href="#part1" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<pre><code>#define LIST     strcat(buf,yytext)
+#define token(t) {LIST; printf(&quot;&lt;%s&gt;\n&quot;,#t); return t;};
+#define tokenInteger(t,i) {LIST; printf(&quot;&lt;%s:%d&gt;\n&quot;,#t,i);}
+#define tokenString(t,s) {LIST; printf(&quot;&lt;%s:%s&gt;\n&quot;,#t,s);}
+
+char buf[MAX_LINE_LENG];
+
+</code></pre><p>先 define 一些東西以減少重複性 code。
+另外，原本老師提供的檔案是沒有 #t， 只有 t而已，但我在本地端用 cygwin 跑不過才改的。</p>
+<h2 id="part2">part2<a href="#part2" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<pre><code>digit [0-9]
+integer {digit}+
+letter [a-zA-Z]
+identifier {letter}({digit}|{letter})*
+real [-+]?{integer}\.{integer}?([Ee][-+]?{digit})?
+string \&quot;(\&quot;\&quot;|.)*\&quot;
+</code></pre><p>ID必須是以字母開頭，後面由數字或字母的 closure 組成。
+字串則是以 &quot; 開頭跟結尾，中間如果有出現 &ldquo;，那就必須多加一個 &quot; 作為標示。例如 &ldquo;aa&quot;&ldquo;bb&rdquo; 會被當作 aa&quot;bb。</p>
+<h2 id="part3">part3<a href="#part3" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>如果是operator，像是+-*%之類的token，就直接寫出他們的樣子，並寫出相對應的動作即可。
+像是：</p>
+<pre><code>&quot;+&quot;     {token('+');}
+&quot;-&quot;     {token('-');}
+&quot;*&quot;     {token('*');}
+&quot;/&quot;     {token('/');}
+&quot;%&quot;     {token('%');}
+</code></pre><p>如果是 keyword，那就寫出該字並寫出相對應的動作。作業有提到大小寫字母的組合都要能辨識。
+例：</p>
+<pre><code>[bB][oO][oO][lL]                {token(BOOL);}
+[bB][rR][eE][aA][kK]    {token(BREAK);}
+[cC][hH][aA][rR]                {token(CHAR);}
+[cC][aA][sS][eE]                {token(CASE);}
+[cC][lL][aA][sS][sS]    {token(CLASS);}
+</code></pre><p>再來就是在 part2 定義過規則的那些token。</p>
+<p>為了讓 lex 除了辨識是哪種 token 外，也能得到其值，要用之前寫好的token()系列。
+例如：</p>
+<pre><code>{integer} {
+        tokenString(INTEGER, yytext);
+ }
+ {identifier} {
+        tokenString(IDENTIFIER, yytext);
+}
+</code></pre><p>至於 string 的處理又再麻煩一點，因為要把前後的 &quot; 拿掉，並且中間若有 &quot;&rdquo; 也要處理。</p>
+<pre><code>{string} {
+        char s[MAX_LINE_LENG];
+        int index = 0;
+        for(int i=1;i&lt;yyleng-1;i++)
+        {
+                if(yytext[i]=='&quot;')
+                        i+=1;
+                s[index++]=yytext[i];
+        }
+        s[index]='\0';
+        tokenString(STRING, s);
+}
+</code></pre><p>我原本沒有加上 <code>s[index]='\0';</code>，在 server 上執行時字串一直輸出多餘內容，找好久才發現 bug。</p>
+<h2 id="part4">part4<a href="#part4" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<pre><code>main()
+{
+    yylex();
+    // 視情況加進想要的東西
+}
+</code></pre><h2 id="others">Others<a href="#others" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<h3 id="comments">comments<a href="#comments" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>分為單行註解與多行註解。</p>
+<p>首先要在 part2 加上 <code>%x CMNT</code></p>
+<p>單行註解
+<code>&quot;//&quot;[^\n]*      {LIST;}</code></p>
+<p>多行註解</p>
+<pre><code>&quot;/*&quot;    {
+        LIST;
+        BEGIN CMNT;
+}
+&lt;CMNT&gt;\n        {
+        LIST;
+		        printf(&quot;%d: %s&quot;, linenum++, buf);
+        buf[0] = '\0';
+}
+&lt;CMNT&gt;. {LIST;}
+&lt;CMNT&gt;&quot;*/&quot;      {
+        LIST;
+        BEGIN INITIAL;
+}
+</code></pre><h3 id="symbol-table">symbol table<a href="#symbol-table" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>如果有寫 symbol table，就在辨識到 ID 的時候 insert 進去。</p>
+<p>可以把 part4 改一下，最後把 symbol table 給 dump 出來。</p>
+
+                
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>672 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2022-05-14 11:21 &#43;0800</p>
+			</footer>
+		</article>
+		<aside id="toc">
+			<div class="toc-title">Table of Contents</div>
+			<nav id="TableOfContents">
+  <ul>
+    <li><a href="#lex-的基本架構">lex 的基本架構</a></li>
+    <li><a href="#part1">part1</a></li>
+    <li><a href="#part2">part2</a></li>
+    <li><a href="#part3">part3</a></li>
+    <li><a href="#part4">part4</a></li>
+    <li><a href="#others">Others</a>
+      <ul>
+        <li><a href="#comments">comments</a></li>
+        <li><a href="#symbol-table">symbol table</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+		</aside>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://cherry900606.github.io/posts/compiler_hw2/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>Compiler 作業二：yacc</span>
+			</a>
+			<a class="prev-post" href="https://cherry900606.github.io/posts/dsu/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Disjoint Set Union(DSU) 筆記</span>
+			</a>
+		</div>
+		<div id="comments" class="thin"><script src="https://utteranc.es/client.js"
+        repo="cherry900606/commentforblog"
+        issue-term="pathname"
+        theme="photon-dark"
+        crossorigin="anonymous"
+        async>
+</script></div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2022 <a href="https://cherry900606.github.io">chenchen</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://cherry900606.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+
+	<script src="https://cherry900606.github.io/js/bundle.min.7d8545daa55d62427355498dd8da13f98ff79a7938ce7d2a5e2ae1ec0de3beb8.js" integrity="sha256-fYVF2qVdYkJzVUmN2NoT+Y/3mnk4zn0qXirh7A3jvrg=" crossorigin="anonymous"></script>
+	
+
+</body>
+
+</html>

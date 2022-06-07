@@ -6,8 +6,282 @@
 		<generator>Hugo -- gohugo.io</generator>
 		<language>zh-tw</language>
 		<copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-		<lastBuildDate>Mon, 28 Feb 2022 22:10:37 +0800</lastBuildDate>
+		<lastBuildDate>Tue, 07 Jun 2022 12:13:23 +0800</lastBuildDate>
 		<atom:link href="https://cherry900606.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+		
+		<item>
+			<title>實作後門攻擊</title>
+			<link>https://cherry900606.github.io/posts/implement_backdoor_by_shap/</link>
+			<pubDate>Tue, 07 Jun 2022 12:13:23 +0800</pubDate>
+			
+			<guid>https://cherry900606.github.io/posts/implement_backdoor_by_shap/</guid>
+			<description>簡介 這次我用在論文閱讀中學到的方法練習實作後門攻擊。使用的是部份的 EMBER 資料集，包含 9999 筆資料，其中前 5000 筆的 label 是 0 (benign),其餘是 1 (ma</description>
+			<content type="html"><![CDATA[<h2 id="簡介">簡介</h2>
+<p>這次我用在論文閱讀中學到的方法練習實作後門攻擊。使用的是部份的 EMBER 資料集，包含 9999 筆資料，其中前 5000 筆的 label 是 0 (benign),其餘是 1 (malware)。</p>
+<p>我先將讀入的資料做簡單的預處理(shuffle + 正規化)，接著切割成 train, test set 後餵給 model，再用得到的 model 跟 shap 套件得到 shap 值。</p>
+<p>經過 feature selection 跟 value selection 後會得到 trigger。因為是 clean label attack，把該 trigger 藏進部分的 benign sample 來訓練模型，最後得到的就是 backdoored model。</p>
+<h2 id="feature-selection">feature selection</h2>
+<p>n 用來指定 trigger size 多大。
+選擇 feature 的依據是找出 feature 中 shap 的絕對值總和最大的 n 個，代表影響力越大。</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="k">def</span> <span class="nf">LargeAbsSHAP</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">feats</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">shap_values</span><span class="p">[</span><span class="n">label</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">larget_shap_index</span> <span class="o">=</span> <span class="n">s</span><span class="o">.</span><span class="n">argsort</span><span class="p">()[</span><span class="o">-</span><span class="n">n</span><span class="p">:]</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">larget_shap_index</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">s</span><span class="p">[</span><span class="n">larget_shap_index</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">larget_shap_index</span>
+<span class="n">selected_feature</span> <span class="o">=</span> <span class="n">LargeAbsSHAP</span><span class="p">(</span><span class="n">shap_values</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">X_train</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="mi">16</span><span class="p">)</span>
+</code></pre></div><h2 id="value-selection">value selection</h2>
+<p>我實作了兩個論文中提到的選擇 vaule 的方式，分別為 CountSHAP 跟 MinPopulation。</p>
+<p>CountSHAP 是找出每個 feature 底下，依據所有 value 數值的出現次數，以及對應到 shap 值得總和，找出最小的 n 個。
+MinPopulation 是直接找出出現次數最少的 n 個。</p>
+<div class="highlight"><pre class="chroma"><code class="language-python" data-lang="python"><span class="kn">import</span> <span class="nn">collections</span>
+<span class="k">def</span> <span class="nf">CountSHAP</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">mini</span> <span class="o">=</span> <span class="mi">100000</span> <span class="c1"># 根據公式算出來的值</span>
+        <span class="n">min_arg</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="c1"># 公式算出來最小值的那個 feature value 是啥</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="p">)[:,</span><span class="n">_f</span><span class="p">])</span><span class="o">.</span><span class="n">most_common</span><span class="p">()</span> <span class="c1"># label 0, all sample &amp; _f feature</span>
+        <span class="k">for</span> <span class="n">_c</span> <span class="ow">in</span> <span class="n">c</span><span class="p">:</span>
+            <span class="n">now</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">_c</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">+</span> <span class="n">s</span><span class="p">[</span><span class="mi">0</span><span class="p">][[</span><span class="n">idx</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">x</span><span class="p">[:</span><span class="mi">1000</span><span class="p">,</span><span class="n">_f</span><span class="p">])</span> <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="n">_c</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span><span class="n">_f</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">now</span> <span class="o">&lt;</span> <span class="n">mini</span><span class="p">:</span>
+                <span class="n">mini</span> <span class="o">=</span> <span class="n">now</span>
+                <span class="n">min_arg</span> <span class="o">=</span> <span class="n">_c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">_f</span><span class="p">,</span> <span class="n">min_arg</span><span class="p">))</span>
+        <span class="c1">#print(mini, min_arg)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+
+<span class="k">def</span> <span class="nf">MinPopulation</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_f</span> <span class="ow">in</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">collections</span><span class="o">.</span><span class="n">Counter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">s</span><span class="p">)[</span><span class="mi">0</span><span class="p">][:,</span><span class="n">_f</span><span class="p">])</span><span class="o">.</span><span class="n">most_common</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">_f</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">result</span>
+<span class="n">selected_value</span> <span class="o">=</span> <span class="n">CountSHAP</span><span class="p">(</span><span class="n">shap_values_dc</span><span class="p">,</span> <span class="n">X_train</span><span class="p">,</span> <span class="n">selected_feature</span><span class="p">)</span>
+</code></pre></div><h2 id="結果">結果</h2>
+<p>我用了幾種模型來檢驗結果，並用三種指標 Acc(F, X), Acc(Fb, X) 跟 Acc(Fb, Xb) 作為標準。</p>
+<p>其中 F 代表正常的 model， Fb 代表有後門的 model； X 代表正常的 malware sample，Xb 代表全部加上 trigger 的 malware sample。</p>
+<p>Acc(F, X) 看出正常情況下，模型對 malware sample 的檢測率，Acc(Fb, X) 看有後門的模型對正常 malware sample 的正確率有沒有降，Acc(Fb, Xb) 看有多少比例的 malware sample 在加上 trigger 後成功偽裝成 benign sample。</p>
+<p>(trigger size=16, poison rate=1%)</p>
+<pre><code>* LGBMClassifier
+Acc(F, X): 0.982
+Acc(Fb, X): 0.981
+Acc(Fb, Xb): 0.0
+
+* XGBClassifier
+Acc(F, X): 0.981
+Acc(Fb, X): 0.983
+Acc(Fb, Xb): 0.081
+0.983/0.081 = 12.3倍
+
+* RandomForestClassifier
+Acc(F, X): 0.949
+Acc(Fb, X): 0.947
+Acc(Fb, Xb): 0.943
+
+* DecisionTreeClassifier
+Acc(F, X): 0.968
+Acc(Fb, X): 0.967
+Acc(Fb, Xb): 0.549
+0.967/0.549 = 1.8倍
+
+* LogisticRegression
+Acc(F, X): 0.943
+Acc(Fb, X): 0.944
+Acc(Fb, Xb): 0.291
+0.944/0.291 = 3.2倍
+</code></pre>]]></content>
+		</item>
+		
+		<item>
+			<title>Adversarial attack(對抗式攻擊)</title>
+			<link>https://cherry900606.github.io/posts/adversarial_attack/</link>
+			<pubDate>Sun, 05 Jun 2022 18:32:56 +0800</pubDate>
+			
+			<guid>https://cherry900606.github.io/posts/adversarial_attack/</guid>
+			<description>對抗式攻擊(adversarial attack)是透過在input加上細微的擾動，讓模型做出錯誤的判斷，被攻擊的模型卻可能對錯誤的預測有高度</description>
+			<content type="html"><![CDATA[<p>對抗式攻擊(adversarial attack)是透過在input加上細微的擾動，讓模型做出錯誤的判斷，被攻擊的模型卻可能對錯誤的預測有高度信心。</p>
+<p>可以用黑箱攻擊(Black-box attacks)或白箱攻擊。前者對於模型僅有有限的了解，像是知道訓練的步驟或模型架構，但也可能沒有任何關於模型的資訊；後者是對目標模型有全面性的認識，知道模型的參數數值、架構等等。</p>
+<p>對抗式攻擊的目標是找到微小的擾動值，當該原本的sample加上擾動值後，會讓classifier預測出錯誤的label。</p>
+<p>除了電腦視覺(computer version)領域外，malware detector也有遭受對抗式攻擊的可能。不過相較於圖像的input是連續的數值，malware 的 input會是離散的。此外，視覺上的相似性會被運作行為相似性取代。</p>
+<p>對抗式攻擊也能應用在現實生活中，並且許多文獻已證實不同的深度神經網路都會被影響。由一個模型得到的對抗例(adversarial example)，拿到不同的神經網路也有效。而這個領域還有待開發。</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Compiler 作業二：yacc</title>
+			<link>https://cherry900606.github.io/posts/compiler_hw2/</link>
+			<pubDate>Sat, 14 May 2022 11:58:18 +0800</pubDate>
+			
+			<guid>https://cherry900606.github.io/posts/compiler_hw2/</guid>
+			<description>yacc 基本架構 %{ // part 1 %} // part 2 %% // part 3 %% // part 4 part1 跟 lex 一樣，include 需要用到的 file，以及一些宣告 part2 列出所有 termial 的 token、non-ter</description>
+			<content type="html"><![CDATA[<h2 id="yacc-基本架構">yacc 基本架構</h2>
+<pre><code>%{
+// part 1
+
+%}
+// part 2
+
+%%
+// part 3
+
+%%
+// part 4
+</code></pre><ul>
+<li>part1 跟 lex 一樣，include 需要用到的 file，以及一些宣告</li>
+<li>part2 列出所有 termial 的 token、non-terminal 的 type，跟 operator 的優先順序等等</li>
+<li>part3 寫 grammar ，以及需要的動作</li>
+<li>part4 跟 lex 一樣，可寫可不寫 main()</li>
+</ul>
+<h2 id="grammar">Grammar</h2>
+<p>因為在實作的過程中，主要是先寫好整個 grammar，最後在補上 sementic check 所需要的東西，所以分這兩塊來寫。</p>
+<p>grammar 的部分就是把該語言的語法寫清楚，這部分我是跟著 project 的文件去寫。</p>
+<p>紀錄兩個小技巧：
+如果是像 statment 這類可能有一行，也可能有多行的可以這樣寫</p>
+<pre><code>statements:
+	statement {Trace(&quot;Reducing to statements\n&quot;);}
+	| statement statements  {Trace(&quot;Reducing to statements\n&quot;);}
+;
+</code></pre><p>如果是可有可無的部分，像是函式宣告可能沒有參數，那可以這樣寫</p>
+<pre><code>optional_parameters:
+	parameters {Trace(&quot;Reducing to optional_parameters\n&quot;);}
+	|  {Trace(&quot;Reducing to optional_parameters\n&quot;);}
+;
+</code></pre><h2 id="sementic">sementic</h2>
+<p>為了讓 yacc 能夠判斷常見的錯誤，像是雖然符合文法，但該變數沒有宣告、型態不符等等，會需要額外寫東西輔助。</p>
+<p>這時候就需要用到 <code>%union</code> ，讓 yylval 或 yytext 知道現在是甚麼型態。</p>
+<p>我這樣寫</p>
+<pre><code>%union
+{
+	struct  e{
+		int ival;
+		float fval;
+		char *sval;
+		bool bval;
+		int dtype;
+	}Element;
+}
+</code></pre><p>以及將某些會需要紀錄參數型態、數值的token修改，最後搭配symbol table。</p>
+<p>這部分直接實作或看code感覺比較容易，就不贅述。</p>
+]]></content>
+		</item>
+		
+		<item>
+			<title>Compiler 作業一：lex</title>
+			<link>https://cherry900606.github.io/posts/compiler_hw1/</link>
+			<pubDate>Sat, 14 May 2022 11:21:12 +0800</pubDate>
+			
+			<guid>https://cherry900606.github.io/posts/compiler_hw1/</guid>
+			<description>lex 的基本架構 %{ // part 1 %} // part 2 %% // part 3 %% // part 4 part1 可以 include 用到的 library part2 用 regular grammar 定義 token part3 寫對 token 要做什麼動作 part4 是 optional，可以自定義 main()並</description>
+			<content type="html"><![CDATA[<h2 id="lex-的基本架構">lex 的基本架構</h2>
+<pre><code class="language-lex" data-lang="lex">%{
+// part 1
+
+%}
+// part 2
+
+%%
+// part 3
+
+%%
+// part 4
+
+</code></pre><ul>
+<li>part1 可以 include 用到的 library</li>
+<li>part2 用 regular grammar 定義 token</li>
+<li>part3 寫對 token 要做什麼動作</li>
+<li>part4 是 optional，可以自定義 main()並呼叫 yylex()，也可以不寫</li>
+</ul>
+<h2 id="part1">part1</h2>
+<pre><code>#define LIST     strcat(buf,yytext)
+#define token(t) {LIST; printf(&quot;&lt;%s&gt;\n&quot;,#t); return t;};
+#define tokenInteger(t,i) {LIST; printf(&quot;&lt;%s:%d&gt;\n&quot;,#t,i);}
+#define tokenString(t,s) {LIST; printf(&quot;&lt;%s:%s&gt;\n&quot;,#t,s);}
+
+char buf[MAX_LINE_LENG];
+
+</code></pre><p>先 define 一些東西以減少重複性 code。
+另外，原本老師提供的檔案是沒有 #t， 只有 t而已，但我在本地端用 cygwin 跑不過才改的。</p>
+<h2 id="part2">part2</h2>
+<pre><code>digit [0-9]
+integer {digit}+
+letter [a-zA-Z]
+identifier {letter}({digit}|{letter})*
+real [-+]?{integer}\.{integer}?([Ee][-+]?{digit})?
+string \&quot;(\&quot;\&quot;|.)*\&quot;
+</code></pre><p>ID必須是以字母開頭，後面由數字或字母的 closure 組成。
+字串則是以 &quot; 開頭跟結尾，中間如果有出現 &ldquo;，那就必須多加一個 &quot; 作為標示。例如 &ldquo;aa&quot;&ldquo;bb&rdquo; 會被當作 aa&quot;bb。</p>
+<h2 id="part3">part3</h2>
+<p>如果是operator，像是+-*%之類的token，就直接寫出他們的樣子，並寫出相對應的動作即可。
+像是：</p>
+<pre><code>&quot;+&quot;     {token('+');}
+&quot;-&quot;     {token('-');}
+&quot;*&quot;     {token('*');}
+&quot;/&quot;     {token('/');}
+&quot;%&quot;     {token('%');}
+</code></pre><p>如果是 keyword，那就寫出該字並寫出相對應的動作。作業有提到大小寫字母的組合都要能辨識。
+例：</p>
+<pre><code>[bB][oO][oO][lL]                {token(BOOL);}
+[bB][rR][eE][aA][kK]    {token(BREAK);}
+[cC][hH][aA][rR]                {token(CHAR);}
+[cC][aA][sS][eE]                {token(CASE);}
+[cC][lL][aA][sS][sS]    {token(CLASS);}
+</code></pre><p>再來就是在 part2 定義過規則的那些token。</p>
+<p>為了讓 lex 除了辨識是哪種 token 外，也能得到其值，要用之前寫好的token()系列。
+例如：</p>
+<pre><code>{integer} {
+        tokenString(INTEGER, yytext);
+ }
+ {identifier} {
+        tokenString(IDENTIFIER, yytext);
+}
+</code></pre><p>至於 string 的處理又再麻煩一點，因為要把前後的 &quot; 拿掉，並且中間若有 &quot;&rdquo; 也要處理。</p>
+<pre><code>{string} {
+        char s[MAX_LINE_LENG];
+        int index = 0;
+        for(int i=1;i&lt;yyleng-1;i++)
+        {
+                if(yytext[i]=='&quot;')
+                        i+=1;
+                s[index++]=yytext[i];
+        }
+        s[index]='\0';
+        tokenString(STRING, s);
+}
+</code></pre><p>我原本沒有加上 <code>s[index]='\0';</code>，在 server 上執行時字串一直輸出多餘內容，找好久才發現 bug。</p>
+<h2 id="part4">part4</h2>
+<pre><code>main()
+{
+    yylex();
+    // 視情況加進想要的東西
+}
+</code></pre><h2 id="others">Others</h2>
+<h3 id="comments">comments</h3>
+<p>分為單行註解與多行註解。</p>
+<p>首先要在 part2 加上 <code>%x CMNT</code></p>
+<p>單行註解
+<code>&quot;//&quot;[^\n]*      {LIST;}</code></p>
+<p>多行註解</p>
+<pre><code>&quot;/*&quot;    {
+        LIST;
+        BEGIN CMNT;
+}
+&lt;CMNT&gt;\n        {
+        LIST;
+		        printf(&quot;%d: %s&quot;, linenum++, buf);
+        buf[0] = '\0';
+}
+&lt;CMNT&gt;. {LIST;}
+&lt;CMNT&gt;&quot;*/&quot;      {
+        LIST;
+        BEGIN INITIAL;
+}
+</code></pre><h3 id="symbol-table">symbol table</h3>
+<p>如果有寫 symbol table，就在辨識到 ID 的時候 insert 進去。</p>
+<p>可以把 part4 改一下，最後把 symbol table 給 dump 出來。</p>
+]]></content>
+		</item>
 		
 		<item>
 			<title>Disjoint Set Union(DSU) 筆記</title>

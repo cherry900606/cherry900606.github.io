@@ -7,7 +7,43 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Mon, 28 Feb 2022 22:10:37 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 07 Jun 2022 12:13:23 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>實作後門攻擊</title>
+      <link>https://cherry900606.github.io/posts/implement_backdoor_by_shap/</link>
+      <pubDate>Tue, 07 Jun 2022 12:13:23 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/implement_backdoor_by_shap/</guid>
+      <description>簡介 這次我用在論文閱讀中學到的方法練習實作後門攻擊。使用的是部份的 EMBER 資料集，包含 9999 筆資料，其中前 5000 筆的 label 是 0 (benign),其餘是 1 (ma</description>
+    </item>
+    
+    <item>
+      <title>Adversarial attack(對抗式攻擊)</title>
+      <link>https://cherry900606.github.io/posts/adversarial_attack/</link>
+      <pubDate>Sun, 05 Jun 2022 18:32:56 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/adversarial_attack/</guid>
+      <description>對抗式攻擊(adversarial attack)是透過在input加上細微的擾動，讓模型做出錯誤的判斷，被攻擊的模型卻可能對錯誤的預測有高度</description>
+    </item>
+    
+    <item>
+      <title>Compiler 作業二：yacc</title>
+      <link>https://cherry900606.github.io/posts/compiler_hw2/</link>
+      <pubDate>Sat, 14 May 2022 11:58:18 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/compiler_hw2/</guid>
+      <description>yacc 基本架構 %{ // part 1 %} // part 2 %% // part 3 %% // part 4 part1 跟 lex 一樣，include 需要用到的 file，以及一些宣告 part2 列出所有 termial 的 token、non-ter</description>
+    </item>
+    
+    <item>
+      <title>Compiler 作業一：lex</title>
+      <link>https://cherry900606.github.io/posts/compiler_hw1/</link>
+      <pubDate>Sat, 14 May 2022 11:21:12 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/compiler_hw1/</guid>
+      <description>lex 的基本架構 %{ // part 1 %} // part 2 %% // part 3 %% // part 4 part1 可以 include 用到的 library part2 用 regular grammar 定義 token part3 寫對 token 要做什麼動作 part4 是 optional，可以自定義 main()並</description>
+    </item>
+    
     <item>
       <title>Disjoint Set Union(DSU) 筆記</title>
       <link>https://cherry900606.github.io/posts/dsu/</link>
@@ -60,42 +96,6 @@
       
       <guid>https://cherry900606.github.io/posts/bfs/</guid>
       <description>使用時機 需要找最短距離(shortest path)，或者遍歷圖(traversal graph)的時候。 演算法 給定一個起始的節點，並逐一尋找相</description>
-    </item>
-    
-    <item>
-      <title>質數</title>
-      <link>https://cherry900606.github.io/posts/prime/</link>
-      <pubDate>Wed, 26 Jan 2022 11:22:03 +0800</pubDate>
-      
-      <guid>https://cherry900606.github.io/posts/prime/</guid>
-      <description>前言 在解質數相關問題時，往往題目有時間限制，如果每個數字 n 都要重新把 2 ~ sqrt(n) 的數字都除除看來判斷，很有可能就 TLE。 為此，我們需要事先透過「質</description>
-    </item>
-    
-    <item>
-      <title>論文閱讀 A Hybrid Markov and LSTM Model for Indoor Location Prediction</title>
-      <link>https://cherry900606.github.io/posts/a_hybrid_markov_and_lstm_model_for_indoor_location_prediction/</link>
-      <pubDate>Thu, 13 Jan 2022 23:00:33 +0800</pubDate>
-      
-      <guid>https://cherry900606.github.io/posts/a_hybrid_markov_and_lstm_model_for_indoor_location_prediction/</guid>
-      <description>Introduction 隨著終端設備的普及，室內的移動軌跡資料也比以往更加容易取得。這些資料能夠讓店家能針對個別使用者推送個人化訊息，藉由過去的歷史資料來預測使用</description>
-    </item>
-    
-    <item>
-      <title>不定長度數字序列的分類問題</title>
-      <link>https://cherry900606.github.io/posts/seq_with_different_length/</link>
-      <pubDate>Thu, 09 Dec 2021 22:11:58 +0800</pubDate>
-      
-      <guid>https://cherry900606.github.io/posts/seq_with_different_length/</guid>
-      <description>題目敘述 從 binary malware file 轉成 number sequence，長度不一。最長的數字序列長度為14231552、最短為32。訓練資料共有3604筆，label數為2</description>
-    </item>
-    
-    <item>
-      <title>Nachos hw1</title>
-      <link>https://cherry900606.github.io/posts/nachos_hw1/</link>
-      <pubDate>Wed, 13 Oct 2021 10:48:33 +0800</pubDate>
-      
-      <guid>https://cherry900606.github.io/posts/nachos_hw1/</guid>
-      <description>安裝 sudo apt install csh g++ git clone https://gitlab.com/connlabtw21/nachos2021.git cd NachOS2021 sudo cp -r usr / cd code make make下去後會噴出很多訊息，這是正常的，等待幾分鐘後即結束。 Testing 測試是否下載成功。 cd userprog ./nachos -e ../test/test1 範例──</description>
     </item>
     
   </channel>

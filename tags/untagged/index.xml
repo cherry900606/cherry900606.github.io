@@ -7,7 +7,16 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Thu, 09 Dec 2021 22:11:58 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/untagged/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 07 Jun 2022 12:13:23 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/untagged/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>實作後門攻擊</title>
+      <link>https://cherry900606.github.io/posts/implement_backdoor_by_shap/</link>
+      <pubDate>Tue, 07 Jun 2022 12:13:23 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/implement_backdoor_by_shap/</guid>
+      <description>簡介 這次我用在論文閱讀中學到的方法練習實作後門攻擊。使用的是部份的 EMBER 資料集，包含 9999 筆資料，其中前 5000 筆的 label 是 0 (benign),其餘是 1 (ma</description>
+    </item>
+    
     <item>
       <title>不定長度數字序列的分類問題</title>
       <link>https://cherry900606.github.io/posts/seq_with_different_length/</link>
