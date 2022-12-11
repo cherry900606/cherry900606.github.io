@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>資訊安全 on CC&#39;s blog</title>
+    <link>https://cherry900606.github.io/tags/%E8%B3%87%E8%A8%8A%E5%AE%89%E5%85%A8/</link>
+    <description>Recent content in 資訊安全 on CC&#39;s blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-tw</language>
+    <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
+    <lastBuildDate>Sat, 10 Dec 2022 22:40:57 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/%E8%B3%87%E8%A8%8A%E5%AE%89%E5%85%A8/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>機器學習與資訊安全之應用 期末Project</title>
+      <link>https://cherry900606.github.io/posts/ml_security_final/</link>
+      <pubDate>Sat, 10 Dec 2022 22:40:57 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/ml_security_final/</guid>
+      <description>說明 本篇文章紀錄我在「機器學習與資訊安全之應用」課程的期末作業內容。 期末作業的要求是實作在 malware detection 上的對抗式攻擊(adversarial atta</description>
+    </item>
+    
+    <item>
+      <title>機器學習與資訊安全之應用 期中Project</title>
+      <link>https://cherry900606.github.io/posts/ml_security/</link>
+      <pubDate>Sat, 10 Dec 2022 20:28:28 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/ml_security/</guid>
+      <description>說明 本篇文章紀錄我在「機器學習與資訊安全之應用」課程的期中作業內容。 期中作業的內容為實作以機器學習中的 few-shot learning 來進行惡意軟體的偵測(malwar</description>
+    </item>
+    
+  </channel>
+</rss>

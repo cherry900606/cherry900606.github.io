@@ -7,7 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Thu, 13 Jan 2022 23:00:33 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 10 Dec 2022 22:40:57 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>機器學習與資訊安全之應用 期末Project</title>
+      <link>https://cherry900606.github.io/posts/ml_security_final/</link>
+      <pubDate>Sat, 10 Dec 2022 22:40:57 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/ml_security_final/</guid>
+      <description>說明 本篇文章紀錄我在「機器學習與資訊安全之應用」課程的期末作業內容。 期末作業的要求是實作在 malware detection 上的對抗式攻擊(adversarial atta</description>
+    </item>
+    
+    <item>
+      <title>機器學習與資訊安全之應用 期中Project</title>
+      <link>https://cherry900606.github.io/posts/ml_security/</link>
+      <pubDate>Sat, 10 Dec 2022 20:28:28 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/ml_security/</guid>
+      <description>說明 本篇文章紀錄我在「機器學習與資訊安全之應用」課程的期中作業內容。 期中作業的內容為實作以機器學習中的 few-shot learning 來進行惡意軟體的偵測(malwar</description>
+    </item>
+    
     <item>
       <title>論文閱讀 A Hybrid Markov and LSTM Model for Indoor Location Prediction</title>
       <link>https://cherry900606.github.io/posts/a_hybrid_markov_and_lstm_model_for_indoor_location_prediction/</link>

@@ -71,7 +71,7 @@
 			<div class="content">
                 
 				<h2 id="簡介">簡介<a href="#簡介" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
-<p>這次我用在論文閱讀中學到的方法練習實作後門攻擊。使用的是部份的 EMBER 資料集，包含 9999 筆資料，其中前 5000 筆的 label 是 0 (benign),其餘是 1 (malware)。</p>
+<p>這次我用在<a href="https://cherry900606.github.io/posts/explanation-guided_backdoor_poisoning_attacks_against_malware_classifiers/">論文閱讀</a>中學到的方法練習實作後門攻擊。使用的是部份的 EMBER 資料集，包含 9999 筆資料，其中前 5000 筆的 label 是 0 (benign),其餘是 1 (malware)。</p>
 <p>我先將讀入的資料做簡單的預處理(shuffle + 正規化)，接著切割成 train, test set 後餵給 model，再用得到的 model 跟 shap 套件得到 shap 值。</p>
 <p>經過 feature selection 跟 value selection 後會得到 trigger。因為是 clean label attack，把該 trigger 藏進部分的 benign sample 來訓練模型，最後得到的就是 backdoored model。</p>
 <h2 id="feature-selection">feature selection<a href="#feature-selection" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
@@ -169,6 +169,9 @@ Acc(Fb, Xb): 0.291
 </nav>
 		</aside>
 		<div class="post-nav thin">
+			<a class="next-post" href="https://cherry900606.github.io/posts/ml_security/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>機器學習與資訊安全之應用 期中Project</span>
+			</a>
 			<a class="prev-post" href="https://cherry900606.github.io/posts/adversarial_attack/">
 				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>Adversarial attack(對抗式攻擊)</span>
 			</a>

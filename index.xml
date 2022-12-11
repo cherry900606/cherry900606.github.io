@@ -7,7 +7,25 @@
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-tw</language>
     <copyright>This work is licensed under a Creative Commons Attribution-NonCommercial 4.0 International License.</copyright>
-    <lastBuildDate>Tue, 07 Jun 2022 12:13:23 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 10 Dec 2022 22:40:57 +0800</lastBuildDate><atom:link href="https://cherry900606.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>機器學習與資訊安全之應用 期末Project</title>
+      <link>https://cherry900606.github.io/posts/ml_security_final/</link>
+      <pubDate>Sat, 10 Dec 2022 22:40:57 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/ml_security_final/</guid>
+      <description>說明 本篇文章紀錄我在「機器學習與資訊安全之應用」課程的期末作業內容。 期末作業的要求是實作在 malware detection 上的對抗式攻擊(adversarial atta</description>
+    </item>
+    
+    <item>
+      <title>機器學習與資訊安全之應用 期中Project</title>
+      <link>https://cherry900606.github.io/posts/ml_security/</link>
+      <pubDate>Sat, 10 Dec 2022 20:28:28 +0800</pubDate>
+      
+      <guid>https://cherry900606.github.io/posts/ml_security/</guid>
+      <description>說明 本篇文章紀錄我在「機器學習與資訊安全之應用」課程的期中作業內容。 期中作業的內容為實作以機器學習中的 few-shot learning 來進行惡意軟體的偵測(malwar</description>
+    </item>
+    
     <item>
       <title>實作後門攻擊</title>
       <link>https://cherry900606.github.io/posts/implement_backdoor_by_shap/</link>
@@ -78,24 +96,6 @@
       
       <guid>https://cherry900606.github.io/posts/coin_problem/</guid>
       <description>簡介 零錢問題是動態規劃(dynamic programming, 簡稱dp)常見的問題之一，題目敘述可能是問有幾 n 錢幣的情況下，付 m 元有幾種組合，或者付 m 元所需要的最</description>
-    </item>
-    
-    <item>
-      <title>後門攻擊</title>
-      <link>https://cherry900606.github.io/posts/backdoor/</link>
-      <pubDate>Mon, 14 Feb 2022 13:57:49 +0800</pubDate>
-      
-      <guid>https://cherry900606.github.io/posts/backdoor/</guid>
-      <description>簡介 深度學習會從訓練資料中提取特徵，因此若攻擊者想讓深度學習模型會在特定情況下誤判，可以在部分的訓練資料中加入觸發器(trigger)，並將</description>
-    </item>
-    
-    <item>
-      <title>BFS(Breadth First Search) 筆記</title>
-      <link>https://cherry900606.github.io/posts/bfs/</link>
-      <pubDate>Tue, 08 Feb 2022 11:17:22 +0800</pubDate>
-      
-      <guid>https://cherry900606.github.io/posts/bfs/</guid>
-      <description>使用時機 需要找最短距離(shortest path)，或者遍歷圖(traversal graph)的時候。 演算法 給定一個起始的節點，並逐一尋找相</description>
     </item>
     
   </channel>

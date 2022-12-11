@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="zh-tw">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<meta name="theme-color" content="#494f5c">
+	<meta name="msapplication-TileColor" content="#494f5c">
+<meta itemprop="name" content="機器學習與資訊安全之應用 期中Project">
+<meta itemprop="description" content="說明 本篇文章紀錄我在「機器學習與資訊安全之應用」課程的期中作業內容。 期中作業的內容為實作以機器學習中的 few-shot learning 來進行惡意軟體的偵測(malwar"><meta itemprop="datePublished" content="2022-12-10T20:28:28&#43;08:00" />
+<meta itemprop="dateModified" content="2022-12-10T20:28:28&#43;08:00" />
+<meta itemprop="wordCount" content="1301">
+<meta itemprop="keywords" content="機器學習,資訊安全," /><meta property="og:title" content="機器學習與資訊安全之應用 期中Project" />
+<meta property="og:description" content="說明 本篇文章紀錄我在「機器學習與資訊安全之應用」課程的期中作業內容。 期中作業的內容為實作以機器學習中的 few-shot learning 來進行惡意軟體的偵測(malwar" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://cherry900606.github.io/posts/ml_security/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-12-10T20:28:28&#43;08:00" />
+<meta property="article:modified_time" content="2022-12-10T20:28:28&#43;08:00" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="機器學習與資訊安全之應用 期中Project"/>
+<meta name="twitter:description" content="說明 本篇文章紀錄我在「機器學習與資訊安全之應用」課程的期中作業內容。 期中作業的內容為實作以機器學習中的 few-shot learning 來進行惡意軟體的偵測(malwar"/>
+
+	<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+	<link rel="manifest" href="/site.webmanifest">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="">
+	<link rel="shortcut icon" href="/favicon.ico">
+
+	<title>機器學習與資訊安全之應用 期中Project</title>
+	<link rel="stylesheet" href="https://cherry900606.github.io/css/style.min.eac77496566fd7d5768fd650ddb0b2b181ca6a2d7c5fdd6fe6b8ba4bf47e566f.css" integrity="sha256-6sd0llZv19V2j9ZQ3bCysYHKai18X91v5ri6S/R+Vm8=" crossorigin="anonymous">
+	
+</head>
+
+<body id="page">
+	
+	<header id="site-header" class="animated slideInUp">
+		<div class="hdr-wrapper section-inner">
+			<div class="hdr-left">
+				<div class="site-branding">
+					<a href="https://cherry900606.github.io">CC&#39;s blog</a>
+				</div>
+				<nav class="site-nav hide-in-mobile">
+					
+				<a href="https://cherry900606.github.io/posts/">Posts</a>
+				<a href="https://cherry900606.github.io/about-me/">About</a>
+
+				</nav>
+			</div>
+			<div class="hdr-right hdr-icons">
+				<button id="toc-btn" class="hdr-btn desktop-only-ib" title="Table of Contents"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-list"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3" y2="6"></line><line x1="3" y1="12" x2="3" y2="12"></line><line x1="3" y1="18" x2="3" y2="18"></line></svg></button><span class="hdr-social hide-in-mobile"><a href="https://github.com/cherry900606" target="_blank" rel="noopener me" title="Github"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg></a><a href="mailto:cherry900606@gmail.com" target="_blank" rel="noopener me" title="Email"><svg xmlns="http://www.w3.org/2000/svg" class="feather" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg></a></span><button id="menu-btn" class="hdr-btn" title="Menu"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+			</div>
+		</div>
+	</header>
+	<div id="mobile-menu" class="animated fast">
+		<ul>
+			<li><a href="https://cherry900606.github.io/posts/">Posts</a></li>
+			<li><a href="https://cherry900606.github.io/about-me/">About</a></li>
+		</ul>
+	</div>
+
+
+	<main class="site-main section-inner animated fadeIn faster">
+		<article class="thin">
+			<header class="post-header">
+				<div class="post-meta"><span>Dec 10, 2022</span></div>
+				<h1>機器學習與資訊安全之應用 期中Project</h1>
+			</header>
+			<div class="content">
+                
+				<h2 id="說明">說明<a href="#說明" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>本篇文章紀錄我在「機器學習與資訊安全之應用」課程的期中作業內容。</p>
+<p>期中作業的內容為實作以機器學習中的 few-shot learning 來進行惡意軟體的偵測(malware detection)。須採用 <a href="https://ietresearch.onlinelibrary.wiley.com/doi/pdf/10.1049/iet-ifs.2018.5268">Dynamic API call sequence visualisation for malware classification</a> 這篇論文特徵提取的方法，並且改以使用 siamese network 來做few-shot learning。</p>
+<p>接下來的內容會依序介紹使用的資料集、特徵提取方法、siamese network 的訓練以及結論。</p>
+<h2 id="資料集介紹">資料集介紹<a href="#資料集介紹" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>使用的資料集來自實驗室學長姊，是不同 malware family 在執行過程中產生的 system call sequence，這種藉由捕捉惡意程式活動的判別方式屬於動態分析。</p>
+<p>單一一筆 sample 的格式如下圖，後續將提取 TIMESTAMP 與 SYSCALL 兩欄的資訊以做分析。
+<img src="https://i.imgur.com/1hZBauo.png" alt=""></p>
+<h2 id="特徵提取">特徵提取<a href="#特徵提取" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<h3 id="論文的方法">論文的方法<a href="#論文的方法" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>論文中的特徵提取方法，是將 API call sequence 依據功能、危險程度分成 16 種類別，並且將惡意程式從開始執行到結束的時段分割為 16 等份，並且依據一個時段內一種類別執行次數給予不同的顏色深淺。藉由將蒐集到的 call sequence 轉換為 image，等同於把惡意程式分類的問題變成圖型的分類，其想法是同一種 family 的惡意程式會為了規避被偵測而略做修改，然而整體行為模式還是相似的，因此可想而知不同的 malware family 所形成的圖像會不太一樣。</p>
+<p><img src="https://i.imgur.com/KrY1Y7T.png" alt=""></p>
+<h3 id="我的方法">我的方法<a href="#我的方法" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h3>
+<p>在課程作業的實作中，我使用的是 system call 而非 API call，加上論文作者也沒給不同 API call 分類底下各自有哪些類型，因此需要自行替 system call 做分類。</p>
+<p>SYSCALL 指的是 system call，屬於底層作業系統中所提供的介面。相對的，API (Application Program Interface) 是為了方便使用者而開法的介面，使用者只須要知道要呼叫哪些 API 以進行開發，無須了解該 API 會呼叫哪些 system call。</p>
+<p>我的方法是在搜尋各種 system call 的含意時產生的靈感。以 execve 這個 system call 為例，<a href="https://man7.org/linux/man-pages/man2/execve.2.html">linux man-pages</a> 中的 SYNOPSIS 小節提到需要引入 header 檔案 unistd.h。因此嘗試以是否引入同樣的 header 作為分類依據，並選出 16 種類別，其中難以分類的放入第 16 種類別 other。</p>
+<p>論文中的 image 維度 16 * 16，代表分成 16 種類別，以及將程式的運行時間切成 16 等分。在此也是選擇同樣的 image 大小，上色的方式也比照論文提供的 hex 對照表。</p>
+<p>接著對各種 malware family 作圖，觀察圖像是否有規律存在。經觀察發現，每種 malware family 都有屬於自己的特殊的 pattern，分別如下：</p>
+<table>
+<thead>
+<tr>
+<th>Malware family</th>
+<th>Image</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mirai</td>
+<td><img src="https://i.imgur.com/FpyPVW7.png" alt=""></td>
+</tr>
+<tr>
+<td>Bashlite</td>
+<td><img src="https://i.imgur.com/8yOSrhU.png" alt=""></td>
+</tr>
+<tr>
+<td>Tsunami</td>
+<td><img src="https://i.imgur.com/V0kHtwS.png" alt=""></td>
+</tr>
+<tr>
+<td>Android</td>
+<td><img src="https://i.imgur.com/PcSQcAh.png" alt=""></td>
+</tr>
+<tr>
+<td>Dofloo</td>
+<td><img src="https://i.imgur.com/3XfCQV9.png" alt=""></td>
+</tr>
+<tr>
+<td>Unknown</td>
+<td><img src="https://i.imgur.com/sPkbAOA.png" alt=""></td>
+</tr>
+<tr>
+<td>Hajime</td>
+<td><img src="https://i.imgur.com/dJtgPjZ.png" alt=""></td>
+</tr>
+<tr>
+<td>Xorddos</td>
+<td><img src="https://i.imgur.com/dTdqXNg.png" alt=""></td>
+</tr>
+</tbody>
+</table>
+<p>然而，並不是同個 malware family 底下的圖片都遵循這樣的 pattern，背後的原因仍有待了解。推測是與每個程式是否有完整執行到有關，有些檔案因為惡意程式沒有完整的執行，因此 system call 數量不足，以至於呈現出來的圖片會有偏差。</p>
+<p>最後選擇以其中的三個 family：Mirai、Android 與 Unknown 來做訓練，各取 10 張圖片，一半作為訓練集，另一半則作為測試集，屬於 3 way 5 shot。經測試訓練集的正確率為 0.71，測試集的正確率為 0.66。</p>
+<h2 id="訓練-siamese-network">訓練 siamese network<a href="#訓練-siamese-network" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<p>Siamese network，又稱為孿生網路，是一種特殊的神經網路架構。它是由兩個相同結構、共享權重的神經網路所構成，用以比較兩個輸入間的相似程度。</p>
+<p>在 GitHub 上的<a href="https://github.com/aspamers/siamese">一個專案</a>提供 Siamese network 的 API，可以很容易的設定模型架構以及呼叫該模型，因此在這份作業我們以其為基礎加上部分修改，並套用在作業的資料集上。
+模型架構示意圖：
+<img src="https://i.imgur.com/hdYTEpx.png" alt=""></p>
+<p>其中，base model 與 head model 的細節如下：</p>
+<p><img src="https://i.imgur.com/A0ny7Jk.png" alt=""></p>
+<h2 id="總結">總結<a href="#總結" class="anchor" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 7h3a5 5 0 0 1 5 5 5 5 0 0 1-5 5h-3m-6 0H6a5 5 0 0 1-5-5 5 5 0 0 1 5-5h3"></path><line x1="8" y1="12" x2="16" y2="12"></line></svg></a></h2>
+<ol>
+<li>嘗試以 system call sequence，而不是 API call sequence 來轉換成 image 以及後續的影像辨識</li>
+<li>轉換成 image 時需要把 system call 做分類，我們以 system call 所引入的 header 作為分類的依據</li>
+</ol>
+
+                
+			</div>
+			<hr class="post-end">
+			<footer class="post-info">
+				<p>
+					<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-tag meta-icon"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line></svg><span class="tag"><a href="https://cherry900606.github.io/tags/%E6%A9%9F%E5%99%A8%E5%AD%B8%E7%BF%92">機器學習</a></span><span class="tag"><a href="https://cherry900606.github.io/tags/%E8%B3%87%E8%A8%8A%E5%AE%89%E5%85%A8">資訊安全</a></span>
+				</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>1301 Words</p>
+				<p><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-calendar"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>2022-12-10 20:28 &#43;0800</p>
+			</footer>
+		</article>
+		<aside id="toc">
+			<div class="toc-title">Table of Contents</div>
+			<nav id="TableOfContents">
+  <ul>
+    <li><a href="#說明">說明</a></li>
+    <li><a href="#資料集介紹">資料集介紹</a></li>
+    <li><a href="#特徵提取">特徵提取</a>
+      <ul>
+        <li><a href="#論文的方法">論文的方法</a></li>
+        <li><a href="#我的方法">我的方法</a></li>
+      </ul>
+    </li>
+    <li><a href="#訓練-siamese-network">訓練 siamese network</a></li>
+    <li><a href="#總結">總結</a></li>
+  </ul>
+</nav>
+		</aside>
+		<div class="post-nav thin">
+			<a class="next-post" href="https://cherry900606.github.io/posts/ml_security_final/">
+				<span class="post-nav-label"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-left"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>&nbsp;Newer</span><br><span>機器學習與資訊安全之應用 期末Project</span>
+			</a>
+			<a class="prev-post" href="https://cherry900606.github.io/posts/implement_backdoor_by_shap/">
+				<span class="post-nav-label">Older&nbsp;<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></span><br><span>實作後門攻擊</span>
+			</a>
+		</div>
+		<div id="comments" class="thin"><script src="https://utteranc.es/client.js"
+        repo="cherry900606/commentforblog"
+        issue-term="pathname"
+        theme="photon-dark"
+        crossorigin="anonymous"
+        async>
+</script></div>
+	</main>
+
+	<footer id="site-footer" class="section-inner thin animated fadeIn faster">
+		<p>&copy; 2022 <a href="https://cherry900606.github.io">chenchen</a> &#183; <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC BY-NC 4.0</a></p>
+		<p>
+			Made with <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> &#183; Theme <a href="https://github.com/Track3/hermit" target="_blank" rel="noopener">Hermit</a> &#183; <a href="https://cherry900606.github.io/posts/index.xml" target="_blank" title="rss"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-rss"><path d="M4 11a9 9 0 0 1 9 9"></path><path d="M4 4a16 16 0 0 1 16 16"></path><circle cx="5" cy="19" r="1"></circle></svg></a>
+		</p>
+	</footer>
+
+
+
+	<script src="https://cherry900606.github.io/js/bundle.min.7d8545daa55d62427355498dd8da13f98ff79a7938ce7d2a5e2ae1ec0de3beb8.js" integrity="sha256-fYVF2qVdYkJzVUmN2NoT+Y/3mnk4zn0qXirh7A3jvrg=" crossorigin="anonymous"></script>
+	
+
+</body>
+
+</html>
